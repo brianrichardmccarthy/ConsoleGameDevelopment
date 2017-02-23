@@ -3,8 +3,10 @@ package ie.wit.cgd.bunnyhop;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 
+import ie.wit.cgd.bunnyhop.game.Assets;
 import ie.wit.cgd.bunnyhop.game.WorldController;
 import ie.wit.cgd.bunnyhop.game.WorldRenderer;
 
@@ -22,6 +24,9 @@ public class BunnyHopMain extends ApplicationAdapter {
 
         // Set Libgdx log level to DEBUG
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
+
+        // Load assets
+        Assets.instance.init(new AssetManager());
 
         // Initialize controller and renderer
         worldController = new WorldController();
@@ -63,12 +68,14 @@ public class BunnyHopMain extends ApplicationAdapter {
     @Override
     public void resume() {
 
+        Assets.instance.init(new AssetManager());
         paused = false;
     }
 
     @Override
     public void dispose() {
 
+        Assets.instance.dispose();
         worldRenderer.dispose();
     }
 }
