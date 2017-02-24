@@ -36,8 +36,8 @@ com_crashlytics_export_strings.xml
 .classpath
 .project
 .metadata/
-./.recommenders/
-.recommenders/index/http___download_eclipse_org_recommenders_models_neon_/
+.recommenders/
+/.recommenders/
 /android/bin/
 /core/bin/
 /desktop/bin/
