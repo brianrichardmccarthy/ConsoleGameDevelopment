@@ -36,6 +36,7 @@ public class BunnyHead extends AbstractGameObject {
     public void init() {
 
         dimension.set(1, 1);
+        // regHead = Assets.instance.bunny.head;
         regHead = Assets.instance.bunny.head;
 
         // Center image on game object
@@ -102,18 +103,38 @@ public class BunnyHead extends AbstractGameObject {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    protected void updateMotionY(float deltaTime) {
 
-        TextureRegion reg = null;
-
-        // Set special color when game object has a feather power-up
-        if (hasFeatherPowerup) batch.setColor(1.0f, 0.8f, 0.0f, 1.0f);
-        // Draw image
-        reg = regHead;
-        batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), viewDirection == VIEW_DIRECTION.LEFT, false);
-
-        // Reset color to white
-        batch.setColor(1, 1, 1, 1);
+        switch (jumpState) {
+            case GROUNDED:
+                jumpState = JUMP_STATE.FALLING;
+                break;
+            case JUMP_RISING:
+                // Keep track of jump time
+                timeJumping += deltaTime;
+                // Jump time left?
+                if (timeJumping <= JUMP_TIME_MAX) {
+                    // Still jumping
+                    velocity.y = terminalVelocity.y;
+                } else {
+                    jumpState = JUMP_STATE.JUMP_FALLING;
+                }
+                break;
+            case FALLING:
+                velocity.y -= terminalVelocity.y;
+                break;
+            case JUMP_FALLING:
+                // Add delta times to track jump time
+                timeJumping += deltaTime;
+                // Jump to minimal height if jump key was pressed too short
+                if (timeJumping > 0 && timeJumping <= JUMP_TIME_MIN) {
+                    // Still jumping
+                    velocity.y = terminalVelocity.y;
+                } else {
+                    jumpState = JUMP_STATE.FALLING;
+                }
+        }
+        if (jumpState != JUMP_STATE.GROUNDED) super.updateMotionY(deltaTime);
     }
 
     @Override
@@ -134,32 +155,18 @@ public class BunnyHead extends AbstractGameObject {
     }
 
     @Override
-    protected void updateMotionY(float deltaTime) {
+    public void render(SpriteBatch batch) {
 
-        switch (jumpState) {
-            case GROUNDED:
-                jumpState = JUMP_STATE.FALLING;
-                break;
-            case JUMP_RISING:
-                // Keep track of jump time
-                timeJumping += deltaTime;
-                // Jump time left?
-                if (timeJumping <= JUMP_TIME_MAX) {
-                    // Still jumping
-                    velocity.y = terminalVelocity.y;
-                }
-                break;
-            case FALLING:
-                break;
-            case JUMP_FALLING:
-                // Add delta times to track jump time
-                timeJumping += deltaTime;
-                // Jump to minimal height if jump key was pressed too short
-                if (timeJumping > 0 && timeJumping <= JUMP_TIME_MIN) {
-                    // Still jumping
-                    velocity.y = terminalVelocity.y;
-                }
-        }
-        if (jumpState != JUMP_STATE.GROUNDED) super.updateMotionY(deltaTime);
+        TextureRegion reg = null;
+
+        // Set special color when game object has a feather power-up
+        if (hasFeatherPowerup) batch.setColor(1.0f, 0.8f, 0.0f, 1.0f);
+        // Draw image
+        reg = regHead;
+        batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), viewDirection == VIEW_DIRECTION.LEFT, false);
+
+        // Reset color to white
+        batch.setColor(1, 1, 1, 1);
     }
+
 }
