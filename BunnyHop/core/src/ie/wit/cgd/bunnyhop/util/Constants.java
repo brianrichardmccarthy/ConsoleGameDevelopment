@@ -23,4 +23,7 @@ public class Constants {
     // GUI Height
     public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
 
+    // Duration of feather power-up in seconds
+    public static final float ITEM_FEATHER_POWERUP_DURATION = 9;
+
 }
