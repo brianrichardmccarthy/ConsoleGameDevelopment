@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import ie.wit.cgd.bunnyhop.game.objects.BunnyHead;
 import ie.wit.cgd.bunnyhop.game.objects.BunnyHead.JUMP_STATE;
 import ie.wit.cgd.bunnyhop.game.objects.Feather;
+import ie.wit.cgd.bunnyhop.game.objects.Goal;
 import ie.wit.cgd.bunnyhop.game.objects.GoldCoin;
 import ie.wit.cgd.bunnyhop.game.objects.Rock;
 import ie.wit.cgd.bunnyhop.util.CameraHelper;
@@ -45,6 +46,7 @@ public class WorldController extends InputAdapter {
 
     public void update(float deltaTime) {
 
+        if (isGameWon()) return;
         handleDebugInput(deltaTime);
         if (isGameOver()) {
             timeLeftGameOverDelay -= deltaTime;
@@ -61,6 +63,7 @@ public class WorldController extends InputAdapter {
             else
                 initLevel();
         }
+
     }
 
     private void initLevel() {
@@ -94,6 +97,7 @@ public class WorldController extends InputAdapter {
     }
 
     private void handleDebugInput(float deltaTime) {
+
         if (Gdx.app.getType() != ApplicationType.Desktop) return;
 
         // Camera Controls (move)
@@ -193,6 +197,14 @@ public class WorldController extends InputAdapter {
         Gdx.app.log(TAG, "Feather collected");
     }
 
+    private void onCollisionBunnyWithGoal(Goal goal) {
+
+        if (!goal.collected) {
+            goal.collected = true;
+            Gdx.app.log(TAG, "Goal collected");
+        }
+    }
+
     private void testCollisions() {
 
         r1.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
@@ -223,6 +235,15 @@ public class WorldController extends InputAdapter {
             onCollisionBunnyWithFeather(feather);
             break;
         }
+
+        // Test collision: Bunny Head <-> Goal
+        r2.set(level.goal.position.x, level.goal.position.y, level.goal.bounds.width, level.goal.bounds.height);
+        if (r1.overlaps(r2)) onCollisionBunnyWithGoal(level.goal);
+    }
+
+    public boolean isGameWon() {
+
+        return level.goal.collected;
     }
 
     public boolean isGameOver() {

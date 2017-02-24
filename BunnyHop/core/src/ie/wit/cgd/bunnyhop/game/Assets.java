@@ -25,6 +25,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetFeather feather;
     public AssetLevelDecoration levelDecoration;
     public AssetFonts fonts;
+    public AssetGoal goal;
 
     // singleton: prevent instantiation from other classes
     private Assets() {
@@ -55,6 +56,7 @@ public class Assets implements Disposable, AssetErrorListener {
         goldCoin = new AssetGoldCoin(atlas);
         feather = new AssetFeather(atlas);
         levelDecoration = new AssetLevelDecoration(atlas);
+        goal = new AssetGoal(atlas);
         fonts = new AssetFonts();
     }
 
@@ -108,6 +110,15 @@ public class Assets implements Disposable, AssetErrorListener {
 
         public AssetFeather(TextureAtlas atlas) {
             feather = atlas.findRegion("item_feather");
+        }
+    }
+
+    public class AssetGoal {
+
+        public final AtlasRegion goal;
+
+        public AssetGoal(TextureAtlas atlas) {
+            goal = atlas.findRegion("goal");
         }
     }
 

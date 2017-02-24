@@ -9,6 +9,7 @@ import ie.wit.cgd.bunnyhop.game.objects.AbstractGameObject;
 import ie.wit.cgd.bunnyhop.game.objects.BunnyHead;
 import ie.wit.cgd.bunnyhop.game.objects.Clouds;
 import ie.wit.cgd.bunnyhop.game.objects.Feather;
+import ie.wit.cgd.bunnyhop.game.objects.Goal;
 import ie.wit.cgd.bunnyhop.game.objects.GoldCoin;
 import ie.wit.cgd.bunnyhop.game.objects.Mountains;
 import ie.wit.cgd.bunnyhop.game.objects.Rock;
@@ -32,6 +33,9 @@ public class Level {
         // purple
         ITEM_FEATHER(255, 0, 255),
 
+        // blue
+        ITEM_GOAL(22, 22, 229),
+
         // yellow
         ITEM_GOLD_COIN(255, 255, 0);
 
@@ -53,8 +57,9 @@ public class Level {
     }
 
     // objects
-    public Array<Rock> rocks;
     public BunnyHead bunnyHead;
+    public Goal goal;
+    public Array<Rock> rocks;
     public Array<GoldCoin> goldCoins;
     public Array<Feather> feathers;
 
@@ -124,6 +129,13 @@ public class Level {
                     offsetHeight = -1.5f;
                     obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
                     goldCoins.add((GoldCoin) obj);
+                } else if (BLOCK_TYPE.ITEM_GOAL.sameColor(currentPixel)) {
+                    // goal
+                    obj = new Goal();
+                    offsetHeight = -1.5f;
+                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+                    goal = (Goal) obj;
+                    Gdx.app.debug(TAG, "Goal loaded");
                 } else {
                     // unknown object/pixel color
 
@@ -139,6 +151,7 @@ public class Level {
                     // alpha channel
                     int a = 0xff & currentPixel;
                     Gdx.app.error(TAG, "Unknown object at x<" + pixelX + "> y<" + pixelY + ">: r<" + r + "> g<" + g + "> b<" + b + "> a<" + a + ">");
+
                 }
                 lastPixel = currentPixel;
             }
@@ -177,6 +190,9 @@ public class Level {
         // Draw Player Character
         bunnyHead.render(batch);
 
+        // draw goal object
+        goal.render(batch);
+
         // Draw Water Overlay
         waterOverlay.render(batch);
 
@@ -187,6 +203,7 @@ public class Level {
     public void update(float deltaTime) {
 
         bunnyHead.update(deltaTime);
+        goal.update(deltaTime);
         for (Rock rock : rocks)
             rock.update(deltaTime);
         for (GoldCoin goldCoin : goldCoins)

@@ -5,6 +5,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.MathUtils;
 
 import ie.wit.cgd.bunnyhop.game.Assets;
 import ie.wit.cgd.bunnyhop.game.WorldController;
@@ -40,7 +41,7 @@ public class BunnyHopMain extends ApplicationAdapter {
         // Do not update game world when paused
         if (!paused) {
             // Update game world by the time that has passed since last rendered frame
-            worldController.update(Gdx.graphics.getDeltaTime());
+            worldController.update(MathUtils.clamp(Gdx.graphics.getDeltaTime(), 0f, 0.05f));
 
             // Sets the clear screen color to: Cornflower Blue
             Gdx.gl.glClearColor(0x64 / 255.0f, 0x95 / 255.0f, 0xed / 255.0f, 0xff / 255.0f);
