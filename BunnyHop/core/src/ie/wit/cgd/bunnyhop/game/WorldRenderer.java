@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 
 import ie.wit.cgd.bunnyhop.util.Constants;
@@ -24,7 +25,7 @@ public class WorldRenderer implements Disposable {
 
         renderWorld(batch);
         renderGui(batch);
-        // renderGuiGameOverMessage(batch);
+        renderGuiGameOverMessage(batch);
         renderGuiFeatherPowerup(batch);
     }
 
@@ -35,6 +36,20 @@ public class WorldRenderer implements Disposable {
         batch.begin();
         worldController.level.render(batch);
         batch.end();
+    }
+
+    private void renderGuiGameOverMessage(SpriteBatch batch) {
+
+        float x = cameraGUI.viewportWidth / 2;
+        float y = cameraGUI.viewportHeight / 2;
+        if (worldController.isGameOver()) {
+            BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
+            batch.begin();
+            fontGameOver.setColor(1, 0.75f, 0.25f, 1);
+            fontGameOver.draw(batch, "GAME OVER", x, y, 0, Align.center, true);
+            fontGameOver.setColor(1, 1, 1, 1);
+            batch.end();
+        }
     }
 
     private void renderGui(SpriteBatch batch) {
