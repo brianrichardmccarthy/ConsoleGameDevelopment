@@ -7,8 +7,6 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import com.badlogic.gdx.Gdx;
-
 public class ProceduralGeneratedLevel {
 
     private static final String TAG = ProceduralGeneratedLevel.class.getName();
@@ -26,43 +24,59 @@ public class ProceduralGeneratedLevel {
     }
 
     public void generateLevel(String fileName) {
+
         try {
             image = ImageIO.read(new File("C:/Projects/Java/ConsoleGameDevelopment1/BunnyHop/android/assets/levels/template.png"));
-            int x = 0, y = 0;
+            int x = 0, y = (int) (image.getHeight() * 0.75);
             for (x = 0; x < image.getWidth(); x++) {
-                for (y = 0; y < image.getHeight(); y++) {
 
-                    // red color channel
-                    int r = 0xff & (image.getRGB(x, y) >>> 16);
+                /*
+                 * // red color channel
+                 * int r = 0xff & (image.getRGB(x, y) >>> 16);
+                 * // green color channel
+                 * int g = 0xff & (image.getRGB(x, y) >>> 8);
+                 * // blue color channel
+                 * int b = 0xff & image.getRGB(x, y);
+                 * if (r != 0 && g != 0 && b != 0) continue;
+                 * int z = rand.nextInt(image.getHeight() - image.getHeight() / 2) + image.getHeight();
+                 */
+                int next = rand.nextInt();
 
-                    // green color channel
-                    int g = 0xff & (image.getRGB(x, y) >>> 8);
+                if (next % 2 == 1) {
 
-                    // blue color channel
-                    int b = 0xff & image.getRGB(x, y);
+                    int[] rockLength = new int[(((rand.nextInt(image.getWidth() - x) + 1) % 10) + 1)];
 
-                    if (r != 0 && g != 0 && b != 0) continue;
-
-                    if (y > image.getHeight() / 2) {
-
-                        int next = rand.nextInt();
-
-                        if (y > image.getHeight() / 2 && next % 2 == 1) {
-                            int[] tempColor = new int[rand.nextInt(10 - 2) + 2];
-                            for (int z = 0; z < tempColor.length; z++) {
-                                tempColor[z] = generateColor(0, 255, 0);
-                            }
-                            
-                            try {
-                                image.setRGB(x, y, tempColor.length, y + 1, tempColor, 0, 0);
-                            } catch (ArrayIndexOutOfBoundsException e) {
-                                Gdx.app.debug(TAG, "Image width <" + image.getWidth() + "> Image Height <" + image.getHeight() + "> x <" + x + "> y <" + y + "> array length <" + tempColor.length + "> y+1 <" + (y + 1) + ">");
-                            }
-                        }
-
+                    for (int rLength = 0; rLength < rockLength.length; rLength++) {
+                        rockLength[rLength] = generateColor(0, 255, 0);
                     }
 
+                    image.setRGB(x, y, (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : rockLength.length, (y + 1 >= image.getHeight()) ? 0 : 1, rockLength, 0, 0);
+
+                    x += rockLength.length;
+                    
+                    if (rand.nextBoolean()) y += 1;
+                    else
+                        y -= 1;
+
                 }
+
+                /*
+                 * if (y > image.getHeight() / 2) {
+                 * int next = rand.nextInt();
+                 * if (y > image.getHeight() / 2 && next % 2 == 1) {
+                 * int[] tempColor = new int[rand.nextInt(10 - 2) + 2];
+                 * for (int z = 0; z < tempColor.length; z++) {
+                 * tempColor[z] = generateColor(0, 255, 0);
+                 * }
+                 * try {
+                 * image.setRGB(x, y, tempColor.length, y + 1, tempColor, 0, 0);
+                 * } catch (ArrayIndexOutOfBoundsException e) {
+                 * Gdx.app.debug(TAG, "Image width <" + image.getWidth() + "> Image Height <" + image.getHeight() + "> x <" + x + "> y <" + y + "> array length <" + tempColor.length + "> y+1 <" + (y + 1) + ">");
+                 * }
+                 * }
+                 * }
+                 */
+
             }
             write(fileName);
         } catch (IOException e) {
