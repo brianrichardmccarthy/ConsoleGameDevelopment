@@ -111,6 +111,7 @@ public class Level {
                     } else {
                         rocks.get(rocks.size - 1).increaseLength(1);
                     }
+
                 } else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
                     // player spawn point
                     obj = new BunnyHead();
@@ -135,7 +136,6 @@ public class Level {
                     offsetHeight = -1.5f;
                     obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
                     goal = (Goal) obj;
-                    Gdx.app.debug(TAG, "Goal loaded");
                 } else {
                     // unknown object/pixel color
 

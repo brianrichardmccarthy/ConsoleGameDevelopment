@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
 
 import ie.wit.cgd.bunnyhop.game.Assets;
+import ie.wit.cgd.bunnyhop.game.ProceduralGeneratedLevel;
 import ie.wit.cgd.bunnyhop.game.WorldController;
 import ie.wit.cgd.bunnyhop.game.WorldRenderer;
 
@@ -28,6 +29,9 @@ public class BunnyHopMain extends ApplicationAdapter {
 
         // Load assets
         Assets.instance.init(new AssetManager());
+
+        ProceduralGeneratedLevel temp = new ProceduralGeneratedLevel();
+        temp.generateLevel("C:\\Projects\\Java\\ConsoleGameDevelopment1\\BunnyHop\\android\\assets\\levels\\level-03");
 
         // Initialize controller and renderer
         worldController = new WorldController();
