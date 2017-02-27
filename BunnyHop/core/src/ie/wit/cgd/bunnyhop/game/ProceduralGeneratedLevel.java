@@ -29,6 +29,7 @@ public class ProceduralGeneratedLevel {
             image = ImageIO.read(new File("C:/Projects/Java/ConsoleGameDevelopment1/BunnyHop/android/assets/levels/template.png"));
             int x = 0, y = (int) (image.getHeight() * 0.75);
             int lengthOfGap = 0;
+            boolean bunnyIsSpawned = false, goalIsSpawned = false;
             for (x = 0; x < image.getWidth(); x++) {
 
                 /*
@@ -55,11 +56,22 @@ public class ProceduralGeneratedLevel {
 
                     float spawn = rand.nextFloat();
                     
-                    if (spawn >= 0.50f) {
+                    if (!bunnyIsSpawned) {
+
+                        image.setRGB(x, y - 1, generateColor(255, 255, 255));
+                        bunnyIsSpawned = true;
+                        continue;
+                    }
+
+                    if (spawn >= 0.40f) {
                         for (int rLength = 0; rLength < rockLength.length; rLength++) {
-                            rockLength[rLength] = generateColor(255, 255, 0);
+                            if (spawn >= 0.40f) rockLength[rLength] = generateColor(255, 255, 0);
+                            else rockLength[rLength] = generateColor(0, 0, 0);
+                            spawn = rand.nextFloat();
                         }
                         image.setRGB(x, y - 1, (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : rockLength.length, 1, rockLength, 0, 0);
+                    } else if (spawn >= 0.20f) {
+                        image.setRGB(x, y - 1, generateColor(255, 0, 255));
                     }
                     
                     x += rockLength.length;
