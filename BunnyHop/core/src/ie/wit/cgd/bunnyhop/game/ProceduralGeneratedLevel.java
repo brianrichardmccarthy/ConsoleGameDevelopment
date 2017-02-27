@@ -28,6 +28,7 @@ public class ProceduralGeneratedLevel {
         try {
             image = ImageIO.read(new File("C:/Projects/Java/ConsoleGameDevelopment1/BunnyHop/android/assets/levels/template.png"));
             int x = 0, y = (int) (image.getHeight() * 0.75);
+            int lengthOfGap = 0;
             for (x = 0; x < image.getWidth(); x++) {
 
                 /*
@@ -42,7 +43,7 @@ public class ProceduralGeneratedLevel {
                  */
                 int next = rand.nextInt();
 
-                if (next % 2 == 1) {
+                if (next % 2 == 1 || lengthOfGap == 3) {
 
                     int[] rockLength = new int[(((rand.nextInt(image.getWidth() - x) + 1) % 10) + 1)];
 
@@ -53,11 +54,11 @@ public class ProceduralGeneratedLevel {
                     image.setRGB(x, y, (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : rockLength.length, (y + 1 >= image.getHeight()) ? 0 : 1, rockLength, 0, 0);
 
                     x += rockLength.length;
-                    
+                    lengthOfGap = 0;
                     if (rand.nextBoolean()) y += 1;
-                    else
-                        y -= 1;
-
+                    else y -= 1;
+                } else {
+                    lengthOfGap++;
                 }
 
                 /*

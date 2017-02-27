@@ -199,10 +199,13 @@ public class WorldController extends InputAdapter {
 
     private void onCollisionBunnyWithGoal(Goal goal) {
 
-        if (!goal.collected) {
-            goal.collected = true;
-            Gdx.app.log(TAG, "Goal collected");
+        if (score > 1000) {
+            if (!goal.collected) {
+                goal.collected = true;
+                Gdx.app.log(TAG, "Goal collected");
+            }
         }
+
     }
 
     private void testCollisions() {
