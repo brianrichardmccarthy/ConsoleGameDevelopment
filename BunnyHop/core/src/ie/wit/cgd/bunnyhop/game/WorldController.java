@@ -20,6 +20,7 @@ public class WorldController extends InputAdapter {
     private static final String TAG = WorldController.class.getName();
 
     public CameraHelper cameraHelper;
+    private String currentLevel;
     public Level level;
     public int lives;
     public int score;
@@ -40,7 +41,8 @@ public class WorldController extends InputAdapter {
         score = 0;
         timeLeftGameOverDelay = 0;
         lives = Constants.LIVES_START;
-        level = new Level(Constants.LEVEL_01);
+        currentLevel = Constants.LEVEL_01;
+        level = new Level(currentLevel);
         cameraHelper.setTarget(level.bunnyHead);
     }
 
@@ -69,7 +71,7 @@ public class WorldController extends InputAdapter {
     private void initLevel() {
 
         score = 0;
-        level = new Level(Constants.LEVEL_01);
+        level = new Level(currentLevel);
         cameraHelper.setTarget(level.bunnyHead);
     }
 
@@ -130,6 +132,21 @@ public class WorldController extends InputAdapter {
         if (Gdx.input.isKeyPressed(Keys.COMMA)) cameraHelper.addZoom(camZoomSpeed);
         if (Gdx.input.isKeyPressed(Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
         if (Gdx.input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
+
+        if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
+            currentLevel = Constants.LEVEL_01;
+            initLevel();
+        }
+
+        if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
+            currentLevel = Constants.LEVEL_02;
+            initLevel();
+        }
+
+        if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
+            currentLevel = Constants.LEVEL_03;
+            initLevel();
+        }
     }
 
     private void moveCamera(float x, float y) {

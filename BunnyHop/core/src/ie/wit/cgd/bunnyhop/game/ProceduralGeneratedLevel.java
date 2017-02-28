@@ -38,7 +38,7 @@ public class ProceduralGeneratedLevel {
         }
 
         int x = 0, y = (int) (image.getHeight() * 0.75);
-        float lengthOfGap = 0;
+        int lengthOfGap = 0;
         boolean bunnyIsSpawned = false, goalIsSpawned = false;
         for (x = 0; x < image.getWidth(); x++) {
 
@@ -54,7 +54,7 @@ public class ProceduralGeneratedLevel {
              */
             int next = rand.nextInt();
 
-            if (next % 2 == 1 || lengthOfGap >= 1.0f) {
+            if (next % 2 == 1 || lengthOfGap == 1) {
 
                 int[] rockLength = new int[(((rand.nextInt(image.getWidth() - x) + 1) % 10) + 1)];
 
@@ -97,9 +97,9 @@ public class ProceduralGeneratedLevel {
 
                 x += rockLength.length;
                 lengthOfGap = 0;
-                y = MathUtils.clamp(y + (rand.nextInt(4) - 2), (int) (image.getHeight() * 0.70), image.getHeight());
+                y = MathUtils.clamp(y + MathUtils.clamp((rand.nextInt(4) - 2), -1, 1), (int) (image.getHeight() * 0.70), image.getHeight());
             } else {
-                lengthOfGap += 0.5f;
+                lengthOfGap++;
             }
 
             /*
