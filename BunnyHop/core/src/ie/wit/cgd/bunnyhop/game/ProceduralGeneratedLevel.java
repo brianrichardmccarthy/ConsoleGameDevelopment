@@ -27,8 +27,6 @@ public class ProceduralGeneratedLevel {
 
     public void generateLevel(String fileName) {
 
-        // image = ImageIO.read(new File("C:/Projects/Java/ConsoleGameDevelopment1/BunnyHop/android/assets/levels/template.png"));
-
         image = new BufferedImage(128, 32, BufferedImage.TYPE_INT_RGB);
 
         for (int setupY = 0; setupY < 32; setupY++) {
@@ -40,18 +38,9 @@ public class ProceduralGeneratedLevel {
         int x = 0, y = (int) (image.getHeight() * 0.75);
         int lengthOfGap = 0;
         boolean bunnyIsSpawned = false, goalIsSpawned = false;
+        int xOfLastRock = 0, yOfLastRock = 0;
         for (x = 0; x < image.getWidth(); x++) {
 
-            /*
-             * // red color channel
-             * int r = 0xff & (image.getRGB(x, y) >>> 16);
-             * // green color channel
-             * int g = 0xff & (image.getRGB(x, y) >>> 8);
-             * // blue color channel
-             * int b = 0xff & image.getRGB(x, y);
-             * if (r != 0 && g != 0 && b != 0) continue;
-             * int z = rand.nextInt(image.getHeight() - image.getHeight() / 2) + image.getHeight();
-             */
             int next = rand.nextInt();
 
             if (next % 2 == 1 || lengthOfGap == 1) {
@@ -64,6 +53,9 @@ public class ProceduralGeneratedLevel {
 
                 image.setRGB(x, y, (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : rockLength.length, (y + 1 >= image.getHeight()) ? 0 : 1, rockLength, 0, 0);
 
+                xOfLastRock = (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : x + rockLength.length - 1;
+                yOfLastRock = y;
+
                 float spawn = rand.nextFloat();
 
                 if (!bunnyIsSpawned) {
@@ -73,17 +65,7 @@ public class ProceduralGeneratedLevel {
                     continue;
                 }
 
-                if (!goalIsSpawned) {
-                    if (x > 100) {
-                        if (spawn < 0.25f) {
-                            image.setRGB(x, y - 1, generateColor(22, 22, 229));
-                            goalIsSpawned = true;
-                            continue;
-                        }
-                    }
-                }
-
-                if (spawn >= 0.40f) {
+                if (spawn >= 0.25f) {
                     for (int rLength = 0; rLength < rockLength.length; rLength++) {
                         if (spawn >= 0.40f) rockLength[rLength] = generateColor(255, 255, 0);
                         else rockLength[rLength] = generateColor(0, 0, 0);
@@ -91,7 +73,7 @@ public class ProceduralGeneratedLevel {
                     }
                     image.setRGB(x, y - 1, (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : rockLength.length, 1, rockLength, 0, 0);
                 }
-                if (spawn >= 0.50f) {
+                if (spawn >= 0.75f) {
                     image.setRGB(x, y - 1, generateColor(255, 0, 255));
                 }
 
@@ -102,37 +84,9 @@ public class ProceduralGeneratedLevel {
                 lengthOfGap++;
             }
 
-            /*
-             * if (y > image.getHeight() / 2) {
-             * int next = rand.nextInt();
-             * if (y > image.getHeight() / 2 && next % 2 == 1) {
-             * int[] tempColor = new int[rand.nextInt(10 - 2) + 2];
-             * for (int z = 0; z < tempColor.length; z++) {
-             * tempColor[z] = generateColor(0, 255, 0);
-             * }
-             * try {
-             * image.setRGB(x, y, tempColor.length, y + 1, tempColor, 0, 0);
-             * } catch (ArrayIndexOutOfBoundsException e) {
-             * Gdx.app.debug(TAG, "Image width <" + image.getWidth() + "> Image Height <" + image.getHeight() + "> x <" + x + "> y <" + y + "> array length <" + tempColor.length + "> y+1 <" + (y + 1) + ">");
-             * }
-             * }
-             * }
-             */
-
         }
 
-        while (!goalIsSpawned) {
-            for (y = (int) (image.getHeight() * 0.75); y < image.getHeight(); y++) {
-                for (x = 100; x < image.getWidth(); x++) {
-                    if (image.getRGB(x, y) == generateColor(0, 255, 0)) {
-                        image.setRGB(x, y, generateColor(22, 22, 229));
-                        x = image.getWidth();
-                        y = image.getHeight();
-                        goalIsSpawned = true;
-                    }
-                }
-            }
-        }
+        image.setRGB(xOfLastRock, yOfLastRock - 1, generateColor(22, 22, 229));
 
         write(fileName);
     }
