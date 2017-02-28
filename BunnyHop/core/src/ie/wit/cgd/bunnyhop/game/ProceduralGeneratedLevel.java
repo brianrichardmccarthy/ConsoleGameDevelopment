@@ -54,7 +54,7 @@ public class ProceduralGeneratedLevel {
              */
             int next = rand.nextInt();
 
-            if (next % 2 == 1 || lengthOfGap >= 1.5f) {
+            if (next % 2 == 1 || lengthOfGap >= 1.0f) {
 
                 int[] rockLength = new int[(((rand.nextInt(image.getWidth() - x) + 1) % 10) + 1)];
 
@@ -119,6 +119,19 @@ public class ProceduralGeneratedLevel {
              * }
              */
 
+        }
+
+        while (!goalIsSpawned) {
+            for (y = (int) (image.getHeight() * 0.75); y < image.getHeight(); y++) {
+                for (x = 100; x < image.getWidth(); x++) {
+                    if (image.getRGB(x, y) == generateColor(0, 255, 0)) {
+                        image.setRGB(x, y, generateColor(22, 22, 229));
+                        x = image.getWidth();
+                        y = image.getHeight();
+                        goalIsSpawned = true;
+                    }
+                }
+            }
         }
 
         write(fileName);
