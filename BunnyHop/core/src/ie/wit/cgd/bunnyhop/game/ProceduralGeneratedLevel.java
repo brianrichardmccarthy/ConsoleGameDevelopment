@@ -7,6 +7,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 
 public class ProceduralGeneratedLevel {
@@ -43,17 +44,17 @@ public class ProceduralGeneratedLevel {
 
             int next = rand.nextInt();
 
-            if (next % 2 == 1 || lengthOfGap == 1) {
+            if (next % 2 == 1 || lengthOfGap == 2) {
 
-                int[] rockLength = new int[(((rand.nextInt(image.getWidth() - x) + 1) % 10) + 1)];
+                int[] rockLength = new int[(x + 10 < image.getWidth()) ? (rand.nextInt(10) + 1) : (rand.nextInt(image.getWidth() - x) + 1)];
 
                 for (int rLength = 0; rLength < rockLength.length; rLength++) {
                     rockLength[rLength] = generateColor(0, 255, 0);
                 }
 
-                image.setRGB(x, y, (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : rockLength.length, (y + 1 >= image.getHeight()) ? 0 : 1, rockLength, 0, 0);
+                image.setRGB(x, y, rockLength.length, (y + 1 >= image.getHeight()) ? 0 : 1, rockLength, 0, 0);
 
-                xOfLastRock = (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : x + rockLength.length - 1;
+                xOfLastRock = x + rockLength.length;
                 yOfLastRock = y;
 
                 float spawn = rand.nextFloat();
@@ -86,7 +87,11 @@ public class ProceduralGeneratedLevel {
 
         }
 
-        image.setRGB(xOfLastRock, yOfLastRock - 1, generateColor(22, 22, 229));
+        try {
+            image.setRGB(xOfLastRock - 1, yOfLastRock - 1, generateColor(22, 22, 229));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Gdx.app.error(TAG, "Error xOfLastRock <" + xOfLastRock + ">");
+        }
 
         write(fileName);
     }

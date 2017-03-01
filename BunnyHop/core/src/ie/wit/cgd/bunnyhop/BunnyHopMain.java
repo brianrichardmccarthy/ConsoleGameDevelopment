@@ -28,7 +28,9 @@ public class BunnyHopMain extends ApplicationAdapter {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
         ProceduralGeneratedLevel temp = new ProceduralGeneratedLevel();
-        temp.generateLevel("C:\\Projects\\Java\\ConsoleGameDevelopment1\\BunnyHop\\android\\assets\\levels\\level-03");
+        for (int x = 0; x < 10; x++) {
+            temp.generateLevel("C:\\Projects\\Java\\ConsoleGameDevelopment1\\BunnyHop\\android\\assets\\levels\\" + x);
+        }
 
         // Load assets
         Assets.instance.init(new AssetManager());
