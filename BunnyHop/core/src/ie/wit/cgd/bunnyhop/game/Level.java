@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import ie.wit.cgd.bunnyhop.game.objects.AbstractGameObject;
 import ie.wit.cgd.bunnyhop.game.objects.BunnyHead;
 import ie.wit.cgd.bunnyhop.game.objects.Clouds;
+import ie.wit.cgd.bunnyhop.game.objects.ExtraLives;
 import ie.wit.cgd.bunnyhop.game.objects.Feather;
 import ie.wit.cgd.bunnyhop.game.objects.Goal;
 import ie.wit.cgd.bunnyhop.game.objects.GoldCoin;
@@ -36,6 +37,9 @@ public class Level {
         // blue
         ITEM_GOAL(22, 22, 229),
 
+        // gray
+        EXTRA_LIVES(128, 128, 128),
+
         // yellow
         ITEM_GOLD_COIN(255, 255, 0);
 
@@ -62,6 +66,7 @@ public class Level {
     public Array<Rock> rocks;
     public Array<GoldCoin> goldCoins;
     public Array<Feather> feathers;
+    public Array<ExtraLives> extraLives;
 
     // decoration
     public Clouds clouds;
@@ -81,6 +86,7 @@ public class Level {
         rocks = new Array<Rock>();
         goldCoins = new Array<GoldCoin>();
         feathers = new Array<Feather>();
+        extraLives = new Array<ExtraLives>();
 
         // load image file that represents the level data
         Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
@@ -136,6 +142,11 @@ public class Level {
                     offsetHeight = -1.5f;
                     obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
                     goal = (Goal) obj;
+                } else if (BLOCK_TYPE.EXTRA_LIVES.sameColor(currentPixel)) {
+                    obj = new ExtraLives();
+                    offsetHeight = -1.5f;
+                    obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
+                    extraLives.add((ExtraLives) obj);
                 } else {
                     // unknown object/pixel color
 
@@ -186,6 +197,10 @@ public class Level {
         // Draw Feathers
         for (Feather feather : feathers)
             feather.render(batch);
+
+        // draw extra lives
+        for (ExtraLives extraLives : extraLives)
+            extraLives.render(batch);
 
         // Draw Player Character
         bunnyHead.render(batch);
