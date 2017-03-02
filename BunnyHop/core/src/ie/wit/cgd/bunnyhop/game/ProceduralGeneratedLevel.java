@@ -83,7 +83,8 @@ public class ProceduralGeneratedLevel {
 
                 }
                 if (spawn >= 0.75f) {
-                    image.setRGB(x, y - 1, generateColor(255, 0, 255));
+                    if (rand.nextBoolean()) image.setRGB(x, y - 1, generateColor(128, 128, 128));
+                    else image.setRGB(x, y - 1, generateColor(255, 0, 255));
                 }
 
                 x += rockLength.length;
