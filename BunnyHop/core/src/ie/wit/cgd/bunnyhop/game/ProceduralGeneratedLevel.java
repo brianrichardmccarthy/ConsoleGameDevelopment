@@ -73,6 +73,14 @@ public class ProceduralGeneratedLevel {
                         spawn = rand.nextFloat();
                     }
                     image.setRGB(x, y - 1, (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : rockLength.length, 1, rockLength, 0, 0);
+
+                    for (int rLength = 0; rLength < rockLength.length; rLength++) {
+                        if (spawn >= 0.60f) rockLength[rLength] = generateColor(255, 255, 0);
+                        else rockLength[rLength] = generateColor(0, 0, 0);
+                        spawn = rand.nextFloat();
+                    }
+                    image.setRGB(x, y - 2, (rockLength.length + x >= image.getWidth()) ? (image.getWidth() - (x + rockLength.length)) : rockLength.length, 1, rockLength, 0, 0);
+
                 }
                 if (spawn >= 0.75f) {
                     image.setRGB(x, y - 1, generateColor(255, 0, 255));
