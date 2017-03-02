@@ -44,7 +44,7 @@ public class ProceduralGeneratedLevel {
 
             int next = rand.nextInt();
 
-            if (next % 2 == 1 || lengthOfGap == 2) {
+            if (next % 2 == 1 || lengthOfGap == 1) {
 
                 int[] rockLength = new int[(x + 10 < image.getWidth()) ? (rand.nextInt(10) + 1) : (rand.nextInt(image.getWidth() - x) + 1)];
 

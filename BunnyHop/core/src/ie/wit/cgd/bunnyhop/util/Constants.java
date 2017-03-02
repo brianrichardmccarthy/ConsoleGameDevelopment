@@ -12,7 +12,7 @@ public class Constants {
     public static final String TEXTURE_ATLAS_OBJECTS = "images/bunnyhop.atlas";
 
     // Location of image file for level 01
-    public static final String LEVEL_01 = "levels/level-01.png";
+    public static final String LEVEL_01 = "levels/level-07.png";
 
     // Location of image file for level 02
     public static final String LEVEL_02 = "levels/level-02.png";
