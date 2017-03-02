@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import ie.wit.cgd.bunnyhop.game.objects.BunnyHead;
 import ie.wit.cgd.bunnyhop.game.objects.BunnyHead.JUMP_STATE;
+import ie.wit.cgd.bunnyhop.game.objects.ExtraLives;
 import ie.wit.cgd.bunnyhop.game.objects.Feather;
 import ie.wit.cgd.bunnyhop.game.objects.Goal;
 import ie.wit.cgd.bunnyhop.game.objects.GoldCoin;
@@ -214,6 +215,15 @@ public class WorldController extends InputAdapter {
         Gdx.app.log(TAG, "Feather collected");
     }
 
+    private void onCollisionBunnyWithExtraLives(ExtraLives extraLive) {
+
+        if (lives < Constants.LIVES_START) {
+            extraLive.collected = true;
+            lives++;
+            Gdx.app.log(TAG, "ExtraLive collected");
+        }
+    }
+
     private void onCollisionBunnyWithGoal(Goal goal) {
 
         if (score > 1000) {
@@ -256,6 +266,13 @@ public class WorldController extends InputAdapter {
             break;
         }
 
+        for (ExtraLives extraLives : level.extraLives) {
+            if (extraLives.collected) continue;
+            r2.set(extraLives.position.x, extraLives.position.y, extraLives.bounds.width, extraLives.bounds.height);
+            if (!r1.overlaps(r2)) continue;
+            onCollisionBunnyWithExtraLives(extraLives);
+        }
+        
         // Test collision: Bunny Head <-> Goal
         r2.set(level.goal.position.x, level.goal.position.y, level.goal.bounds.width, level.goal.bounds.height);
         if (r1.overlaps(r2)) onCollisionBunnyWithGoal(level.goal);

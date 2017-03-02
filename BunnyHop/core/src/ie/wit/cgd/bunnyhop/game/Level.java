@@ -225,6 +225,8 @@ public class Level {
             goldCoin.update(deltaTime);
         for (Feather feather : feathers)
             feather.update(deltaTime);
+        for (ExtraLives extraLives : extraLives)
+            extraLives.update(deltaTime);
         clouds.update(deltaTime);
     }
 
