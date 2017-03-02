@@ -67,6 +67,9 @@ public class WorldRenderer implements Disposable {
 
         // draw FPS text (anchored to bottom right edge)
         renderGuiFpsCounter(batch);
+
+        // draw the time to the screen
+        renderTime(batch);
         batch.end();
     }
 
@@ -107,6 +110,20 @@ public class WorldRenderer implements Disposable {
         float y = -15;
         batch.draw(Assets.instance.goldCoin.goldCoin, x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
         Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.score, x + 75, y + 37);
+    }
+
+    private void renderTime(SpriteBatch batch) {
+
+        int minutes = ((int) worldController.getTime()/ 60);
+        int seconds = ((int) worldController.getTime() % 60);
+
+
+        BitmapFont timeFont = Assets.instance.fonts.defaultNormal;
+        float x = 20;
+        float y = cameraGUI.viewportHeight - 15;
+        batch.setColor(0, 0, 0, 1);
+        timeFont.draw(batch, minutes + ":" + seconds, x, y, 0, Align.center, true);
+        batch.setColor(1, 1, 1, 1);
     }
 
     private void init() {
