@@ -54,7 +54,7 @@ public class WorldController extends InputAdapter {
 
     public void update(float deltaTime) {
 
-        timeLeftCompleteLevel -= deltaTime;
+    	if (cameraHelper.hasTarget(level.bunnyHead)) timeLeftCompleteLevel -= deltaTime;
         if (isGameWon()) return;
         handleDebugInput(deltaTime);
         if (isGameOver()) {

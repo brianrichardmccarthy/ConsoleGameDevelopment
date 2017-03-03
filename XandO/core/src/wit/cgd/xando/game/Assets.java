@@ -20,7 +20,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public Asset board;
 	public Asset x;
-	public Asset o;
+	public Asset O;
 
 	private Assets() {
 
@@ -46,7 +46,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		board = new Asset(atlas, "board");
 		x = new Asset(atlas, "x");
-		o = new Asset(atlas, "o");
+		O = new Asset(atlas, "o");
 	}
 
 	@Override
