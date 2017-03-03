@@ -82,12 +82,10 @@ public class Level {
 
 	public Level(String filename) {
 
-		if (filename.equals(Constants.LEVEL_01))
-			init(filename);
-		else if (filename.equals(Constants.LEVEL_02)) {
+		if (filename.equals(Constants.LEVEL_01)) init(filename);
+		else if (filename.equals(Constants.LEVEL_02) || filename.equals(Constants.LEVEL_03)) {
+			proceduralGeneratedLevel.init();
 			init(proceduralGeneratedLevel.currentLevel);
-		} else if (filename.equals(Constants.LEVEL_03)) {
-			init(proceduralGeneratedLevel.nextLevel);
 		}
 	}
 
@@ -250,11 +248,14 @@ public class Level {
 
 	private class ProceduralGeneratedLevel {
 
-		public final Pixmap currentLevel, nextLevel;
+		public Pixmap currentLevel, nextLevel;
 
 		public ProceduralGeneratedLevel() {
-			currentLevel = generateLevel();
-			;
+			init();
+		}
+		
+		public void init() {
+			currentLevel = (nextLevel != null) ? nextLevel : generateLevel() ;
 			nextLevel = generateLevel();
 		}
 

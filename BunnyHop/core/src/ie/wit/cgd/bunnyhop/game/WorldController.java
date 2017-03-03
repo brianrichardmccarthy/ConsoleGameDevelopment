@@ -220,10 +220,11 @@ public class WorldController extends InputAdapter {
     }
 
     private void onCollisionBunnyWithExtraLives(ExtraLives extraLive) {
-
+    	extraLive.collected = true;
         if (lives < Constants.LIVES_START) {
-            extraLive.collected = true;
             lives++;
+        } else {
+        	timeLeftCompleteLevel += 15.0f;
         }
     }
 

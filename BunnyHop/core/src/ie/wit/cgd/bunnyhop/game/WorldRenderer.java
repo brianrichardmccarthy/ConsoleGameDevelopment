@@ -122,7 +122,7 @@ public class WorldRenderer implements Disposable {
         float x = 20;
         float y = cameraGUI.viewportHeight - 15;
         batch.setColor(0, 0, 0, 1);
-        timeFont.draw(batch, minutes + ":" + seconds, x, y, 0, Align.center, true);
+        timeFont.draw(batch, minutes + ":" + ((seconds < 10) ? "0" : "") + seconds, x, y, 0, Align.center, true);
         batch.setColor(1, 1, 1, 1);
     }
 
