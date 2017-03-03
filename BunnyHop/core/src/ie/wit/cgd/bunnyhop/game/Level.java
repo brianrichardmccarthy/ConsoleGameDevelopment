@@ -253,7 +253,7 @@ public class Level {
 			image.setColor(Color.BLACK);
 			image.fill();
 
-			int y = (int) (image.getHeight() * 0.75), xOfLastRock = 0, yOfLastRock = 0, lengthOfGap = 0;
+			int y = (int) (image.getHeight() * 0.85), xOfLastRock = 0, yOfLastRock = 0, lengthOfGap = 0;
 			boolean bunnyIsSpawned = false;
 
 			for (int pixelX = 0; pixelX < image.getWidth(); pixelX++) {
@@ -297,7 +297,7 @@ public class Level {
 					pixelX += rockLength;
 					lengthOfGap = 0;
 					y = MathUtils.clamp(y + MathUtils.clamp((rand.nextInt(4) - 2), -1, 1),
-							(int) (image.getHeight() * 0.70), image.getHeight());
+							(int) (image.getHeight() * 0.80), image.getHeight());
 
 				} else {
 					lengthOfGap++;
