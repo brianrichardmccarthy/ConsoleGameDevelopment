@@ -118,3 +118,4 @@ gradle-app.setting
 Thumbs.db
 
 *.txt
+/BunnyHopFiles/
