@@ -1,0 +1,40 @@
+
+xando.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+board
+  rotate: false
+  xy: 2, 190
+  size: 747, 766
+  orig: 747, 766
+  offset: 0, 0
+  index: -1
+o
+  rotate: false
+  xy: 2, 2
+  size: 193, 186
+  orig: 193, 186
+  offset: 0, 0
+  index: -1
+x
+  rotate: false
+  xy: 751, 765
+  size: 181, 191
+  orig: 181, 191
+  offset: 0, 0
+  index: -1
+
+xando2.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+tictactoe
+  rotate: false
+  xy: 2, 2
+  size: 747, 766
+  orig: 747, 766
+  offset: 0, 0
+  index: -1
