@@ -40,9 +40,6 @@ public class Assets implements Disposable, AssetErrorListener {
         assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
         // start loading assets and wait until finished
         assetManager.finishLoading();
-        Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
-        for (String a : assetManager.getAssetNames())
-            Gdx.app.debug(TAG, "asset: " + a);
 
         TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_OBJECTS);
 

@@ -171,11 +171,9 @@ public class WorldController extends InputAdapter {
         if (keycode == Keys.R) {
             // Reset game world
             init();
-            Gdx.app.debug(TAG, "Game world resetted");
         } else if (keycode == Keys.ENTER) {
             // Toggle camera follow
             cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.bunnyHead);
-            Gdx.app.debug(TAG, "Camera follow enabled: " + cameraHelper.hasTarget());
         }
         return false;
     }
@@ -212,7 +210,6 @@ public class WorldController extends InputAdapter {
 
         goldcoin.collected = true;
         score += goldcoin.getScore();
-        Gdx.app.log(TAG, "Gold coin collected");
     }
 
     private void onCollisionBunnyWithFeather(Feather feather) {
@@ -220,7 +217,6 @@ public class WorldController extends InputAdapter {
         feather.collected = true;
         score += feather.getScore();
         level.bunnyHead.setFeatherPowerup(true);
-        Gdx.app.log(TAG, "Feather collected");
     }
 
     private void onCollisionBunnyWithExtraLives(ExtraLives extraLive) {
@@ -228,7 +224,6 @@ public class WorldController extends InputAdapter {
         if (lives < Constants.LIVES_START) {
             extraLive.collected = true;
             lives++;
-            Gdx.app.log(TAG, "ExtraLive collected");
         }
     }
 
@@ -237,7 +232,6 @@ public class WorldController extends InputAdapter {
         if (score > 1000) {
             if (!goal.collected) {
                 goal.collected = true;
-                Gdx.app.log(TAG, "Goal collected");
             }
         }
 

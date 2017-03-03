@@ -86,10 +86,8 @@ public class Level {
 			init(filename);
 		else if (filename.equals(Constants.LEVEL_02)) {
 			init(proceduralGeneratedLevel.currentLevel);
-			Gdx.app.debug(TAG, "Level two loaded");
 		} else if (filename.equals(Constants.LEVEL_03)) {
 			init(proceduralGeneratedLevel.nextLevel);
-			Gdx.app.debug(TAG, "Level three loaded");
 		}
 	}
 
@@ -98,7 +96,6 @@ public class Level {
 		// load image file that represents the level data
 		init(new Pixmap(Gdx.files.internal(filename)));
 
-		Gdx.app.debug(TAG, "level '" + filename + "' loaded");
 	}
 
 	private void init(Pixmap pixmap) {
