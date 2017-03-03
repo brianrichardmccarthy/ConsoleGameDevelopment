@@ -1,5 +1,4 @@
-
-ackage ie.wit.cgd.bunnyhop.game;
+package ie.wit.cgd.bunnyhop.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
