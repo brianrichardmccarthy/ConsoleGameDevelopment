@@ -17,9 +17,6 @@ public class Constants {
     // Location of image file for level 02
     public static final String LEVEL_02 = "level-02";
 
-    // Location of image file for level 03
-    public static final String LEVEL_03 = "level-03";
-
     // Amount of extra lives at level start
     public static final int LIVES_START = 3;
 

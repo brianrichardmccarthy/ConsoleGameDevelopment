@@ -152,10 +152,6 @@ public class WorldController extends InputAdapter {
             initLevel();
         }
 
-        if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
-            currentLevel = Constants.LEVEL_03;
-            initLevel();
-        }
     }
 
     private void moveCamera(float x, float y) {

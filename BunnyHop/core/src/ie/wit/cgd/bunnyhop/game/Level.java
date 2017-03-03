@@ -78,15 +78,12 @@ public class Level {
 	public Clouds clouds;
 	public Mountains mountains;
 	public WaterOverlay waterOverlay;
-	private final ProceduralGeneratedLevel proceduralGeneratedLevel = new ProceduralGeneratedLevel();
+	private final ProceduralGeneratedLevel proceduralGeneratedLevel;
 
 	public Level(String filename) {
-
+		proceduralGeneratedLevel = new ProceduralGeneratedLevel();
 		if (filename.equals(Constants.LEVEL_01)) init(filename);
-		else if (filename.equals(Constants.LEVEL_02) || filename.equals(Constants.LEVEL_03)) {
-			proceduralGeneratedLevel.init();
-			init(proceduralGeneratedLevel.currentLevel);
-		}
+		else if (filename.equals(Constants.LEVEL_02)) init(proceduralGeneratedLevel.generateLevel());
 	}
 
 	private void init(String filename) {
@@ -248,18 +245,7 @@ public class Level {
 
 	private class ProceduralGeneratedLevel {
 
-		public Pixmap currentLevel, nextLevel;
-
-		public ProceduralGeneratedLevel() {
-			init();
-		}
-		
-		public void init() {
-			currentLevel = (nextLevel != null) ? nextLevel : generateLevel() ;
-			nextLevel = generateLevel();
-		}
-
-		private Pixmap generateLevel() {
+		public Pixmap generateLevel() {
 
 			Pixmap image = new Pixmap(128, 32, Format.RGBA8888);
 
