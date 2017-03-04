@@ -9,5 +9,4 @@
 	*  The goal spawning on the last rock.
 	*  Spawning of gold coins, extra lives, and feathers randomly between the bunny spawn and the goal spawn.
 4. - [x] Have a time limit to complete level (90 seconds). The play is penalized for dying by the time to complete being reduce by half, if they die again they are then third time.
-
-The player must have a score over 1000 (ten gold coin) to complete the level.
+5. - [x] The player must have a score over 1000 (ten gold coin) to complete the level.
