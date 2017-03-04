@@ -1,3 +1,13 @@
+/**
+ * 
+ * @file        Mountains.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Class for Mountains object (extends the Abstract Game Object Class)
+ * @notes       Code for rendering the Mountains texture, no known BUGS or ISSUES
+ *
+ */
+
 package ie.wit.cgd.bunnyhop.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

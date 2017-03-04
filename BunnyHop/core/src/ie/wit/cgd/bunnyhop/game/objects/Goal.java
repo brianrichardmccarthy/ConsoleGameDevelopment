@@ -1,3 +1,13 @@
+/**
+ * 
+ * @file        Goal.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Class for goal object (extends the Abstract Game Object Class)
+ * @notes       Code for rendering the goal texture, as well as tracking if the goal is collected, no known BUGS or ISSUES
+ *
+ */
+
 package ie.wit.cgd.bunnyhop.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

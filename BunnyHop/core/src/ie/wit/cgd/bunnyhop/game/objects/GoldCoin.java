@@ -1,3 +1,13 @@
+/**
+ * 
+ * @file        GoldCoin.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Class for gold coin object (extends the Abstract Game Object Class)
+ * @notes       Code for rendering the gold coin texture, as well as tracking if the gold coin is collected, no BUGS or ISSUES
+ *
+ */
+
 package ie.wit.cgd.bunnyhop.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

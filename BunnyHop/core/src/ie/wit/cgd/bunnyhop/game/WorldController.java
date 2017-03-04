@@ -18,6 +18,7 @@ import ie.wit.cgd.bunnyhop.util.Constants;
 
 public class WorldController extends InputAdapter {
 
+	@SuppressWarnings("unused")
     private static final String TAG = WorldController.class.getName();
 
     public CameraHelper cameraHelper;
@@ -102,7 +103,10 @@ public class WorldController extends InputAdapter {
                 }
             }
             
-            if (Gdx.input.isKeyPressed(Keys.Y) && (isGameOver() || isGameWon())) initLevel();
+            if (Gdx.input.isKeyPressed(Keys.Y) && (isGameOver() || isGameWon())) {
+            	if (currentLevel.equals(Constants.LEVEL_01)) currentLevel = Constants.LEVEL_02; 
+            	initLevel();
+            }
             else if (Gdx.input.isKeyPressed(Keys.N) && (isGameOver() || isGameWon())) Gdx.app.exit();
 
             // Bunny Jump
@@ -155,6 +159,8 @@ public class WorldController extends InputAdapter {
             currentLevel = Constants.LEVEL_02;
             initLevel();
         }
+        
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) Gdx.app.exit();
 
     }
 

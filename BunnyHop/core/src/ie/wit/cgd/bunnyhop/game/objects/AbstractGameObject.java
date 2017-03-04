@@ -1,3 +1,13 @@
+/**
+ * 
+ * @file        AbstractGameObject.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Class for AbstractGameObject object
+ * @notes       Stores information on position, velocity, and dimension etc, no known BUGS or ISSUES
+ *
+ */
+
 package ie.wit.cgd.bunnyhop.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

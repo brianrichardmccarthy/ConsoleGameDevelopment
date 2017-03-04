@@ -9,6 +9,7 @@ import ie.wit.cgd.bunnyhop.game.objects.AbstractGameObject;
 
 public class CameraHelper {
 
+	@SuppressWarnings("unused")
     private static final String TAG = CameraHelper.class.getName();
 
     private final float MAX_ZOOM_IN = 0.25f;

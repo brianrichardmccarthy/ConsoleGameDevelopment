@@ -1,3 +1,13 @@
+/**
+ * 
+ * @file        ExtraLives.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Class for ExtraLives object (extends the Abstract Game Object Class)
+ * @notes       Code for rendering the ExtraLives texture, tracks if ExtraLive is collected, no known BUGS or ISSUES
+ *
+ */
+
 package ie.wit.cgd.bunnyhop.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

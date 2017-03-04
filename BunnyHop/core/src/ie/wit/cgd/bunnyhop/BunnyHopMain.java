@@ -1,3 +1,13 @@
+/**
+ * 
+ * @file        BunnyHopMain.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       
+ * @notes       BunnyHopMain, no known BUGS or ISSUES
+ *
+ */
+
 package ie.wit.cgd.bunnyhop;
 
 import com.badlogic.gdx.Application;
@@ -13,7 +23,8 @@ import ie.wit.cgd.bunnyhop.game.WorldRenderer;
 
 public class BunnyHopMain extends ApplicationAdapter {
 
-    private static final String TAG = BunnyHopMain.class.getName();
+    @SuppressWarnings("unused")
+	private static final String TAG = BunnyHopMain.class.getName();
 
     private WorldController worldController;
     private WorldRenderer worldRenderer;

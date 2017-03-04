@@ -1,3 +1,13 @@
+/**
+ * 
+ * @file        Constants.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Constant Variables for bunny hop
+ * @notes       see brief, no known BUGS or ISSUES
+ *
+ */
+
 package ie.wit.cgd.bunnyhop.util;
 
 public class Constants {

@@ -1,3 +1,13 @@
+/**
+ * 
+ * @file        Feather.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Class for feather object (extends the Abstract Game Object Class)
+ * @notes       Code for rendering the feather texture, as well as tracking if the feather is collected, no known BUGS or ISSUES
+ *
+ */
+
 package ie.wit.cgd.bunnyhop.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
