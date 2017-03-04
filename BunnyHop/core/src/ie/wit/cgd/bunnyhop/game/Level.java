@@ -52,12 +52,18 @@ public class Level {
 		private int color;
 
 		private BLOCK_TYPE(int r, int g, int b) {
-			color = r << 24 | g << 16 | b << 8 | 0xff;
+			color = generateColor(r, g, b);
 		}
 
 		public boolean sameColor(int color) {
 
 			return this.color == color;
+		}
+		
+		public static int generateColor(int r, int g, int b) {
+
+			return r << 24 | g << 16 | b << 8 | 0xff;
+
 		}
 
 		public int getColor() {
@@ -78,12 +84,10 @@ public class Level {
 	public Clouds clouds;
 	public Mountains mountains;
 	public WaterOverlay waterOverlay;
-	private final ProceduralGeneratedLevel proceduralGeneratedLevel;
 
 	public Level(String filename) {
-		proceduralGeneratedLevel = new ProceduralGeneratedLevel();
 		if (filename.equals(Constants.LEVEL_01)) init(filename);
-		else if (filename.equals(Constants.LEVEL_02)) init(proceduralGeneratedLevel.generateLevel());
+		else if (filename.equals(Constants.LEVEL_02)) init(generateLevel());
 	}
 
 	private void init(String filename) {
@@ -243,80 +247,71 @@ public class Level {
 		clouds.update(deltaTime);
 	}
 
-	private class ProceduralGeneratedLevel {
+	public Pixmap generateLevel() {
 
-		public Pixmap generateLevel() {
+		Pixmap image = new Pixmap(128, 32, Format.RGBA8888);
 
-			Pixmap image = new Pixmap(128, 32, Format.RGBA8888);
+		Random rand = new Random();
+		image.setColor(Color.BLACK);
+		image.fill();
 
-			Random rand = new Random();
-			image.setColor(Color.BLACK);
-			image.fill();
+		int y = (int) (image.getHeight() * 0.85), xOfLastRock = 0, yOfLastRock = 0, lengthOfGap = 0;
+		boolean bunnyIsSpawned = false;
 
-			int y = (int) (image.getHeight() * 0.85), xOfLastRock = 0, yOfLastRock = 0, lengthOfGap = 0;
-			boolean bunnyIsSpawned = false;
+		for (int pixelX = 0; pixelX < image.getWidth(); pixelX++) {
 
-			for (int pixelX = 0; pixelX < image.getWidth(); pixelX++) {
+			if (rand.nextBoolean() || lengthOfGap == 1) {
+				float spawn = rand.nextFloat();
+				int rockLength = (pixelX + 10 < image.getWidth()) ? (rand.nextInt(10) + 1)
+						: (rand.nextInt(image.getWidth() - pixelX) + 1);
 
-				if (rand.nextBoolean() || lengthOfGap == 1) {
-					float spawn = rand.nextFloat();
-					int rockLength = (pixelX + 10 < image.getWidth()) ? (rand.nextInt(10) + 1)
-							: (rand.nextInt(image.getWidth() - pixelX) + 1);
+				image.setColor(Color.rgba8888(new Color(BLOCK_TYPE.generateColor(0, 255, 0))));
+				image.drawRectangle(pixelX, y, rockLength, 1);
 
-					image.setColor(Color.rgba8888(new Color(generateColor(0, 255, 0))));
-					image.drawRectangle(pixelX, y, rockLength, 1);
+				xOfLastRock = pixelX + rockLength;
+				yOfLastRock = y;
 
-					xOfLastRock = pixelX + rockLength;
-					yOfLastRock = y;
-
-					if (!bunnyIsSpawned) {
-						image.setColor(Color.rgba8888(new Color(generateColor(255, 255, 255))));
-						image.drawPixel(pixelX, y - 1);
-						bunnyIsSpawned = true;
-						continue;
-					}
-
-					image.setColor(Color.rgba8888(new Color(generateColor(255, 255, 0))));
-					for (int goldSpawn = 0; goldSpawn < rockLength; goldSpawn++) {
-						if (spawn >= 0.40f)
-							image.drawPixel(goldSpawn + pixelX, y - 1);
-						if (spawn >= 0.60f)
-							image.drawPixel(pixelX, y - 2);
-						spawn = rand.nextFloat();
-					}
-
-					if (spawn >= 0.75f) {
-						if (spawn >= 0.90f)
-							image.setColor(Color.rgba8888(new Color(generateColor(128, 128, 128))));
-						else
-							image.setColor(Color.rgba8888(new Color(generateColor(255, 0, 255))));
-
-						image.drawPixel(pixelX, y - 1);
-					}
-
-					pixelX += rockLength;
-					lengthOfGap = 0;
-					y = MathUtils.clamp(y + MathUtils.clamp((rand.nextInt(4) - 2), -1, 1),
-							(int) (image.getHeight() * 0.80), image.getHeight());
-
-				} else {
-					lengthOfGap++;
+				if (!bunnyIsSpawned) {
+					image.setColor(Color.rgba8888(new Color(BLOCK_TYPE.generateColor(255, 255, 255))));
+					image.drawPixel(pixelX, y - 1);
+					bunnyIsSpawned = true;
+					continue;
 				}
 
+				image.setColor(Color.rgba8888(new Color(BLOCK_TYPE.generateColor(255, 255, 0))));
+				for (int goldSpawn = 0; goldSpawn < rockLength; goldSpawn++) {
+					if (spawn >= 0.40f)
+						image.drawPixel(goldSpawn + pixelX, y - 1);
+					if (spawn >= 0.60f)
+						image.drawPixel(pixelX, y - 2);
+					spawn = rand.nextFloat();
+				}
+
+				if (spawn >= 0.75f) {
+					if (spawn >= 0.90f)
+						image.setColor(Color.rgba8888(new Color(BLOCK_TYPE.generateColor(128, 128, 128))));
+					else
+						image.setColor(Color.rgba8888(new Color(BLOCK_TYPE.generateColor(255, 0, 255))));
+
+					image.drawPixel(pixelX, y - 1);
+				}
+
+				pixelX += rockLength;
+				lengthOfGap = 0;
+				y = MathUtils.clamp(y + MathUtils.clamp((rand.nextInt(4) - 2), -1, 1),
+						(int) (image.getHeight() * 0.80), image.getHeight());
+
+			} else {
+				lengthOfGap++;
 			}
 
-			image.setColor(Color.rgba8888(new Color(generateColor(22, 22, 229))));
-			image.drawPixel(xOfLastRock - 1, yOfLastRock - 1);
-
-			return image;
-
 		}
 
-		private int generateColor(int r, int g, int b) {
+		image.setColor(Color.rgba8888(new Color(BLOCK_TYPE.generateColor(22, 22, 229))));
+		image.drawPixel(xOfLastRock - 1, yOfLastRock - 1);
 
-			return r << 24 | g << 16 | b << 8 | 0xff;
+		return image;
 
-		}
 	}
 
 }
