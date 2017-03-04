@@ -55,22 +55,24 @@ public class WorldController extends InputAdapter {
     public void update(float deltaTime) {
 
     	if (cameraHelper.hasTarget(level.bunnyHead)) timeLeftCompleteLevel -= deltaTime;
-        if (isGameWon()) return;
-        handleDebugInput(deltaTime);
-        if (isGameOver()) {
+    	handleInputGame(deltaTime);
+    	
+    	if (isGameOver()) {
             timeLeftGameOverDelay -= deltaTime;
-            if (timeLeftGameOverDelay < 0) init();
-        } else {
-            handleInputGame(deltaTime);
+            if (timeLeftGameOverDelay < 0) initLevel();
         }
-        level.update(deltaTime);
-        testCollisions();
-        cameraHelper.update(deltaTime);
-        if (!isGameOver() && isPlayerInWater()) {
-            lives--;
-            if (isGameOver()) timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
-            else
-                initLevel();
+    	
+        if (!isGameWon()) {
+        	handleDebugInput(deltaTime);
+            level.update(deltaTime);
+            testCollisions();
+            cameraHelper.update(deltaTime);
+            if (!isGameOver() && isPlayerInWater()) {
+                lives--;
+                if (isGameOver()) timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
+                else
+                    initLevel();
+            }
         }
 
     }
@@ -99,11 +101,13 @@ public class WorldController extends InputAdapter {
                     level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
                 }
             }
+            
+            if (Gdx.input.isKeyPressed(Keys.Y) && (isGameOver() || isGameWon())) initLevel();
+            else if (Gdx.input.isKeyPressed(Keys.N) && (isGameOver() || isGameWon())) Gdx.app.exit();
 
             // Bunny Jump
             if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE)) level.bunnyHead.setJumping(true);
-            else
-                level.bunnyHead.setJumping(false);
+            else level.bunnyHead.setJumping(false);
         }
     }
 
@@ -141,7 +145,7 @@ public class WorldController extends InputAdapter {
         if (Gdx.input.isKeyPressed(Keys.COMMA)) cameraHelper.addZoom(camZoomSpeed);
         if (Gdx.input.isKeyPressed(Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
         if (Gdx.input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
-
+        
         if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
             currentLevel = Constants.LEVEL_01;
             initLevel();
@@ -166,7 +170,7 @@ public class WorldController extends InputAdapter {
 
         if (keycode == Keys.R) {
             // Reset game world
-            init();
+            initLevel();
         } else if (keycode == Keys.ENTER) {
             // Toggle camera follow
             cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.bunnyHead);
