@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        AndroidLauncher.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Android launcher
+ * @notes       Launches the app on android, No known BUGS or ISSUES
+ *
+ */
 package ie.wit.cgd.bunnyhop;
 
 import android.os.Bundle;

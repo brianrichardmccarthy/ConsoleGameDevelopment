@@ -3,8 +3,8 @@
  * @file        BunnyHopMain.java
  * @author      Brian McCarthy, 20063914
  * @assignment  BunnyHop
- * @brief       
- * @notes       BunnyHopMain, no known BUGS or ISSUES
+ * @brief       Handles the world controller, world renderer, and updates etc
+ * @notes       No known BUGS or ISSUES. Creates the world controller and world renderer.
  *
  */
 

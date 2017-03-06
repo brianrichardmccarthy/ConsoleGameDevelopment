@@ -1,3 +1,11 @@
+/**
+ * @file        DesktopLauncher.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Desktop launcher, (builds atlas)
+ * @notes       No known BUGS or ISSUES
+ *
+ */
 package ie.wit.cgd.bunnyhop.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -9,7 +17,7 @@ import ie.wit.cgd.bunnyhop.BunnyHopMain;
 
 public class DesktopLauncher {
 
-    private static boolean rebuildAtlas = true;
+    private static boolean rebuildAtlas = false;
     private static boolean drawDebugOutline = false;
 
     public static void main(String[] args) {

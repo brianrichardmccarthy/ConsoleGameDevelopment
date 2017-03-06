@@ -1,3 +1,11 @@
+/**
+ * @file        WorldController.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Controls the world
+ * @notes       No known BUGS or ISSUES. Controls variables such as time, camera, score, current level etc. As well as handling the collisions.
+ *
+ */
 package ie.wit.cgd.bunnyhop.game;
 
 import com.badlogic.gdx.Application.ApplicationType;

@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        CameraHelper.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Handles the world controller, world renderer, and updates etc
+ * @notes       No known BUGS or ISSUES, handles the camera zooming in/ out, its position, if its tracking an object.
+ *
+ */
 package ie.wit.cgd.bunnyhop.util;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;

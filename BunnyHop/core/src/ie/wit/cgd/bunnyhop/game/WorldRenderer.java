@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        WorldRenderer.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Renders the world
+ * @notes       No known BUGS or ISSUES, Renders text to the GUI, renders the world objects etc
+ *
+ */
 package ie.wit.cgd.bunnyhop.game;
 
 import com.badlogic.gdx.Gdx;
@@ -121,7 +130,7 @@ public class WorldRenderer implements Disposable {
         BitmapFont timeFont = Assets.instance.fonts.defaultNormal;
         float x = 20;
         float y = cameraGUI.viewportHeight - 15;
-        batch.setColor(0, 0, 0, 1);
+        batch.setColor(1, 1, 0, 1);
         timeFont.draw(batch, minutes + ":" + ((seconds < 10) ? "0" : "") + seconds, x, y, 0, Align.center, true);
         batch.setColor(1, 1, 1, 1);
     }

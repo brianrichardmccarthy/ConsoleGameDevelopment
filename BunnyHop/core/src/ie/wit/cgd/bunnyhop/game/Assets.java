@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        Assets.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  BunnyHop
+ * @brief       Handles the world controller, world renderer, and updates etc
+ * @notes       No known BUGS, only ISSUES is the multiple mini-classes 
+ *
+ */
 package ie.wit.cgd.bunnyhop.game;
 
 import com.badlogic.gdx.Gdx;
