@@ -2,32 +2,42 @@ package wit.cgd.xando;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import wit.cgd.xando.game.Assets;
+import wit.cgd.xando.game.WorldController;
+import wit.cgd.xando.game.WorldRenderer;
 
 public class XandOMain extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
 
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
-	}
+    private WorldController worldController;
+    private WorldRenderer worldRenderer;
+
+    @Override
+    public void create() {
+
+        Assets.instance.init(new AssetManager());
+        worldController = new WorldController();
+        worldRenderer = new WorldRenderer(worldController);
+    }
+
+    @Override
+    public void render() {
+
+        // Update game world by the time that has passed since last rendered frame.
+        worldController.update(Gdx.graphics.getDeltaTime());
+
+        // Sets the clear screen color to: Cornflower Blue
+        Gdx.gl.glClearColor(0x00 / 255.0f, 0xff / 255.0f, 0x00 / 255.0f, 0xff / 255.0f);
+
+        // Clears the screen
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        worldRenderer.render();
+    }
+
+    @Override
+    public void dispose() {
+
+    }
 }

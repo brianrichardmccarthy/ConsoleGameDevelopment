@@ -19,7 +19,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	private AssetManager assetManager;
 
 	public Asset board;
-	public Asset x;
+	public Asset X;
 	public Asset O;
 
 	private Assets() {
@@ -45,7 +45,7 @@ public class Assets implements Disposable, AssetErrorListener {
 			t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		board = new Asset(atlas, "board");
-		x = new Asset(atlas, "x");
+		X = new Asset(atlas, "x");
 		O = new Asset(atlas, "o");
 	}
 

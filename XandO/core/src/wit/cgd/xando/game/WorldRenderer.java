@@ -31,10 +31,12 @@ public class WorldRenderer implements Disposable {
 	}
 
 	public void render() {
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-
-		batch.end();
+	    batch.setProjectionMatrix(camera.combined);
+	    batch.begin();
+	    
+	    worldController.board.render(batch);
+	    
+	    batch.end();
 	}
 
 	@Override

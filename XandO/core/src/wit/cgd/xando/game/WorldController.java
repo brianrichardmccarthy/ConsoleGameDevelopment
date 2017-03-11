@@ -8,6 +8,7 @@ public class WorldController extends InputAdapter {
 	private static final String TAG = WorldController.class.getName();
 	public float viewportWidth;
 	public int width, height;
+	public Board board;
 	
 	public WorldController() {
 		init();
@@ -15,6 +16,7 @@ public class WorldController extends InputAdapter {
 	
 	private void init() {
 		Gdx.input.setInputProcessor(this);
+		board = new Board();
 	}
 
 	public void update(float deltaTime) {
