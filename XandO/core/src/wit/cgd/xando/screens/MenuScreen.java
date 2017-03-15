@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import wit.cgd.xando.game.util.Constants;
+import wit.cgd.xando.game.util.GameStats;
 
 public class MenuScreen extends AbstractGameScreen {
 
@@ -135,13 +136,13 @@ public class MenuScreen extends AbstractGameScreen {
         Table table = new Table();
         table.left().top();
 
-        gameCountLabel = new Label("Number of games played: * ", skin);
+        gameCountLabel = new Label("Number of games played: " + GameStats.instance.gameCount, skin);
         table.add(gameCountLabel).left();
         table.row();
-        currentStreakLabel = new Label("Length of current winning streak: * ", skin);
+        currentStreakLabel = new Label("Current Streak: " + GameStats.instance.currentStreak, skin);
         table.add(currentStreakLabel).left();
         table.row();
-        longestStreakLabel = new Label("Longest winning streak: * ", skin);
+        longestStreakLabel = new Label("Longest Streak: " + GameStats.instance.longestStreak, skin);
         table.add(longestStreakLabel).left();
 
         table.row();
@@ -201,6 +202,8 @@ public class MenuScreen extends AbstractGameScreen {
 
     private void onResetStatsClicked() {
 
+        GameStats.instance.reset();
+        rebuildStage();
     }
 
     private void onPlayClicked() {

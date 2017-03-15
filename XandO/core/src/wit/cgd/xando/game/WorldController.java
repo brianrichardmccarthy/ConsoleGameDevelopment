@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 
+import wit.cgd.xando.game.Board.GameState;
 import wit.cgd.xando.game.ai.FirstSpacePlayer;
+import wit.cgd.xando.game.util.GameStats;
 import wit.cgd.xando.screens.MenuScreen;
 
 public class WorldController extends InputAdapter {
@@ -18,6 +20,7 @@ public class WorldController extends InputAdapter {
     public Board board;
     float timeLeftGameOverDelay;
     private Game game;
+    private boolean updateScore;
 
     public WorldController(Game game) {
         this.game = game;
@@ -37,6 +40,7 @@ public class WorldController extends InputAdapter {
         board.firstPlayer = new HumanPlayer(board, board.X);
         board.secondPlayer = new FirstSpacePlayer(board, board.O);
         board.start();
+        updateScore = true;
 
         timeLeftGameOverDelay = 2;
     }
@@ -48,6 +52,16 @@ public class WorldController extends InputAdapter {
         }
 
         if (board.gameState != Board.GameState.PLAYING) {
+            if (updateScore) {
+                if (board.gameState== Board.GameState.X_WON) {
+                    GameStats.instance.win();
+                } else if (board.gameState == Board.GameState.O_WON) {
+                    GameStats.instance.lose();
+                } else {
+                    GameStats.instance.draw();
+                }
+                updateScore = false;
+            }
             timeLeftGameOverDelay -= deltaTime;
             if (timeLeftGameOverDelay < 0) backToMenu();
         }
