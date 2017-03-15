@@ -1,158 +1,130 @@
 package wit.cgd.xando.game;
 
+import wit.cgd.xando.game.util.Constants;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import wit.cgd.xando.game.util.Constants;
-
 public class Board {
 
-    public static final String TAG = Board.class.getName();
+	@SuppressWarnings("unused")
+	private static final String TAG = WorldRenderer.class.getName();
 
-    public static enum GameState {
-        PLAYING, DRAW, X_WON, O_WON
-    }
+	public static enum GameState {
+		PLAYING, DRAW, X_WON, O_WON
+	}
 
-    public GameState gameState;
+	public GameState gameState;
 
-    public final int EMPTY = 0;
-    public final int X = 1;
-    public final int O = 2;
-    public int[][] cells = new int[3][3];
+	public final int EMPTY = 0;
+	public final int X = 1;
+	public final int O = 2;
+	public int[][] cells = new int[3][3];
 
-    public BasePlayer firstPlayer, secondPlayer;
-    public BasePlayer currentPlayer;
+	public BasePlayer firstPlayer, secondPlayer;
+	public BasePlayer currentPlayer;
 
-    public TextureRegion board;
-    public TextureRegion x;
-    public TextureRegion o;
-    
-    public Board() {
-        init();
-    }
+	public Board() {
+		init();
+	}
 
-    private void init() {
-        start();
-    }
+	public void init() {
+		start();
+	}
 
-    public void start() {
+	public void start() {
+		for (int r = 0; r < 3; r++)
+			for (int c = 0; c < 3; c++)
+				cells[r][c] = EMPTY;
 
-        for (int x = 0; x < cells.length; x++)
-            for (int y = 0; y < cells[x].length; y++)
-                // cells[x][y] = EMPTY;
-                if ((x*3+y)%2 == 0 ) cells[x][y] = O;
-                else cells[x][y] = X;
+		gameState = GameState.PLAYING;
+		currentPlayer = firstPlayer;
+	}
 
-        currentPlayer = firstPlayer;
-        gameState = GameState.PLAYING;
-        board = Assets.instance.board.region;
-        o = Assets.instance.O.region;
-        x = Assets.instance.X.region;
-    }
+	public boolean move() {
+		return move(-1, -1);
+	}
 
-    public boolean move() {
-        return move(-1, -1);
-    }
+	public boolean move(int row, int col) {
 
-    public boolean move(int row, int col) {
-        if (currentPlayer instanceof HumanPlayer) {
-            if (row > cells.length || col > cells[0].length || row < 0 || col < 0 || cells[row][col] != EMPTY)
-                return false;
-        } else {
-            int cell = currentPlayer.move();
-            row = cell / 3;
-            col = cell % 3;
+		if (currentPlayer.human) {
+			if (row < 0 || col < 0 || row > 2 || col > 2
+					|| cells[row][col] != EMPTY)
+				return false;
+		} else { // computer player
+			int pos = currentPlayer.move();
+			col = pos % 3;
+			row = pos / 3;
+		}
 
-        }
-        if (hasWon(currentPlayer.mySymbol, row, col))
-            gameState = (currentPlayer.mySymbol == X) ? GameState.X_WON : GameState.O_WON;
+		System.out.println(" " + currentPlayer.human + " " + row + " " + col);
+		// store move
+		cells[row][col] = currentPlayer.mySymbol;
 
-        if (gameState == GameState.PLAYING && isDraw())
-            gameState = GameState.DRAW;
+		System.out.print("Board:");
+		for (int r=0; r<3; r++)
+			for (int c=0; c<3; c++)
+				System.out.print(" " + cells[r][c]);
+		System.out.println();
+		if (hasWon(currentPlayer.mySymbol, row, col)) {
+			gameState = currentPlayer.mySymbol == X ? GameState.X_WON
+					: GameState.O_WON;
+		} else if (isDraw()) {
+			gameState = GameState.DRAW;
+		}
 
-        if (gameState == GameState.PLAYING)
-            currentPlayer = (currentPlayer instanceof HumanPlayer) ? secondPlayer : firstPlayer;
+		// switch player
+		if (gameState == GameState.PLAYING) {
+			currentPlayer = (currentPlayer == firstPlayer ? secondPlayer
+					: firstPlayer);
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    public boolean hasWon(int symbol, int row, int col) {
-        int num = 0;
-        for (int y = 0; y < cells[row].length; y++) {
-            if (cells[row][y] == symbol)
-                num++;
-        }
-        if (num == 2)
-            return true;
+	public boolean isDraw() {
+		for (int r = 0; r < 3; ++r) {
+			for (int c = 0; c < 3; ++c) {
+				if (cells[r][c] == EMPTY) {
+					return false; // an empty seed found, not a draw, exit
+				}
+			}
+		}
+		return true; // no empty cell, it's a draw
+	}
 
-        num = 0;
-        for (int x = 0; x < cells[col].length; x++) {
-            if (cells[x][col] == symbol)
-                num++;
-        }
+	public boolean hasWon(int symbol, int row, int col) {
+		return (
+			// 3-in-the-row
+			cells[row][0] == symbol && cells[row][1] == symbol && cells[row][2] == symbol
+			||  // 3-in-the-column
+			cells[0][col] == symbol && cells[1][col] == symbol && cells[2][col] == symbol
+			||  // 3-in-the-diagonal
+			row == col && cells[0][0] == symbol && cells[1][1] == symbol && cells[2][2] == symbol 
+			|| // 3-in-the-opposite-diagonal
+			row + col == 2 && cells[0][2] == symbol && cells[1][1] == symbol && cells[2][0] == symbol
+		);
+	}
 
-        if (num == 2)
-            return true;
-        
-        int pos = row*3+col;
-        
-        if (pos == 0 || pos == 8 || pos == 4) {
-            num = 0;
-            pos = 0;
-            for (int x = 4; pos <= 8; pos += x) {
-                int tempCol = pos % 3;
-                int tempRow = pos / 3;
-                if (cells[tempRow][tempCol] == symbol)
-                    num++;
-            }
-            
-            if (num == 2)
-                return true;
-        }
-        
-        pos = row*3+col;
-        
-        if (pos == 2 || pos == 6 || pos == 4) {
-            num = 0;
-            pos = 2;
-            for (int x = 2; pos <= 6; pos += x) {
-                int tempCol = pos % 3;
-                int tempRow = pos / 3;
-                if (cells[tempRow][tempCol] == symbol)
-                    num++;
-            }
-            
-            if (num == 2)
-                return true;
-        }
-        
-        return false;
+	public void render(SpriteBatch batch) {
+		TextureRegion region = Assets.instance.board.region;
+		batch.draw(region.getTexture(), -2,
+				-Constants.VIEWPORT_HEIGHT / 2 + 0.1f, 0, 0, 4, 4, 1, 1, 0,
+				region.getRegionX(), region.getRegionY(),
+				region.getRegionWidth(), region.getRegionHeight(), false, false);
 
-    }
+		for (int row = 0; row < 3; row++)
+			for (int col = 0; col < 3; col++) {
+				if (cells[row][col] == EMPTY) continue;
+				region = cells[row][col] == X ? Assets.instance.x.region
+						: Assets.instance.o.region;
+				batch.draw(region.getTexture(), col*1.4f-1.9f,
+						row*1.4f-2.3f, 0, 0, 1, 1, 1, 1, 0,
+						region.getRegionX(), region.getRegionY(),
+						region.getRegionWidth(), region.getRegionHeight(),
+						false, false);
+			}
 
-    public boolean isDraw() {
-        for (int x = 0; x < cells.length; x++) {
-            for (int y = 0; y < cells[0].length; y++) {
-                if (cells[x][y] == EMPTY)
-                    return false;
-            }
-        }
-        return true;
-    }
-    
-    public void render(SpriteBatch batch) {
-        batch.draw(board.getTexture(), -Constants.VIEWPORT_WIDTH/2.25f, -Constants.VIEWPORT_HEIGHT/2, 
-            0f,0f ,1, 1, 4.5f, 5, 0, board.getRegionX(), board.getRegionY(), board.getRegionWidth(), board.getRegionHeight(), false, false);
-        
-        for (int x = 0; x < cells.length; x++)
-            for (int y = 0; y < cells[x].length; y++)
-                if (cells[x][y] == X) 
-                    batch.draw(this.x.getTexture(), -Constants.VIEWPORT_WIDTH/2.30f+(Constants.VIEWPORT_WIDTH/3)*x, -Constants.VIEWPORT_HEIGHT/2.25f+(Constants.VIEWPORT_HEIGHT/3)*(2-y), 
-                        0f,0f , .75f, .75f, 1.5f, 1.5f, 0, this.x.getRegionX(), this.x.getRegionY(), this.x.getRegionWidth(), this.x.getRegionHeight(), false, false);
-                else if (cells[x][y] == O) 
-                    batch.draw(this.o.getTexture(), -Constants.VIEWPORT_WIDTH/2.25f+(Constants.VIEWPORT_WIDTH/3)*x, -Constants.VIEWPORT_HEIGHT/2.25f+(Constants.VIEWPORT_HEIGHT/3)*(2-y), 
-                        0f,0f , .75f, .75f, 1.5f, 1.5f, 0, this.o.getRegionX(), this.o.getRegionY(), this.o.getRegionWidth(), this.o.getRegionHeight(), false, false);
-        
+	}
 
-    }
 }

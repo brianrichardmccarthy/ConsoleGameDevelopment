@@ -118,6 +118,7 @@ gradle-app.setting
 Thumbs.db
 
 *.txt
+*.zip
 /BunnyHopFiles/
 
 gdx-setup.jar

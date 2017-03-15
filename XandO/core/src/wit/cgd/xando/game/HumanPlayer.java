@@ -1,18 +1,20 @@
 package wit.cgd.xando.game;
 
-
 public class HumanPlayer extends BasePlayer {
 
-    public HumanPlayer(Board board, int symbol) {
-        super(board, symbol);
-        super.human = true;
-    }
+	@SuppressWarnings("unused")
+	private static final String	TAG	= WorldRenderer.class.getName(); 
 
-    @Override
-    public int move() {
+	public HumanPlayer(Board board, int symbol) {
+		super(board, symbol);
+		human = true;
+		name = "Electrified Meat";
+	}
 
-        return 0;
-    }
+	@Override
+	public int move() {
+		// human move handled in worldController
+		return 0;
+	}
 
-    
 }
