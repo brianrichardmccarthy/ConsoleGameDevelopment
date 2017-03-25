@@ -5,6 +5,7 @@ public abstract class BasePlayer {
 	public int mySymbol, opponentSymbol;
 	public String name;
 	public Board board;
+	public int skill;
 
 	
 	public BasePlayer(Board board, int symbol) {

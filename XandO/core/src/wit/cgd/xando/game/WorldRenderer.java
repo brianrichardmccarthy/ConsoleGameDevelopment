@@ -1,5 +1,6 @@
 package wit.cgd.xando.game;
 
+import wit.cgd.xando.game.Board.GameState;
 import wit.cgd.xando.game.WorldController;
 import wit.cgd.xando.game.util.Constants;
 
@@ -7,7 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Disposable;
 
 public class WorldRenderer implements Disposable {
@@ -51,34 +51,40 @@ public class WorldRenderer implements Disposable {
      }
 
 	public void render() {
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		worldController.board.render(batch);
-		batch.end();
-		
+	    batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        worldController.board.render(batch);
+
+        if (worldController.dragging) {
+
+            float x = worldController.dragX;
+            x = (float) (worldController.viewportWidth * (x - 0.5 * worldController.width) / worldController.width);
+
+            float y = worldController.dragY;
+            y = (float) (4.0 * (worldController.height - y) / worldController.height-2.5);
+
+            batch.draw(worldController.dragRegion.getTexture(), 
+                    x, y, 0, 0, 1, 1, 1, 1, 0,
+                    worldController.dragRegion.getRegionX(), worldController.dragRegion.getRegionY(), 
+                    worldController.dragRegion.getRegionWidth(), worldController.dragRegion.getRegionHeight(),
+                    false, false);
+        }
+
 		// GUI rendering
 		
-		batch.setProjectionMatrix(cameraGUI.combined);
-		batch.begin();
 		if (worldController.board.gameState != Board.GameState.PLAYING) {
 			float x = cameraGUI.viewportWidth / 2;
 			float y = cameraGUI.viewportHeight / 2;
 			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
 			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
 			String message = "X Won";
-			if (worldController.board.gameState== worldController.board.gameState.O_WON) 
+			if (worldController.board.gameState== GameState.O_WON) 
 				message = "O Won";
-			else if (worldController.board.gameState== worldController.board.gameState.DRAW)
+			else if (worldController.board.gameState== GameState.DRAW)
 				message = "Draw";
 			fontGameOver.draw(batch, message, x, y, 0, Align.center, true);
 			fontGameOver.setColor(1, 1, 1, 1);
 		}
-//			if (board.gameState != Board.GameState.PLAYING) {
-//				timeLeftGameOverDelay -= deltaTime;
-//				if (timeLeftGameOverDelay < 0) {
-//					backToMenu();
-//				}
-//			}
 		batch.end();
 	}
 

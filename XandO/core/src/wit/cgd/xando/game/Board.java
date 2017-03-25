@@ -1,9 +1,11 @@
 package wit.cgd.xando.game;
 
-import wit.cgd.xando.game.util.Constants;
-
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+import wit.cgd.xando.game.util.AudioManager;
+import wit.cgd.xando.game.util.Constants;
 
 public class Board {
 
@@ -48,16 +50,18 @@ public class Board {
 	public boolean move(int row, int col) {
 
 		if (currentPlayer.human) {
+		    AudioManager.instance.play(Assets.instance.sounds.first);
 			if (row < 0 || col < 0 || row > 2 || col > 2
 					|| cells[row][col] != EMPTY)
 				return false;
 		} else { // computer player
+		    AudioManager.instance.play(Assets.instance.sounds.second);
 			int pos = currentPlayer.move();
 			col = pos % 3;
 			row = pos / 3;
 		}
 
-		System.out.println(" " + currentPlayer.human + " " + row + " " + col);
+		System.out.println("" + currentPlayer.human + " " + row + " " + col);
 		// store move
 		cells[row][col] = currentPlayer.mySymbol;
 
@@ -69,7 +73,9 @@ public class Board {
 		if (hasWon(currentPlayer.mySymbol, row, col)) {
 			gameState = currentPlayer.mySymbol == X ? GameState.X_WON
 					: GameState.O_WON;
+			AudioManager.instance.play(Assets.instance.sounds.win);
 		} else if (isDraw()) {
+		    AudioManager.instance.play(Assets.instance.sounds.draw);
 			gameState = GameState.DRAW;
 		}
 
@@ -125,6 +131,16 @@ public class Board {
 						false, false);
 			}
 
+		// draw drag and drop pieces
+        region =  Assets.instance.x.region;
+        batch.draw(region.getTexture(), (-1) * 1.4f - 1.9f, 1 * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0,
+                region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight(),
+                false, false);
+        region =  Assets.instance.o.region;
+        batch.draw(region.getTexture(), (3) * 1.4f - 1.9f, 1 * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0,
+                region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight(),
+                false, false);
+		
 	}
 
 }
