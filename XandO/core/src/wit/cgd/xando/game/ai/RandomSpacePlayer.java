@@ -18,9 +18,7 @@ public class RandomSpacePlayer extends BasePlayer {
         
         while (true) {
             int space = rand.nextInt(9);
-            int row = space / 3;
-            int col = space % 3;
-            if (board.cells[row][col] == board.EMPTY) return space;
+            if (board.cells[space / 3][space % 3] == board.EMPTY) return space;
         }
         
     }
