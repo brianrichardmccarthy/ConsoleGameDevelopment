@@ -14,28 +14,33 @@ public class CheckAndImpactPlayer extends BasePlayer {
 	public int move() {
 
 		for (int x = 0; x < 8; x++) {
-			if (board.cells[x/3][x%3] == board.EMPTY) {
-				board.cells[x/3][x%3] = mySymbol;
-				if (board.hasWon(mySymbol, x / 3, x % 3)) {
-					board.cells[x/3][x%3] = board.EMPTY;
+		    int row = x/3;
+		    int col = x%3;
+			if (board.cells[row][col] == board.EMPTY) {
+				board.cells[row][col] = mySymbol;
+				if (board.hasWon(mySymbol, row, col)) {
+					board.cells[row][col] = board.EMPTY;
 					return x;
 				}
+				board.cells[row][col] = board.EMPTY;
 			}
 		}
 
 		for (int x = 0; x < 8; x++) {
-			if (board.cells[x/3][x%3] == board.EMPTY) {
-				board.cells[x/3][x%3] = opponentSymbol;
-				if (board.hasWon(opponentSymbol, x / 3, x % 3)) {
-					board.cells[x/3][x%3] = board.EMPTY;
+		    int row = x/3;
+            int col = x%3;
+			if (board.cells[row][col] == board.EMPTY) {
+				board.cells[row][col] = opponentSymbol;
+				if (board.hasWon(opponentSymbol, row, col)) {
+					board.cells[row][col] = board.EMPTY;
 					return x;
 				}
+				board.cells[row][col] = board.EMPTY;
 			}
 		}
 		
 		for (int num : new int[] { 4, 0, 2, 6, 8, 1, 3, 5, 7 })
-			if (board.cells[num / 3][num % 3] == board.EMPTY)
-				return num;
+			if (board.cells[num / 3][num % 3] == board.EMPTY) return num;
 
 		return -1;
 

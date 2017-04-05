@@ -78,10 +78,8 @@ public class WorldRenderer implements Disposable {
 			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
 			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
 			String message = "X Won";
-			if (worldController.board.gameState== GameState.O_WON) 
-				message = "O Won";
-			else if (worldController.board.gameState== GameState.DRAW)
-				message = "Draw";
+			if (worldController.board.gameState== GameState.O_WON)  message = "O Won";
+			else if (worldController.board.gameState== GameState.DRAW) message = "Draw";
 			fontGameOver.draw(batch, message, x, y, 0, Align.center, true);
 			fontGameOver.setColor(1, 1, 1, 1);
 		}

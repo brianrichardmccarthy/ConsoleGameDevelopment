@@ -9,7 +9,6 @@ import wit.cgd.xando.game.util.Constants;
 
 public class Board {
 
-	@SuppressWarnings("unused")
 	private static final String TAG = WorldRenderer.class.getName();
 
 	public static enum GameState {
@@ -83,6 +82,7 @@ public class Board {
 		if (gameState == GameState.PLAYING) {
 			currentPlayer = (currentPlayer == firstPlayer ? secondPlayer
 					: firstPlayer);
+			Gdx.app.debug(TAG, "Current player <" + currentPlayer.name + ">");
 		}
 
 		return true;

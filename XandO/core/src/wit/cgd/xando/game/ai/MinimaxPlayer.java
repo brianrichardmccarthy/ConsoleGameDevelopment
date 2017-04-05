@@ -22,8 +22,9 @@ public class MinimaxPlayer extends BasePlayer {
 
     @Override
     public int move () {
-        Gdx.app.debug(name, "Move");
-        return (int) minimax(mySymbol, opponentSymbol, 0);
+        int temp = (int) minimax(mySymbol, opponentSymbol, 0);
+        Gdx.app.debug(name, "Temp <" + temp + ">");
+        return temp;
     }
 
     private float minimax(int p_mySymbol, int p_opponentSymbol, int depth) {
@@ -42,7 +43,7 @@ public class MinimaxPlayer extends BasePlayer {
                 // skip over used positions
                 if (board.cells[r][c]!=board.EMPTY) continue;
 
-                String indent = new String(new char[depth]).replace("\0", "  ");
+                // String indent = new String(new char[depth]).replace("\0", "  ");
                 //Gdx.app.log(indent, "search ("+r+","+c+")");
 
                 // place move 

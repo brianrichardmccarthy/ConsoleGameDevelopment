@@ -15,9 +15,9 @@ import wit.cgd.xando.game.ai.RandomSpacePlayer;
 import wit.cgd.xando.game.util.GameStats;
 import wit.cgd.xando.screens.MenuScreen;
 
+@SuppressWarnings("unused")
 public class WorldController extends InputAdapter {
 
-    @SuppressWarnings("unused")
     private static final String TAG = WorldRenderer.class.getName();
 
     public float viewportWidth;
@@ -28,12 +28,11 @@ public class WorldController extends InputAdapter {
     boolean dragging = false;
     int dragX, dragY;
     TextureRegion dragRegion;
-    
-    final float                 TIME_LEFT_GAME_OVER_DELAY = 0;
-    float                       timeLeftGameOverDelay;
-    final int                   GAME_COUNT = 10;
-    public int                  gameCount = 0;
-    public int                  win=0, draw=0, loss=0;
+
+    float timeLeftGameOverDelay;
+    final float TIME_LEFT_GAME_OVER_DELAY = 3;
+    public int gameCount = 0;
+    public int win = 0, draw = 0, loss = 0;
 
     public WorldController(Game game) {
         this.game = game;
@@ -55,7 +54,7 @@ public class WorldController extends InputAdapter {
         // board.start();
         // updateScore = true;
         // timeLeftGameOverDelay = 2;
-     // Players:
+        // Players:
         //      HumanPlayer 
         //      FirstSpacePlayer 
         //      RandomSpacePlayer 
@@ -65,27 +64,21 @@ public class WorldController extends InputAdapter {
         //      MinimaxPlayer
         Gdx.input.setInputProcessor(this);
         board = new Board();
-        // board.firstPlayer = new HumanPlayer(board, board.X);
-        // board.secondPlayer = new CheckAndImpactPlayer(board, board.O);
-
-        // board.firstPlayer = new FirstSpacePlayer(board, board.X);
-        // board.secondPlayer = new FirstSpacePlayer(board, board.O);
-        
+        timeLeftGameOverDelay = TIME_LEFT_GAME_OVER_DELAY;
         board.firstPlayer = new HumanPlayer(board, board.X);
         board.secondPlayer = new MinimaxPlayer(board, board.O);
-        
+
         // final float                 TIME_LEFT_GAME_OVER_DELAY = 0;
-        
-        timeLeftGameOverDelay = TIME_LEFT_GAME_OVER_DELAY;
+
         board.start();
     }
 
-    /* public void update(float deltaTime) {
-
+     public void update(float deltaTime) {
+    
         if (board.gameState == Board.GameState.PLAYING) {
             board.move();
         }
-
+    
         if (board.gameState != Board.GameState.PLAYING) {
             if (updateScore) {
                 if (board.gameState == Board.GameState.X_WON) {
@@ -100,9 +93,10 @@ public class WorldController extends InputAdapter {
             timeLeftGameOverDelay -= deltaTime;
             if (timeLeftGameOverDelay < 0) backToMenu();
         }
-    } */
+    } 
 
-    public void update(float deltaTime) {
+    /* public void update(float deltaTime) {
+
         if (board.gameState == Board.GameState.PLAYING) {
             board.move();
         } else {
@@ -118,10 +112,9 @@ public class WorldController extends InputAdapter {
                     draw++;
                 }
 
-                if (gameCount==GAME_COUNT) {
+                if (gameCount == GAME_COUNT) {
                     Gdx.app.log(TAG,
-                        "\nPlayeed "+ gameCount + " games \t" + board.firstPlayer.name + " vs "+ board.secondPlayer.name +
-                        "\n\t X  win \t"+ win + "\t X draw \t"+ draw + "\t X loss \t"+ loss); 
+                        "\nPlayeed " + gameCount + " games \t" + board.firstPlayer.name + " vs " + board.secondPlayer.name + "\n\t X  win \t" + win + "\t X draw \t" + draw + "\t X loss \t" + loss);
                     Gdx.app.exit();
                 }
                 board.start();
@@ -129,8 +122,8 @@ public class WorldController extends InputAdapter {
                 board.gameState = Board.GameState.PLAYING;
             }
         }
-    }
-    
+    } */
+
     @Override
     public boolean keyUp(int keycode) {
 
@@ -143,6 +136,7 @@ public class WorldController extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
         if (board.gameState == Board.GameState.PLAYING && board.currentPlayer.human) {
 
             // convert to cell position
@@ -159,13 +153,13 @@ public class WorldController extends InputAdapter {
             dragY = screenY;
 
             // check if valid start of a drag for first player
-            if (row == 1 && col == -1 && board.currentPlayer==board.firstPlayer) {
+            if (row == 1 && col == -1 && board.currentPlayer == board.firstPlayer) {
                 dragging = true;
                 dragRegion = Assets.instance.x.region;
                 return true;
             }
             // check if valid start of a drag for second player
-            if (row == 1 && col == 3 && board.currentPlayer==board.secondPlayer) {
+            if (row == 1 && col == 3 && board.currentPlayer == board.secondPlayer) {
                 dragging = true;
                 dragRegion = Assets.instance.o.region;
                 return true;
@@ -175,22 +169,21 @@ public class WorldController extends InputAdapter {
 
         return true;
     }
-    
+
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+
         dragX = screenX;
-        dragY = screenY;        
+        dragY = screenY;
         return true;
     }
-    
+
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         dragging = false;
 
-        if ((board.currentPlayer.mySymbol == board.X && dragRegion != Assets.instance.x.region) || (
-            board.currentPlayer.mySymbol == board.O && dragRegion != Assets.instance.o.region))
-            return true;
+        if ( (board.currentPlayer.mySymbol == board.X && dragRegion != Assets.instance.x.region) || (board.currentPlayer.mySymbol == board.O && dragRegion != Assets.instance.o.region)) return true;
 
         // convert to cell position
         int row = 4 * (height - screenY) / height;
