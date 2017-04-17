@@ -12,6 +12,7 @@ import wit.cgd.xando.game.ai.ImpactSpacePlayer;
 import wit.cgd.xando.game.ai.MinimaxPlayer;
 import wit.cgd.xando.game.ai.RandomImpactSpacePlayer;
 import wit.cgd.xando.game.ai.RandomSpacePlayer;
+import wit.cgd.xando.game.util.GamePreferences;
 import wit.cgd.xando.game.util.GameStats;
 import wit.cgd.xando.screens.MenuScreen;
 
@@ -47,30 +48,28 @@ public class WorldController extends InputAdapter {
 
     private void init() {
 
-        // Gdx.input.setInputProcessor(this);
-        // board = new Board();
-        // board.firstPlayer = new HumanPlayer(board, board.X);
-        // board.secondPlayer = new FirstSpacePlayer(board, board.O);
-        // board.start();
-        // updateScore = true;
-        // timeLeftGameOverDelay = 2;
-        // Players:
-        //      HumanPlayer 
-        //      FirstSpacePlayer 
-        //      RandomSpacePlayer 
-        //      ImpactSpacePlayer 
-        //      RandomImpactSpacePlayer
-        //      CheckAndImpactPlayer
-        //      MinimaxPlayer
-        Gdx.input.setInputProcessor(this);
-        board = new Board();
-        timeLeftGameOverDelay = TIME_LEFT_GAME_OVER_DELAY;
-        board.firstPlayer = new HumanPlayer(board, board.X);
-        board.secondPlayer = new MinimaxPlayer(board, board.O);
-
-        // final float                 TIME_LEFT_GAME_OVER_DELAY = 0;
-
-        board.start();
+         Gdx.input.setInputProcessor(this);
+         board = new Board();
+         
+         if (GamePreferences.instance.firstPlayerHuman) board.firstPlayer = new HumanPlayer(board, board.X);
+         else if (GamePreferences.instance.firstPlayerSkill <= 1.0f) board.firstPlayer = new FirstSpacePlayer(board, board.X);
+         else if (GamePreferences.instance.firstPlayerSkill <= 2.0f) board.firstPlayer = new RandomSpacePlayer(board, board.X);
+         else if (GamePreferences.instance.firstPlayerSkill <= 3.0f) board.firstPlayer = new ImpactSpacePlayer(board, board.X);
+         else if (GamePreferences.instance.firstPlayerSkill <= 5.0f) board.firstPlayer = new RandomImpactSpacePlayer(board, board.X);
+         else if (GamePreferences.instance.firstPlayerSkill <= 7.0f) board.firstPlayer = new CheckAndImpactPlayer(board, board.X);
+         else board.firstPlayer = new MinimaxPlayer(board, board.X);
+         
+         if (GamePreferences.instance.secondPlayerHuman) board.secondPlayer = new HumanPlayer(board, board.O);
+         else if (GamePreferences.instance.secondPlayerSkill <= 1.0f) board.secondPlayer = new FirstSpacePlayer(board, board.O);
+         else if (GamePreferences.instance.secondPlayerSkill <= 2.0f) board.secondPlayer = new RandomSpacePlayer(board, board.O);
+         else if (GamePreferences.instance.secondPlayerSkill <= 3.0f) board.secondPlayer = new ImpactSpacePlayer(board, board.O);
+         else if (GamePreferences.instance.secondPlayerSkill <= 5.0f) board.secondPlayer = new RandomImpactSpacePlayer(board, board.O);
+         else if (GamePreferences.instance.secondPlayerSkill <= 7.0f) board.secondPlayer = new CheckAndImpactPlayer(board, board.O);
+         else board.secondPlayer = new MinimaxPlayer(board, board.O);
+         
+         updateScore = true;
+         timeLeftGameOverDelay = 2;
+         board.start();
     }
 
      public void update(float deltaTime) {
@@ -93,7 +92,7 @@ public class WorldController extends InputAdapter {
             timeLeftGameOverDelay -= deltaTime;
             if (timeLeftGameOverDelay < 0) backToMenu();
         }
-    } 
+    }
 
     /* public void update(float deltaTime) {
 

@@ -12,9 +12,9 @@ public class Player extends AbstractGameObject {
 
 	public static final String TAG = Player.class.getName();
 	
-	private Animation<TextureRegion> animation;
-	private TextureRegion region;
-	private float timeShootDelay;
+	protected Animation<TextureRegion> animation;
+	protected TextureRegion region;
+	protected float timeShootDelay;
 	
 	public Player (Level level) {
 		super(level);

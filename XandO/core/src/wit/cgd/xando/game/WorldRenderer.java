@@ -70,9 +70,12 @@ public class WorldRenderer implements Disposable {
                     false, false);
         }
 
+        batch.end();
+        
 		// GUI rendering
-		
 		if (worldController.board.gameState != Board.GameState.PLAYING) {
+		    batch.setProjectionMatrix(cameraGUI.combined);
+		    batch.begin();
 			float x = cameraGUI.viewportWidth / 2;
 			float y = cameraGUI.viewportHeight / 2;
 			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
@@ -82,8 +85,9 @@ public class WorldRenderer implements Disposable {
 			else if (worldController.board.gameState== GameState.DRAW) message = "Draw";
 			fontGameOver.draw(batch, message, x, y, 0, Align.center, true);
 			fontGameOver.setColor(1, 1, 1, 1);
+			batch.end();
 		}
-		batch.end();
+		
 	}
 
     

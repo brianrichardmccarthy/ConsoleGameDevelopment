@@ -16,13 +16,10 @@ public class FirstSpacePlayer extends BasePlayer {
 
 	@Override
 	public int move() {
-		/* for (int r=2; r>=0; --r)
+		for (int r=2; r>=0; --r)
 			for (int c=0; c<3; ++c) 
 				if (board.cells[r][c]==board.EMPTY) 
-					return r*3+c; */
-		
-		for (int x = 0; x < 9; x++)
-			if (board.cells[x/3][x%3] == board.EMPTY) return x;
+					return r*3+c;
 		
 		return -1;
 		

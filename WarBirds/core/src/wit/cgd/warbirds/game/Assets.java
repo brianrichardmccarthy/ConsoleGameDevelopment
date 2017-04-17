@@ -18,152 +18,164 @@ import wit.cgd.warbirds.game.util.Constants;
 
 public class Assets implements Disposable, AssetErrorListener {
 
-	public static final String	TAG			= Assets.class.getName();
-	public static final Assets	instance	= new Assets();
+    public static final String TAG = Assets.class.getName();
+    public static final Assets instance = new Assets();
 
-	private AssetManager		assetManager;
+    private AssetManager assetManager;
 
-	public AssetFonts			fonts;
+    public AssetFonts fonts;
 
-	public AssetSounds			sounds;
-	public AssetMusic			music;
+    public AssetSounds sounds;
+    public AssetMusic music;
 
-	public AssetPlayer			player;
-	public Asset				bullet;
-	public Asset				doubleBullet;
-	public AssetLevelDecoration	levelDecoration;
+    public AssetAirplane player;
+    public AssetAirplane enemy[];
+    public Asset bullet;
+    public Asset doubleBullet;
+    public AssetLevelDecoration levelDecoration;
 
-	private Assets() {}
+    private Assets() {
+    }
 
-	public void init(AssetManager assetManager) {
+    public void init(AssetManager assetManager) {
 
-		this.assetManager = assetManager;
-		assetManager.setErrorListener(this);
+        this.assetManager = assetManager;
+        assetManager.setErrorListener(this);
 
-		// load texture for game sprites
-		assetManager.load(Constants.TEXTURE_ATLAS_GAME, TextureAtlas.class);
+        // load texture for game sprites
+        assetManager.load(Constants.TEXTURE_ATLAS_GAME, TextureAtlas.class);
 
-		// TODO load sounds
-		// assetManager.load("sounds/FILENAME", Sound.class);
+        // TODO load sounds
+        // assetManager.load("sounds/FILENAME", Sound.class);
 
-		// load music
-		// assetManager.load("music/FILENAME", Music.class);
+        // load music
+        // assetManager.load("music/FILENAME", Music.class);
 
-		assetManager.finishLoading();
+        assetManager.finishLoading();
 
+        Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
+        for (String a: assetManager.getAssetNames())
+            Gdx.app.debug(TAG, "asset: " + a);
 
-		Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
-		for (String a : assetManager.getAssetNames())
-			Gdx.app.debug(TAG, "asset: " + a);
+        // create atlas for game sprites
+        TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_GAME);
+        for (Texture t: atlas.getTextures())
+            t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
-		// create atlas for game sprites
-		TextureAtlas atlas = assetManager.get(Constants.TEXTURE_ATLAS_GAME);
-		for (Texture t : atlas.getTextures())
-			t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        fonts = new AssetFonts();
 
-		fonts = new AssetFonts();
+        // create game resource objects
+        player = new AssetAirplane(atlas, "player");
+        enemy = new AssetAirplane[]{
+                new AssetAirplane(atlas, "enemy_plane_green"),
+                new AssetAirplane(atlas, "enemy_plane_white"),
+                new AssetAirplane(atlas, "enemy_plane_yellow")
+        };
+        levelDecoration = new AssetLevelDecoration(atlas);
+        bullet = new Asset(atlas, "bullet");
+        doubleBullet = new Asset(atlas, "bullet_double");
 
-		// create game resource objects
-		player = new AssetPlayer(atlas);
-		levelDecoration = new AssetLevelDecoration(atlas);
-		bullet = new Asset(atlas, "bullet");
-		doubleBullet  = new Asset(atlas, "bullet_double");
-		
-		// create sound and music resource objects
-		sounds = new AssetSounds(assetManager);
-		music = new AssetMusic(assetManager);
+        // create sound and music resource objects
+        sounds = new AssetSounds(assetManager);
+        music = new AssetMusic(assetManager);
 
-	}
+    }
 
-	@Override
-	public void dispose() {
-		assetManager.dispose();
-	}
+    @Override
+    public void dispose() {
 
-	@Override
-	public void error(AssetDescriptor asset, Throwable throwable) {
-		Gdx.app.error(TAG, "Couldn't load asset '" + asset + "'", (Exception) throwable);
-	}
+        assetManager.dispose();
+    }
 
-	public class Asset {
-		public final AtlasRegion	region;
+    @Override
+    public void error(AssetDescriptor asset, Throwable throwable) {
 
-		public Asset(TextureAtlas atlas, String imageName) {
-			region = atlas.findRegion(imageName);
-			Gdx.app.log(TAG, "Loaded asset '" + imageName + "'");
-		}
-	}
+        Gdx.app.error(TAG, "Couldn't load asset '" + asset + "'", (Exception) throwable);
+    }
 
-	public class AssetPlayer {
-		public final AtlasRegion	region;
-		public final Animation		animationNormal;
-		public final Animation		animationExplosionBig;
+    public class Asset {
 
-		public AssetPlayer(TextureAtlas atlas) {
-			region = atlas.findRegion("player");
+        public final AtlasRegion region;
 
-			Array<AtlasRegion> regions = atlas.findRegions("player");
-			animationNormal = new Animation(1.0f / 15.0f, regions, Animation.PlayMode.LOOP);
-			regions = atlas.findRegions("explosion_big");
-			animationExplosionBig = new Animation(1.0f / 15.0f, regions, Animation.PlayMode.LOOP);
-		}
-	}
+        public Asset(TextureAtlas atlas, String imageName) {
+            region = atlas.findRegion(imageName);
+            Gdx.app.log(TAG, "Loaded asset '" + imageName + "'");
+        }
+    }
 
-	public class AssetLevelDecoration {
+    public class AssetAirplane {
 
-		public final AtlasRegion	islandBig;
-		public final AtlasRegion	islandSmall;
-		public final AtlasRegion	islandTiny;
-		public final AtlasRegion	water;
+        public final AtlasRegion region;
+        public final Animation animationNormal;
+        public final Animation animationExplosionBig;
+        public final String regionName;
 
-		public AssetLevelDecoration(TextureAtlas atlas) {
-			water = atlas.findRegion("water");
-			islandBig = atlas.findRegion("island_big");
-			islandSmall = atlas.findRegion("island_small");
-			islandTiny = atlas.findRegion("island_tiny");
-		}
-	}
+        public AssetAirplane(TextureAtlas atlas, String region) {
+            this.region = atlas.findRegion(region);
+            regionName = region;
+            Array<AtlasRegion> regions = atlas.findRegions(region);
+            animationNormal = new Animation(1.0f / 15.0f, regions, Animation.PlayMode.LOOP);
+            regions = atlas.findRegions("explosion_big");
+            animationExplosionBig = new Animation(1.0f / 15.0f, regions, Animation.PlayMode.LOOP);
+        }
+    }
 
-	public class AssetFonts {
-		public final BitmapFont	defaultSmall;
-		public final BitmapFont	defaultNormal;
-		public final BitmapFont	defaultBig;
+    public class AssetLevelDecoration {
 
-		public AssetFonts() {
-			// create three fonts using Libgdx's built-in 15px bitmap font
-			defaultSmall = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
-			defaultNormal = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
-			defaultBig = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
-			// set font sizes
-			defaultSmall.getData().setScale(0.75f);
-			defaultNormal.getData().setScale(1.0f);
-			defaultBig.getData().setScale(4.0f);
-			// enable linear texture filtering for smooth fonts
-			defaultSmall.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			defaultBig.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		}
-	}
+        public final AtlasRegion islandBig;
+        public final AtlasRegion islandSmall;
+        public final AtlasRegion islandTiny;
+        public final AtlasRegion water;
 
-	public class AssetSounds {
+        public AssetLevelDecoration(TextureAtlas atlas) {
+            water = atlas.findRegion("water");
+            islandBig = atlas.findRegion("island_big");
+            islandSmall = atlas.findRegion("island_small");
+            islandTiny = atlas.findRegion("island_tiny");
+        }
+    }
 
-		// TODO list reference to sound assets
-		// public final Sound first;
+    public class AssetFonts {
 
-		public AssetSounds(AssetManager am) {
-			// TODO 
-			// first = am.get("sounds/FILENAME", Sound.class);
-		}
-	}
+        public final BitmapFont defaultSmall;
+        public final BitmapFont defaultNormal;
+        public final BitmapFont defaultBig;
 
-	public class AssetMusic {
-		// TODO list reference to music assets
-		// public final Music song01;
+        public AssetFonts() {
+            // create three fonts using Libgdx's built-in 15px bitmap font
+            defaultSmall = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+            defaultNormal = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+            defaultBig = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+            // set font sizes
+            defaultSmall.getData().setScale(0.75f);
+            defaultNormal.getData().setScale(1.0f);
+            defaultBig.getData().setScale(4.0f);
+            // enable linear texture filtering for smooth fonts
+            defaultSmall.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+            defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+            defaultBig.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        }
+    }
 
-		public AssetMusic(AssetManager am) {
-			// TODO
-			// song01 = am.get("music/FILENAME", Music.class);
-		}
-	}
+    public class AssetSounds {
+
+        // TODO list reference to sound assets
+        // public final Sound first;
+
+        public AssetSounds(AssetManager am) {
+            // TODO 
+            // first = am.get("sounds/FILENAME", Sound.class);
+        }
+    }
+
+    public class AssetMusic {
+        // TODO list reference to music assets
+        // public final Music song01;
+
+        public AssetMusic(AssetManager am) {
+            // TODO
+            // song01 = am.get("music/FILENAME", Music.class);
+        }
+    }
 
 }
