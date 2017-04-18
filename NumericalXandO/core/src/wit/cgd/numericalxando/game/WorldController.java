@@ -16,7 +16,6 @@ import wit.cgd.numericalxando.game.util.GamePreferences;
 import wit.cgd.numericalxando.game.util.GameStats;
 import wit.cgd.numericalxando.screens.MenuScreen;
 
-@SuppressWarnings("unused")
 public class WorldController extends InputAdapter {
 
     private static final String TAG = WorldRenderer.class.getName();
@@ -94,35 +93,6 @@ public class WorldController extends InputAdapter {
         }
     }
 
-    /* public void update(float deltaTime) {
-
-        if (board.gameState == Board.GameState.PLAYING) {
-            board.move();
-        } else {
-            timeLeftGameOverDelay -= deltaTime;
-            if (timeLeftGameOverDelay < 0) {
-                gameCount++;
-                if (board.gameState == Board.GameState.X_WON) {
-                    win++;
-                } else if (board.gameState == Board.GameState.O_WON) {
-                    loss++;
-                } else {
-                    assert (board.gameState == Board.GameState.DRAW);
-                    draw++;
-                }
-
-                if (gameCount == GAME_COUNT) {
-                    Gdx.app.log(TAG,
-                        "\nPlayeed " + gameCount + " games \t" + board.firstPlayer.name + " vs " + board.secondPlayer.name + "\n\t X  win \t" + win + "\t X draw \t" + draw + "\t X loss \t" + loss);
-                    Gdx.app.exit();
-                }
-                board.start();
-                timeLeftGameOverDelay = TIME_LEFT_GAME_OVER_DELAY;
-                board.gameState = Board.GameState.PLAYING;
-            }
-        }
-    } */
-
     @Override
     public boolean keyUp(int keycode) {
 
@@ -144,7 +114,7 @@ public class WorldController extends InputAdapter {
 
             // board move - just place piece and return
             if (row >= 0 && row < 3 && col >= 0 && col < 3) {
-                board.move(row, col);
+                board.move(row, col, board.currentPlayer.myNumbers.get(0));
                 return true;
             }
 
@@ -154,16 +124,16 @@ public class WorldController extends InputAdapter {
             // check if valid start of a drag for first player
             if (row == 1 && col == -1 && board.currentPlayer == board.firstPlayer) {
                 dragging = true;
-                dragRegion = Assets.instance.x.region;
+                dragRegion = Assets.instance.numbers.get(0).region;
                 return true;
             }
+            
             // check if valid start of a drag for second player
             if (row == 1 && col == 3 && board.currentPlayer == board.secondPlayer) {
                 dragging = true;
-                dragRegion = Assets.instance.o.region;
+                dragRegion = Assets.instance.numbers.get(1).region;
                 return true;
             }
-
         }
 
         return true;
@@ -182,15 +152,20 @@ public class WorldController extends InputAdapter {
 
         dragging = false;
 
-        if ( (board.currentPlayer.mySymbol == board.X && dragRegion != Assets.instance.x.region) || (board.currentPlayer.mySymbol == board.O && dragRegion != Assets.instance.o.region)) return true;
+        if ( (board.currentPlayer.mySymbol == board.X && dragRegion != Assets.instance.numbers.get(0).region) || (board.currentPlayer.mySymbol == board.O && dragRegion != Assets.instance.numbers.get(1).region)) return true;
 
+        if (dragRegion == null) {
+            // Gdx.app.error(TAG, "dragRegion is null");
+            return false;
+        }
+        
         // convert to cell position
         int row = 4 * (height - screenY) / height;
         int col = (int) (viewportWidth * (screenX - 0.5 * width) / width) + 1;
 
         // if a valid board cell then place piece
         if (row >= 0 && row < 3 && col >= 0 && col < 3) {
-            board.move(row, col);
+            board.move(row, col, (Integer.parseInt(dragRegion.toString())));
             return true;
         }
 

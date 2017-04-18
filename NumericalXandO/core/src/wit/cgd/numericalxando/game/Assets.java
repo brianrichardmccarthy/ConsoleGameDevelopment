@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 import wit.cgd.numericalxando.game.util.Constants;
@@ -25,9 +26,9 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetFonts fonts;
 
     public Asset board;
-    public Asset x;
-    public Asset o;
 
+    public Array<Asset> numbers;
+    
     public AssetSounds sounds;
     public AssetMusic music;
 
@@ -93,6 +94,10 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public void init(AssetManager assetManager) {
 
+        if (numbers != null) numbers.clear();
+        
+        numbers = new Array<Asset>(10);
+        
         this.assetManager = assetManager;
         
         // set asset manager error handler
@@ -117,9 +122,17 @@ public class Assets implements Disposable, AssetErrorListener {
 
         // build game resource objects
         board = new Asset(atlas, "board");
-        x = new Asset(atlas, "x");
-        o = new Asset(atlas, "o");
-
+        
+        numbers.add(new Asset(atlas, "1"));
+        numbers.add(new Asset(atlas, "2"));
+        numbers.add(new Asset(atlas, "3"));
+        numbers.add(new Asset(atlas, "4"));
+        numbers.add(new Asset(atlas, "5"));
+        numbers.add(new Asset(atlas, "6"));
+        numbers.add(new Asset(atlas, "7"));
+        numbers.add(new Asset(atlas, "8"));
+        numbers.add(new Asset(atlas, "9"));
+        
         // load sounds
         this.assetManager.load("sounds/first.wav", Sound.class);
         this.assetManager.load("sounds/second.wav", Sound.class);
