@@ -1,12 +1,33 @@
 package wit.cgd.numericalxando.game;
 
+import java.util.Stack;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 
+import wit.cgd.numericalxando.game.ai.MinimaxPlayer;
 import wit.cgd.numericalxando.game.util.AudioManager;
 import wit.cgd.numericalxando.game.util.Constants;
 
+
 public class Board {
+    private class Previous {
+        public int row;
+        public int col;
+        public int number;
+        public int playerSymbol;
+        
+        public Previous(int row, int col, int number, int playerSymbol) {
+            this.row = row;
+            this.col = col;
+            this.number = number;
+            this.playerSymbol = playerSymbol;
+        }
+        
+        
+    }
 
     private static final String TAG = WorldRenderer.class.getName();
 
@@ -23,7 +44,10 @@ public class Board {
 
     public BasePlayer firstPlayer, secondPlayer;
     public BasePlayer currentPlayer;
+    private Stack<Previous> previous;
 
+    public Vector3 suggested;
+    
     public Board() {
         init();
     }
@@ -41,6 +65,7 @@ public class Board {
 
         gameState = GameState.PLAYING;
         currentPlayer = firstPlayer;
+        previous = new Stack<Previous>();
     }
 
     public boolean move() {
@@ -64,7 +89,8 @@ public class Board {
         // store move
         cells[row][col] = number;
         currentPlayer.remove(number);
-
+        previous.push(new Previous(row, col, number, currentPlayer.mySymbol));
+        
         if (hasWon(row, col)) {
             gameState = currentPlayer.mySymbol == X ? GameState.X_WON : GameState.O_WON;
             AudioManager.instance.play(Assets.instance.sounds.win);
@@ -106,6 +132,25 @@ public class Board {
             );
     }
 
+    public void undo() {
+        if (!previous.isEmpty()) {
+            Previous temp = previous.pop();
+            cells[temp.row][temp.col] = EMPTY;
+            if (temp.playerSymbol == firstPlayer.mySymbol) firstPlayer.myNumbers.add(temp.number);
+            else secondPlayer.myNumbers.add(temp.number);
+        }
+    }
+    
+    public void help() {
+        MinimaxPlayer tempPlayer = new MinimaxPlayer(this, currentPlayer.mySymbol);
+        tempPlayer.myNumbers.clear();
+        tempPlayer.oppentNumbers.clear();
+        tempPlayer.myNumbers = new Array<Integer>(currentPlayer.myNumbers);
+        tempPlayer.oppentNumbers = new Array<Integer>(currentPlayer.oppentNumbers);
+        int p = tempPlayer.move();
+        suggested = new Vector3(p/3, p%3, tempPlayer.choice);
+    }
+    
     public void render(SpriteBatch batch) {
 
         TextureRegion region = Assets.instance.board.region;
