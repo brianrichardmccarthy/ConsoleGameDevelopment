@@ -18,7 +18,7 @@ public class CheckAndImpactPlayer extends BasePlayer {
 		    int col = x%3;
 			if (board.cells[row][col] == board.EMPTY) {
 				board.cells[row][col] = mySymbol;
-				if (board.hasWon(mySymbol, row, col)) {
+				if (board.hasWon(row, col)) {
 					board.cells[row][col] = board.EMPTY;
 					return x;
 				}
@@ -31,7 +31,7 @@ public class CheckAndImpactPlayer extends BasePlayer {
             int col = x%3;
 			if (board.cells[row][col] == board.EMPTY) {
 				board.cells[row][col] = opponentSymbol;
-				if (board.hasWon(opponentSymbol, row, col)) {
+				if (board.hasWon(row, col)) {
 					board.cells[row][col] = board.EMPTY;
 					return x;
 				}

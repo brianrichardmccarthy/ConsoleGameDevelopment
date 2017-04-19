@@ -50,7 +50,7 @@ public class MinimaxPlayer extends BasePlayer {
                 board.cells[r][c] = p_mySymbol;
 
                 // evaluate board (recursively)
-                if (board.hasWon(p_mySymbol, r, c)) {
+                if (board.hasWon(r, c)) {
                     score = WIN_SCORE;
                 } else if (board.isDraw()) {
                     score = DRAW_SCORE;

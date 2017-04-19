@@ -50,7 +50,6 @@ public abstract class BasePlayer {
 	    if (index != -1) {
 	        myNumbers.removeIndex(index);
 	    }
-	    Gdx.app.debug(name, "My Numbers <" + myNumbers + ">");
 	}
 	
 	public boolean valid(int number) {

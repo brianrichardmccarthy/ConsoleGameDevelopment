@@ -61,12 +61,11 @@ public class Board {
             row = pos / 3;
         }
 
-        
         // store move
         cells[row][col] = number;
         currentPlayer.remove(number);
-        
-        if (hasWon(currentPlayer.mySymbol, row, col)) {
+
+        if (hasWon(row, col)) {
             gameState = currentPlayer.mySymbol == X ? GameState.X_WON : GameState.O_WON;
             AudioManager.instance.play(Assets.instance.sounds.win);
         } else if (isDraw()) {
@@ -93,16 +92,18 @@ public class Board {
         return true; // no empty cell, it's a draw
     }
 
-    public boolean hasWon(int symbol, int row, int col) {
+    public boolean hasWon(int row, int col) {
 
-        return false;
-        
-//        return (
-        // 3-in-the-row
-//        cells[row][0] == symbol && cells[row][1] == symbol && cells[row][2] == symbol ||  // 3-in-the-column
-//                cells[0][col] == symbol && cells[1][col] == symbol && cells[2][col] == symbol ||  // 3-in-the-diagonal
-//                row == col && cells[0][0] == symbol && cells[1][1] == symbol && cells[2][2] == symbol || // 3-in-the-opposite-diagonal
-//                row + col == 2 && cells[0][2] == symbol && cells[1][1] == symbol && cells[2][0] == symbol);
+        return (
+                // 3-in-the-row
+                ((cells[row][0] + cells[row][1] + cells[row][2] == 15) && (cells[row][0] != EMPTY && cells[row][1] != EMPTY && cells[row][2] != EMPTY))
+                ||  // 3-in-the-column
+                (cells[0][col] + cells[1][col] + cells[2][col] == 15 && (cells[0][col] != EMPTY && cells[1][col] != EMPTY && cells[2][col] != EMPTY))
+                ||  // 3-in-the-diagonal
+                (row == col && cells[0][0] + cells[1][1] + cells[2][2] == 15 && (cells[0][0] != EMPTY && cells[1][1] != EMPTY && cells[2][2] != EMPTY))
+                || // 3-in-the-opposite-diagonal
+                (row + col == 2 && cells[0][2] + cells[1][1] + cells[2][0] == 15 && (cells[0][2] != EMPTY && cells[1][1] != EMPTY && cells[2][0] != EMPTY))
+            );
     }
 
     public void render(SpriteBatch batch) {
@@ -114,66 +115,76 @@ public class Board {
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 3; col++) {
                 if (cells[row][col] == EMPTY) continue;
-                batch.draw(Assets.instance.numbers.get(cells[row][col]).region.getTexture(), col * 1.4f - 1.9f, row * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0,
-                    Assets.instance.numbers.get(cells[row][col]).region.getRegionX(), Assets.instance.numbers.get(cells[row][col]).region.getRegionY(), Assets.instance.numbers.get(cells[row][col]).region.getRegionWidth(), Assets.instance.numbers.get(cells[row][col]).region.getRegionHeight(), false,
-                    false);
+                batch.draw(Assets.instance.numbers.get(cells[row][col]).region.getTexture(), col * 1.4f - 1.9f,
+                    row * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0, Assets.instance.numbers.get(
+                        cells[row][col]).region.getRegionX(), Assets.instance.numbers.get(
+                            cells[row][col]).region.getRegionY(), Assets.instance.numbers.get(
+                                cells[row][col]).region.getRegionWidth(), Assets.instance.numbers.get(
+                                    cells[row][col]).region.getRegionHeight(), false, false);
             }
 
-        if (firstPlayer.valid(1)) {
+        if (firstPlayer.valid(1))
             // one
-            batch.draw(Assets.instance.numbers.get(1).region.getTexture(), (-1) * 1.4f - 2.7f, 1 * 1.4f - .2f, 0, 0, 1, 1, 1, 1, 0,
-                Assets.instance.numbers.get(1).region.getRegionX(), Assets.instance.numbers.get(1).region.getRegionY(), Assets.instance.numbers.get(1).region.getRegionWidth(), Assets.instance.numbers.get(1).region.getRegionHeight(),
-                false, false);
-            
-        }
-        
+            batch.draw(Assets.instance.numbers.get(1).region.getTexture(), (-1) * 1.4f - 2.7f, 1 * 1.4f - .2f, 0, 0, 1,
+                1, 1, 1, 0, Assets.instance.numbers.get(1).region.getRegionX(), Assets.instance.numbers.get(
+                    1).region.getRegionY(), Assets.instance.numbers.get(1).region.getRegionWidth(),
+                Assets.instance.numbers.get(1).region.getRegionHeight(), false, false);
+
         if (firstPlayer.valid(3))
-        // three
-        batch.draw(Assets.instance.numbers.get(3).region.getTexture(), (-1) * 1.4f - 2.7f, 1 * 1.4f - 1.5f, 0, 0, 1, 1, 1, 1, 0,
-            Assets.instance.numbers.get(3).region.getRegionX(), Assets.instance.numbers.get(3).region.getRegionY(), Assets.instance.numbers.get(3).region.getRegionWidth(), Assets.instance.numbers.get(3).region.getRegionHeight(),
-            false, false);
-        
+            // three
+            batch.draw(Assets.instance.numbers.get(3).region.getTexture(), (-1) * 1.4f - 2.7f, 1 * 1.4f - 1.5f, 0, 0, 1,
+                1, 1, 1, 0, Assets.instance.numbers.get(3).region.getRegionX(), Assets.instance.numbers.get(
+                    3).region.getRegionY(), Assets.instance.numbers.get(3).region.getRegionWidth(),
+                Assets.instance.numbers.get(3).region.getRegionHeight(), false, false);
+
         if (firstPlayer.valid(5))
-        // five
-        batch.draw(Assets.instance.numbers.get(5).region.getTexture(), (-1) * 1.4f - 2.7f, 1 * 1.4f - 2.7f, 0, 0, 1, 1, 1, 1, 0,
-            Assets.instance.numbers.get(5).region.getRegionX(), Assets.instance.numbers.get(5).region.getRegionY(), Assets.instance.numbers.get(5).region.getRegionWidth(), Assets.instance.numbers.get(5).region.getRegionHeight(),
-            false, false);
-        
+            // five
+            batch.draw(Assets.instance.numbers.get(5).region.getTexture(), (-1) * 1.4f - 2.7f, 1 * 1.4f - 2.7f, 0, 0, 1,
+                1, 1, 1, 0, Assets.instance.numbers.get(5).region.getRegionX(), Assets.instance.numbers.get(
+                    5).region.getRegionY(), Assets.instance.numbers.get(5).region.getRegionWidth(),
+                Assets.instance.numbers.get(5).region.getRegionHeight(), false, false);
+
         if (firstPlayer.valid(7))
-        // seven
-        batch.draw(Assets.instance.numbers.get(7).region.getTexture(), (-1) * 1.4f - 1.7f, 1 * 1.4f - 1f, 0, 0, 1, 1, 1, 1, 0,
-            Assets.instance.numbers.get(7).region.getRegionX(), Assets.instance.numbers.get(7).region.getRegionY(), Assets.instance.numbers.get(7).region.getRegionWidth(), Assets.instance.numbers.get(7).region.getRegionHeight(),
-            false, false);
-        
+            // seven
+            batch.draw(Assets.instance.numbers.get(7).region.getTexture(), (-1) * 1.4f - 1.7f, 1 * 1.4f - 1f, 0, 0, 1,
+                1, 1, 1, 0, Assets.instance.numbers.get(7).region.getRegionX(), Assets.instance.numbers.get(
+                    7).region.getRegionY(), Assets.instance.numbers.get(7).region.getRegionWidth(),
+                Assets.instance.numbers.get(7).region.getRegionHeight(), false, false);
+
         if (firstPlayer.valid(9))
-        // nine
-        batch.draw(Assets.instance.numbers.get(9).region.getTexture(), (-1) * 1.4f - 1.7f, 1 * 1.4f - 2.2f, 0, 0, 1, 1, 1, 1, 0,
-            Assets.instance.numbers.get(9).region.getRegionX(), Assets.instance.numbers.get(9).region.getRegionY(), Assets.instance.numbers.get(9).region.getRegionWidth(), Assets.instance.numbers.get(9).region.getRegionHeight(),
-            false, false);
-        
+            // nine
+            batch.draw(Assets.instance.numbers.get(9).region.getTexture(), (-1) * 1.4f - 1.7f, 1 * 1.4f - 2.2f, 0, 0, 1,
+                1, 1, 1, 0, Assets.instance.numbers.get(9).region.getRegionX(), Assets.instance.numbers.get(
+                    9).region.getRegionY(), Assets.instance.numbers.get(9).region.getRegionWidth(),
+                Assets.instance.numbers.get(9).region.getRegionHeight(), false, false);
+
         if (secondPlayer.valid(2))
-        // two
-        batch.draw(Assets.instance.numbers.get(2).region.getTexture(), (3) * 1.4f - 2f, 1 * 1.4f - .3f, 0, 0, 1, 1, 1, 1, 0,
-            Assets.instance.numbers.get(2).region.getRegionX(), Assets.instance.numbers.get(2).region.getRegionY(), Assets.instance.numbers.get(2).region.getRegionWidth(), Assets.instance.numbers.get(2).region.getRegionHeight(),
-            false, false);
-        
+            // two
+            batch.draw(Assets.instance.numbers.get(2).region.getTexture(), (3) * 1.4f - 2f, 1 * 1.4f - .3f, 0, 0, 1, 1,
+                1, 1, 0, Assets.instance.numbers.get(2).region.getRegionX(), Assets.instance.numbers.get(
+                    2).region.getRegionY(), Assets.instance.numbers.get(2).region.getRegionWidth(),
+                Assets.instance.numbers.get(2).region.getRegionHeight(), false, false);
+
         if (secondPlayer.valid(4))
-        // four
-        batch.draw(Assets.instance.numbers.get(4).region.getTexture(), (3) * 1.4f - 1.2f, 1 * 1.4f - 1.5f, 0, 0, 1, 1, 1, 1, 0,
-            Assets.instance.numbers.get(4).region.getRegionX(), Assets.instance.numbers.get(4).region.getRegionY(), Assets.instance.numbers.get(4).region.getRegionWidth(), Assets.instance.numbers.get(4).region.getRegionHeight(),
-            false, false);
+            // four
+            batch.draw(Assets.instance.numbers.get(4).region.getTexture(), (3) * 1.4f - 1.2f, 1 * 1.4f - 1.5f, 0, 0, 1,
+                1, 1, 1, 0, Assets.instance.numbers.get(4).region.getRegionX(), Assets.instance.numbers.get(
+                    4).region.getRegionY(), Assets.instance.numbers.get(4).region.getRegionWidth(),
+                Assets.instance.numbers.get(4).region.getRegionHeight(), false, false);
 
         if (secondPlayer.valid(6))
-        // six
-        batch.draw(Assets.instance.numbers.get(6).region.getTexture(), (3) * 1.4f - 2f, 1 * 1.4f - 2.6f, 0, 0, 1, 1, 1, 1, 0,
-            Assets.instance.numbers.get(6).region.getRegionX(), Assets.instance.numbers.get(6).region.getRegionY(), Assets.instance.numbers.get(6).region.getRegionWidth(), Assets.instance.numbers.get(6).region.getRegionHeight(),
-            false, false);
-        
+            // six
+            batch.draw(Assets.instance.numbers.get(6).region.getTexture(), (3) * 1.4f - 2f, 1 * 1.4f - 2.6f, 0, 0, 1, 1,
+                1, 1, 0, Assets.instance.numbers.get(6).region.getRegionX(), Assets.instance.numbers.get(
+                    6).region.getRegionY(), Assets.instance.numbers.get(6).region.getRegionWidth(),
+                Assets.instance.numbers.get(6).region.getRegionHeight(), false, false);
+
         if (secondPlayer.valid(8))
-        // eight
-        batch.draw(Assets.instance.numbers.get(8).region.getTexture(), (3) * 1.4f - 1.2f, 1 * 1.4f - 3.8f, 0, 0, 1, 1, 1, 1, 0,
-            Assets.instance.numbers.get(8).region.getRegionX(), Assets.instance.numbers.get(8).region.getRegionY(), Assets.instance.numbers.get(8).region.getRegionWidth(), Assets.instance.numbers.get(8).region.getRegionHeight(),
-            false, false);
+            // eight
+            batch.draw(Assets.instance.numbers.get(8).region.getTexture(), (3) * 1.4f - 1.2f, 1 * 1.4f - 3.8f, 0, 0, 1,
+                1, 1, 1, 0, Assets.instance.numbers.get(8).region.getRegionX(), Assets.instance.numbers.get(
+                    8).region.getRegionY(), Assets.instance.numbers.get(8).region.getRegionWidth(),
+                Assets.instance.numbers.get(8).region.getRegionHeight(), false, false);
     }
 
 }
