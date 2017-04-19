@@ -1,5 +1,6 @@
 package wit.cgd.numericalxando.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -60,9 +61,11 @@ public class Board {
             row = pos / 3;
         }
 
+        
         // store move
         cells[row][col] = number;
-
+        currentPlayer.remove(number);
+        
         if (hasWon(currentPlayer.mySymbol, row, col)) {
             gameState = currentPlayer.mySymbol == X ? GameState.X_WON : GameState.O_WON;
             AudioManager.instance.play(Assets.instance.sounds.win);
@@ -111,28 +114,66 @@ public class Board {
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 3; col++) {
                 if (cells[row][col] == EMPTY) continue;
-                region = cells[row][col] == X ? Assets.instance.numbers.get(0).region : Assets.instance.numbers.get(1).region;
-                batch.draw(region.getTexture(), col * 1.4f - 1.9f, row * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0,
-                    region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight(), false,
+                batch.draw(Assets.instance.numbers.get(cells[row][col]).region.getTexture(), col * 1.4f - 1.9f, row * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0,
+                    Assets.instance.numbers.get(cells[row][col]).region.getRegionX(), Assets.instance.numbers.get(cells[row][col]).region.getRegionY(), Assets.instance.numbers.get(cells[row][col]).region.getRegionWidth(), Assets.instance.numbers.get(cells[row][col]).region.getRegionHeight(), false,
                     false);
             }
 
+        if (firstPlayer.valid(1)) {
+            // one
+            batch.draw(Assets.instance.numbers.get(1).region.getTexture(), (-1) * 1.4f - 2.7f, 1 * 1.4f - .2f, 0, 0, 1, 1, 1, 1, 0,
+                Assets.instance.numbers.get(1).region.getRegionX(), Assets.instance.numbers.get(1).region.getRegionY(), Assets.instance.numbers.get(1).region.getRegionWidth(), Assets.instance.numbers.get(1).region.getRegionHeight(),
+                false, false);
+            
+        }
         
-        batch.draw(Assets.instance.numbers.get(0).region.getTexture(), (-1) * 1.4f - (1.9f+.8f), 1 * 1.4f - (2.3f-4.5f/10), 0, 0, 1, 1, 1, 1, 0,
-            Assets.instance.numbers.get(0).region.getRegionX(), Assets.instance.numbers.get(0).region.getRegionY(), Assets.instance.numbers.get(0).region.getRegionWidth(), Assets.instance.numbers.get(0).region.getRegionHeight(),
+        if (firstPlayer.valid(3))
+        // three
+        batch.draw(Assets.instance.numbers.get(3).region.getTexture(), (-1) * 1.4f - 2.7f, 1 * 1.4f - 1.5f, 0, 0, 1, 1, 1, 1, 0,
+            Assets.instance.numbers.get(3).region.getRegionX(), Assets.instance.numbers.get(3).region.getRegionY(), Assets.instance.numbers.get(3).region.getRegionWidth(), Assets.instance.numbers.get(3).region.getRegionHeight(),
             false, false);
         
-        for (int x = 1; x < Assets.instance.numbers.size; x++) {
-            if (x%2 == 1) {
-                batch.draw(Assets.instance.numbers.get(x).region.getTexture(), (-1) * 1.4f - 1.9f, 1 * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0,
-                    Assets.instance.numbers.get(x).region.getRegionX(), Assets.instance.numbers.get(x).region.getRegionY(), Assets.instance.numbers.get(x).region.getRegionWidth(), Assets.instance.numbers.get(x).region.getRegionHeight(),
-                    false, false);
-            } else {
-                batch.draw(Assets.instance.numbers.get(x).region.getTexture(), (3) * 1.4f - 1.9f, 1 * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0,
-                    Assets.instance.numbers.get(x).region.getRegionX(), Assets.instance.numbers.get(x).region.getRegionY(), Assets.instance.numbers.get(x).region.getRegionWidth(), Assets.instance.numbers.get(x).region.getRegionHeight(),
-                    false, false);
-            }
-         }
+        if (firstPlayer.valid(5))
+        // five
+        batch.draw(Assets.instance.numbers.get(5).region.getTexture(), (-1) * 1.4f - 2.7f, 1 * 1.4f - 2.7f, 0, 0, 1, 1, 1, 1, 0,
+            Assets.instance.numbers.get(5).region.getRegionX(), Assets.instance.numbers.get(5).region.getRegionY(), Assets.instance.numbers.get(5).region.getRegionWidth(), Assets.instance.numbers.get(5).region.getRegionHeight(),
+            false, false);
+        
+        if (firstPlayer.valid(7))
+        // seven
+        batch.draw(Assets.instance.numbers.get(7).region.getTexture(), (-1) * 1.4f - 1.7f, 1 * 1.4f - 1f, 0, 0, 1, 1, 1, 1, 0,
+            Assets.instance.numbers.get(7).region.getRegionX(), Assets.instance.numbers.get(7).region.getRegionY(), Assets.instance.numbers.get(7).region.getRegionWidth(), Assets.instance.numbers.get(7).region.getRegionHeight(),
+            false, false);
+        
+        if (firstPlayer.valid(9))
+        // nine
+        batch.draw(Assets.instance.numbers.get(9).region.getTexture(), (-1) * 1.4f - 1.7f, 1 * 1.4f - 2.2f, 0, 0, 1, 1, 1, 1, 0,
+            Assets.instance.numbers.get(9).region.getRegionX(), Assets.instance.numbers.get(9).region.getRegionY(), Assets.instance.numbers.get(9).region.getRegionWidth(), Assets.instance.numbers.get(9).region.getRegionHeight(),
+            false, false);
+        
+        if (secondPlayer.valid(2))
+        // two
+        batch.draw(Assets.instance.numbers.get(2).region.getTexture(), (3) * 1.4f - 2f, 1 * 1.4f - .3f, 0, 0, 1, 1, 1, 1, 0,
+            Assets.instance.numbers.get(2).region.getRegionX(), Assets.instance.numbers.get(2).region.getRegionY(), Assets.instance.numbers.get(2).region.getRegionWidth(), Assets.instance.numbers.get(2).region.getRegionHeight(),
+            false, false);
+        
+        if (secondPlayer.valid(4))
+        // four
+        batch.draw(Assets.instance.numbers.get(4).region.getTexture(), (3) * 1.4f - 1.2f, 1 * 1.4f - 1.5f, 0, 0, 1, 1, 1, 1, 0,
+            Assets.instance.numbers.get(4).region.getRegionX(), Assets.instance.numbers.get(4).region.getRegionY(), Assets.instance.numbers.get(4).region.getRegionWidth(), Assets.instance.numbers.get(4).region.getRegionHeight(),
+            false, false);
+
+        if (secondPlayer.valid(6))
+        // six
+        batch.draw(Assets.instance.numbers.get(6).region.getTexture(), (3) * 1.4f - 2f, 1 * 1.4f - 2.6f, 0, 0, 1, 1, 1, 1, 0,
+            Assets.instance.numbers.get(6).region.getRegionX(), Assets.instance.numbers.get(6).region.getRegionY(), Assets.instance.numbers.get(6).region.getRegionWidth(), Assets.instance.numbers.get(6).region.getRegionHeight(),
+            false, false);
+        
+        if (secondPlayer.valid(8))
+        // eight
+        batch.draw(Assets.instance.numbers.get(8).region.getTexture(), (3) * 1.4f - 1.2f, 1 * 1.4f - 3.8f, 0, 0, 1, 1, 1, 1, 0,
+            Assets.instance.numbers.get(8).region.getRegionX(), Assets.instance.numbers.get(8).region.getRegionY(), Assets.instance.numbers.get(8).region.getRegionWidth(), Assets.instance.numbers.get(8).region.getRegionHeight(),
+            false, false);
     }
 
 }

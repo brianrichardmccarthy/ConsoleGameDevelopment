@@ -1,5 +1,7 @@
 package wit.cgd.numericalxando.game;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
@@ -27,7 +29,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public Asset board;
 
-    public Array<Asset> numbers;
+    public HashMap<Integer, Asset> numbers;
     
     public AssetSounds sounds;
     public AssetMusic music;
@@ -96,7 +98,7 @@ public class Assets implements Disposable, AssetErrorListener {
 
         if (numbers != null) numbers.clear();
         
-        numbers = new Array<Asset>(10);
+        numbers = new HashMap<Integer, Asset>();
         
         this.assetManager = assetManager;
         
@@ -123,15 +125,15 @@ public class Assets implements Disposable, AssetErrorListener {
         // build game resource objects
         board = new Asset(atlas, "board");
         
-        numbers.add(new Asset(atlas, "1"));
-        numbers.add(new Asset(atlas, "2"));
-        numbers.add(new Asset(atlas, "3"));
-        numbers.add(new Asset(atlas, "4"));
-        numbers.add(new Asset(atlas, "5"));
-        numbers.add(new Asset(atlas, "6"));
-        numbers.add(new Asset(atlas, "7"));
-        numbers.add(new Asset(atlas, "8"));
-        numbers.add(new Asset(atlas, "9"));
+        numbers.put(1, new Asset(atlas, "1"));
+        numbers.put(2, new Asset(atlas, "2"));
+        numbers.put(3, new Asset(atlas, "3"));
+        numbers.put(4, new Asset(atlas, "4"));
+        numbers.put(5, new Asset(atlas, "5"));
+        numbers.put(6, new Asset(atlas, "6"));
+        numbers.put(7, new Asset(atlas, "7"));
+        numbers.put(8, new Asset(atlas, "8"));
+        numbers.put(9, new Asset(atlas, "9"));
         
         // load sounds
         this.assetManager.load("sounds/first.wav", Sound.class);

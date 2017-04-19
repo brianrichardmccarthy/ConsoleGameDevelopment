@@ -115,23 +115,64 @@ public class WorldController extends InputAdapter {
             // board move - just place piece and return
             if (row >= 0 && row < 3 && col >= 0 && col < 3) {
                 board.move(row, col, board.currentPlayer.myNumbers.get(0));
+                dragRegion = null;
                 return true;
             }
 
             dragX = screenX;
             dragY = screenY;
 
-            // check if valid start of a drag for first player
-            if (row == 1 && col == -1 && board.currentPlayer == board.firstPlayer) {
+            if (row == 3 && col == -2 && board.currentPlayer == board.firstPlayer) {
                 dragging = true;
-                dragRegion = Assets.instance.numbers.get(0).region;
+                dragRegion = Assets.instance.numbers.get(1).region;
                 return true;
             }
             
-            // check if valid start of a drag for second player
+            if (row == 3 && col == 3 && board.currentPlayer == board.secondPlayer) {
+                dragging = true;
+                dragRegion = Assets.instance.numbers.get(2).region;
+                return true;
+            }
+            
+            if (row == 2 && col == -2 && board.currentPlayer == board.firstPlayer) {
+                dragging = true;
+                dragRegion = Assets.instance.numbers.get(3).region;
+                return true;
+            }
+            
+            if (row == 2 && col == 4 && board.currentPlayer == board.secondPlayer) {
+                dragging = true;
+                dragRegion = Assets.instance.numbers.get(4).region;
+                return true;
+            }
+            
+            if (row == 1 && col == -2 && board.currentPlayer == board.firstPlayer) {
+                dragging = true;
+                dragRegion = Assets.instance.numbers.get(5).region;
+                return true;
+            }
+            
             if (row == 1 && col == 3 && board.currentPlayer == board.secondPlayer) {
                 dragging = true;
-                dragRegion = Assets.instance.numbers.get(1).region;
+                dragRegion = Assets.instance.numbers.get(6).region;
+                return true;
+            }
+            
+            if (row == 2 && col == -1 && board.currentPlayer == board.firstPlayer) {
+                dragging = true;
+                dragRegion = Assets.instance.numbers.get(7).region;
+                return true;
+            }
+            
+            if (row == 0 && col == 4 && board.currentPlayer == board.secondPlayer) {
+                dragging = true;
+                dragRegion = Assets.instance.numbers.get(8).region;
+                return true;
+            }
+            
+            if (row == 1 && col == -1 && board.currentPlayer == board.firstPlayer) {
+                dragging = true;
+                dragRegion = Assets.instance.numbers.get(9).region;
                 return true;
             }
         }
@@ -152,20 +193,24 @@ public class WorldController extends InputAdapter {
 
         dragging = false;
 
-        if ( (board.currentPlayer.mySymbol == board.X && dragRegion != Assets.instance.numbers.get(0).region) || (board.currentPlayer.mySymbol == board.O && dragRegion != Assets.instance.numbers.get(1).region)) return true;
-
-        if (dragRegion == null) {
-            // Gdx.app.error(TAG, "dragRegion is null");
-            return false;
-        }
+        //if ( (board.currentPlayer.mySymbol == board.X && (dragRegion != Assets.instance.numbers.get(0).region 
+        //                                              && dragRegion != Assets.instance.numbers.get(2).region 
+        //                                              && dragRegion != Assets.instance.numbers.get(3).region
+        //                                              && dragRegion != Assets.instance.numbers.get(5).region
+        //                                              && dragRegion != Assets.instance.numbers.get(7).region)) 
+        //        ) return true;
+        
+        // || (board.currentPlayer.mySymbol == board.O && dragRegion != Assets.instance.numbers.get(1).region)
         
         // convert to cell position
         int row = 4 * (height - screenY) / height;
         int col = (int) (viewportWidth * (screenX - 0.5 * width) / width) + 1;
 
         // if a valid board cell then place piece
-        if (row >= 0 && row < 3 && col >= 0 && col < 3) {
-            board.move(row, col, (Integer.parseInt(dragRegion.toString())));
+        if (row >= 0 && row < 3 && col >= 0 && col < 3 && dragRegion != null) {
+            int x = (Integer.parseInt(dragRegion.toString()));
+            board.move(row, col, x);
+            dragRegion = null;
             return true;
         }
 

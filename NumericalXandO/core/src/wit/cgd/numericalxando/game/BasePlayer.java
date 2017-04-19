@@ -34,7 +34,34 @@ public abstract class BasePlayer {
 	        mySymbol = board.O;
             opponentSymbol = board.X;
 	    }
+	}
+	
+	public void remove(int number) {
+	    int index = -1, loop = 0;
 	    
+	    while (loop < myNumbers.size) {
+	        if (myNumbers.get(loop) == number) {
+	            index = loop;
+	            break;
+	        }
+	        loop++;
+	    }
+	    
+	    if (index != -1) {
+	        myNumbers.removeIndex(index);
+	    }
+	    Gdx.app.debug(name, "My Numbers <" + myNumbers + ">");
+	}
+	
+	public boolean valid(int number) {
+	    
+	    
+	    for (int x = 0; x < myNumbers.size; x++) {
+	        if (myNumbers.get(x) == number)
+	            return true;
+	    }
+	    
+	    return false;
 	}
 	
 	public abstract int move ();
