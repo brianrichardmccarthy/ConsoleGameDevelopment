@@ -193,14 +193,7 @@ public class WorldController extends InputAdapter {
 
         dragging = false;
 
-        //if ( (board.currentPlayer.mySymbol == board.X && (dragRegion != Assets.instance.numbers.get(0).region 
-        //                                              && dragRegion != Assets.instance.numbers.get(2).region 
-        //                                              && dragRegion != Assets.instance.numbers.get(3).region
-        //                                              && dragRegion != Assets.instance.numbers.get(5).region
-        //                                              && dragRegion != Assets.instance.numbers.get(7).region)) 
-        //        ) return true;
-        
-        // || (board.currentPlayer.mySymbol == board.O && dragRegion != Assets.instance.numbers.get(1).region)
+        if (dragRegion == null) return true;
         
         // convert to cell position
         int row = 4 * (height - screenY) / height;
