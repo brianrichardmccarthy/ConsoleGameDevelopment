@@ -15,7 +15,7 @@ public class MinimaxPlayer extends BasePlayer {
         super(board, symbol);
         name = "MinimaxPlayer";
 
-        skill = 2;  // skill is measure of search depth
+        skill = 5;  // skill is measure of search depth
 
         randomGenerator = new Random();
     }
