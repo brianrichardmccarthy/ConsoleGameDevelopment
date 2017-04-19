@@ -1,6 +1,5 @@
 package wit.cgd.numericalxando.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -59,6 +58,7 @@ public class Board {
             int pos = currentPlayer.move();
             col = pos % 3;
             row = pos / 3;
+            number = currentPlayer.choice;
         }
 
         // store move
@@ -115,6 +115,7 @@ public class Board {
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 3; col++) {
                 if (cells[row][col] == EMPTY) continue;
+                if (Assets.instance.numbers.get(cells[row][col]) != null) 
                 batch.draw(Assets.instance.numbers.get(cells[row][col]).region.getTexture(), col * 1.4f - 1.9f,
                     row * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0, Assets.instance.numbers.get(
                         cells[row][col]).region.getRegionX(), Assets.instance.numbers.get(

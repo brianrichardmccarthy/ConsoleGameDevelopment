@@ -15,21 +15,21 @@ public class MinimaxPlayer extends BasePlayer {
         super(board, symbol);
         name = "MinimaxPlayer";
 
-        skill = 5;  // skill is measure of search depth
+        skill = 2;  // skill is measure of search depth
 
         randomGenerator = new Random();
     }
 
     @Override
-    public int move () {
+    public int move() {
+
         int temp = (int) minimax(mySymbol, opponentSymbol, 0);
-        Gdx.app.debug(name, "Temp <" + temp + ">");
         return temp;
     }
 
     private float minimax(int p_mySymbol, int p_opponentSymbol, int depth) {
 
-        final float WIN_SCORE = 100;        
+        final float WIN_SCORE = 100;
         final float DRAW_SCORE = 0;
 
         float score;
@@ -37,52 +37,54 @@ public class MinimaxPlayer extends BasePlayer {
         int maxPos = -1;
 
         // for each board position
-        for (int r=0; r<3; ++r) {
-            for (int c=0; c<3; ++c) {
+        for (int r = 0; r < 3; ++r) {
+            for (int c = 0; c < 3; ++c) {
+                for (int x = 0; x < myNumbers.size; x++) {
 
-                // skip over used positions
-                if (board.cells[r][c]!=board.EMPTY) continue;
+                    // skip over used positions
+                    if (board.cells[r][c] != board.EMPTY) continue;
 
-                // String indent = new String(new char[depth]).replace("\0", "  ");
-                //Gdx.app.log(indent, "search ("+r+","+c+")");
 
-                // place move 
-                board.cells[r][c] = p_mySymbol;
-
-                // evaluate board (recursively)
-                if (board.hasWon(r, c)) {
-                    score = WIN_SCORE;
-                } else if (board.isDraw()) {
-                    score = DRAW_SCORE;
-                } else {
-                    if (depth<skill) {
-                        score = -minimax(p_opponentSymbol, p_mySymbol, depth+1);
+                    // place move 
+                    int tempNumber= 0;
+                    if (mySymbol == p_mySymbol)
+                        tempNumber = myNumbers.removeIndex(x);
+                    else tempNumber = oppentNumbers.removeIndex(x);
+                    board.cells[r][c] = tempNumber;
+                    
+                    // evaluate board (recursively)
+                    if (board.hasWon(r, c)) {
+                        score = WIN_SCORE;
+                    } else if (board.isDraw()) {
+                        score = DRAW_SCORE;
                     } else {
-                        score = 0;
+                        if (depth < skill) {
+                            score = -minimax(p_opponentSymbol, p_mySymbol, depth + 1);
+                        } else {
+                            score = 0;
+                        }
                     }
+
+                    // update ranking
+                    if (Math.abs(score - maxScore) < 1.0E-5 && randomGenerator.nextDouble() < 0.1) {
+                        maxScore = score;
+                        maxPos = 3 * r + c;
+                    } else if (score > maxScore) {    // clear 
+                        maxScore = score;
+                        maxPos = 3 * r + c;
+                        choice = tempNumber;
+                    }
+
+                    // undo move 
+                    board.cells[r][c] = board.EMPTY;
+                    if (mySymbol == p_mySymbol) myNumbers.add(tempNumber);
+                    else oppentNumbers.add(tempNumber);
                 }
-
-                // update ranking
-
-                if (Math.abs(score-maxScore)<1.0E-5 && randomGenerator.nextDouble()<0.1) {
-                    maxScore = score;
-                    maxPos = 3*r+c;
-
-                } else if (score>maxScore) {    // clear 
-                    maxScore = score;
-                    maxPos = 3*r+c;
-                } 
-
-                //Gdx.app.log(indent, "Score "+score);
-
-                // undo move 
-                board.cells[r][c] = board.EMPTY;
-
             }
         }
 
         // on uppermost call return move not score
-        return (depth==0? maxPos : maxScore);
+        return (depth == 0 ? maxPos : maxScore);
 
     };
 

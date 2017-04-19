@@ -10,6 +10,7 @@ public abstract class BasePlayer {
 	public String name;
 	public Board board;
 	public int skill;
+	public int choice;
 	
 	public BasePlayer(Board board, int symbol) {
 		this.board = board;
@@ -17,6 +18,7 @@ public abstract class BasePlayer {
 		oppentNumbers = new Array<Integer>();
 		setSymbol(symbol);
 		human = false;
+		choice = 0;
 	}
 	
 	public void setSymbol(int symbol) {
