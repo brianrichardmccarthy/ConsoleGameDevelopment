@@ -16,6 +16,8 @@ public class RandomSpacePlayer extends BasePlayer {
     public int move() {
         Random rand = new Random();
         
+        choice = myNumbers.first();
+        
         while (true) {
             int space = rand.nextInt(9);
             if (board.cells[space / 3][space % 3] == board.EMPTY) return space;

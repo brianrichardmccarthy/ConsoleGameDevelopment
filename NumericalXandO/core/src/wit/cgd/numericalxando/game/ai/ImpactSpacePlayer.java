@@ -12,6 +12,8 @@ public class ImpactSpacePlayer extends BasePlayer {
 
     @Override
     public int move() {
+        
+        choice = myNumbers.first();
 
         	 if (board.cells[1][1] == board.EMPTY) return (1*3+1);
         else if (board.cells[0][0] == board.EMPTY) return (0*3+0);

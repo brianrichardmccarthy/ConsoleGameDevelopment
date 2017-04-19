@@ -1,6 +1,5 @@
 package wit.cgd.numericalxando.game.ai;
 
-import sun.awt.image.PNGImageDecoder.Chromaticities;
 import wit.cgd.numericalxando.game.BasePlayer;
 import wit.cgd.numericalxando.game.Board;
 import wit.cgd.numericalxando.game.WorldRenderer;
