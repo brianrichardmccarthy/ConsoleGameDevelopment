@@ -2,6 +2,7 @@ package wit.cgd.numericalxando.game;
 
 import java.util.Stack;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -90,6 +91,7 @@ public class Board {
         cells[row][col] = number;
         currentPlayer.remove(number);
         previous.push(new Previous(row, col, number, currentPlayer.mySymbol));
+        Gdx.app.debug(TAG, "Current player <" + currentPlayer.mySymbol + "> Number <" + number + ">");
         
         if (hasWon(row, col)) {
             gameState = currentPlayer.mySymbol == X ? GameState.X_WON : GameState.O_WON;

@@ -15,16 +15,15 @@ public class MinimaxPlayer extends BasePlayer {
         super(board, symbol);
         name = "MinimaxPlayer";
 
-        skill = 5;  // skill is measure of search depth
+        skill = 3;  // skill is measure of search depth
 
         randomGenerator = new Random();
     }
 
     @Override
     public int move() {
-
-        int temp = (int) minimax(mySymbol, opponentSymbol, 0);
-        return temp;
+        
+        return (int) minimax(mySymbol, opponentSymbol, 0);
     }
 
     private float minimax(int p_mySymbol, int p_opponentSymbol, int depth) {
@@ -69,10 +68,13 @@ public class MinimaxPlayer extends BasePlayer {
                     if (Math.abs(score - maxScore) < 1.0E-5 && randomGenerator.nextDouble() < 0.1) {
                         maxScore = score;
                         maxPos = 3 * r + c;
+                        if ((mySymbol == board.X && tempNumber%2 == 1)) choice = tempNumber;
+                        else if ((mySymbol == board.O && tempNumber%2 == 0)) choice = tempNumber;
                     } else if (score > maxScore) {    // clear 
                         maxScore = score;
                         maxPos = 3 * r + c;
-                        choice = tempNumber;
+                        if ((mySymbol == board.X && tempNumber%2 == 1)) choice = tempNumber;
+                        else if ((mySymbol == board.O && tempNumber%2 == 0)) choice = tempNumber;
                     }
 
                     // undo move 
