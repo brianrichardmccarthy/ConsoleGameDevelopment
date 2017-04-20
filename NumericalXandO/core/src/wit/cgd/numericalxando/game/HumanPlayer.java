@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        HumanPlayer.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Human player class
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game;
 
 public class HumanPlayer extends BasePlayer {

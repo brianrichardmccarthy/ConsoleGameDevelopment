@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        GameScreen.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       The game, handles the controller and the renderer
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.screens;
 
 import com.badlogic.gdx.Game;

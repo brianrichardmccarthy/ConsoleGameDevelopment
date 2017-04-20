@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        Board.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Handles the board, two players and checks if next move has won the game
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game;
 
 import java.util.Stack;

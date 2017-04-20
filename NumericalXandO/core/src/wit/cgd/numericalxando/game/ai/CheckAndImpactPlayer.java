@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        CheckAndImpactPlayer.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Plays by deciding if the next move can win the game, place it. Else if the opponents next move can win the game block it. Else place a random piece in most valuable spot
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game.ai;
 
 import wit.cgd.numericalxando.game.BasePlayer;

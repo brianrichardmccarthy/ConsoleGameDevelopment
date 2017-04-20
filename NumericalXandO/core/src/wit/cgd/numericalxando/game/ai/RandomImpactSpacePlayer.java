@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        RandomImpactSpacePlayer.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Places a random number in the first most valuable space
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game.ai;
 
 import wit.cgd.numericalxando.game.BasePlayer;

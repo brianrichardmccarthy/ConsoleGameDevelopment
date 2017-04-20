@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        WorldController.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Handles input and the game state
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game;
 
 import com.badlogic.gdx.Game;

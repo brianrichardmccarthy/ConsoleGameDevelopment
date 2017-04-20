@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        Constants.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Constant values
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game.util;
 
 public class Constants {

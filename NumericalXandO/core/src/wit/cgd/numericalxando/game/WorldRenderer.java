@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        WorldRenderer.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Renders text and the game
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game;
 
 import wit.cgd.numericalxando.game.WorldController;

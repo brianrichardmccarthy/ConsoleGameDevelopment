@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        AbstractGameScreen.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Abstract class for different screens
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.screens;
 
 import com.badlogic.gdx.Game;

@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        MinimaxPlayer.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Decides the move using the minimax algorithm
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game.ai;
 
 import java.util.Random;

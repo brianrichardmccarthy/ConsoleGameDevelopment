@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        NumericalXandOMain.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and o
+ * @brief       Creates the menu screen
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando;
 
 import com.badlogic.gdx.Application;

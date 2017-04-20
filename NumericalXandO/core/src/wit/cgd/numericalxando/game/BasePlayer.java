@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        BasePLayer.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Template for AI and Human players
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game;
 
 import com.badlogic.gdx.utils.Array;

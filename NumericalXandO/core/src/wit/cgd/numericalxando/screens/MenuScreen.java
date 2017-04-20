@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        MenuScreen.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and o
+ * @brief       Handles the option screen and new game scree as well as showing the game stats
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.screens;
 
 import com.badlogic.gdx.Game;

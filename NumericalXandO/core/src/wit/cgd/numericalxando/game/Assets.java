@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        Assets.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Handles the game assets
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game;
 
 import java.util.HashMap;

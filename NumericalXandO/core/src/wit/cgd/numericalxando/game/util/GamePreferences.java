@@ -1,3 +1,12 @@
+/**
+ * 
+ * @file        GamePreferences.java
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Numerical X and O
+ * @brief       Handles the skill of the computer players, as well as audio
+ * @notes       No known BUGS or ISSUES.
+ *
+ */
 package wit.cgd.numericalxando.game.util;
 
 import com.badlogic.gdx.Gdx;
