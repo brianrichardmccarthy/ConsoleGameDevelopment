@@ -12,10 +12,10 @@ public class GameScreen extends AbstractGameScreen {
     @SuppressWarnings("unused")
     private static final String TAG = GameScreen.class.getName();
 
-    private WorldController     worldController;
-    private WorldRenderer       worldRenderer;
+    private WorldController worldController;
+    private WorldRenderer worldRenderer;
 
-    private boolean             paused;
+    private boolean paused;
 
     public GameScreen(Game game) {
         super(game);
@@ -40,11 +40,13 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void resize(int width, int height) {
+
         worldRenderer.resize(width, height);
     }
 
     @Override
     public void show() {
+
         worldController = new WorldController(game);
         worldRenderer = new WorldRenderer(worldController);
         Gdx.input.setCatchBackKey(true);
@@ -52,17 +54,20 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void hide() {
+
         worldRenderer.dispose();
         Gdx.input.setCatchBackKey(false);
     }
 
     @Override
     public void pause() {
+
         paused = true;
     }
 
     @Override
     public void resume() {
+
         super.resume();
         paused = false;
     }

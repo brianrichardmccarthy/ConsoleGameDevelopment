@@ -2,8 +2,6 @@ package wit.cgd.numericalxando.game.ai;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
-
 import wit.cgd.numericalxando.game.BasePlayer;
 import wit.cgd.numericalxando.game.Board;
 
@@ -22,7 +20,7 @@ public class MinimaxPlayer extends BasePlayer {
 
     @Override
     public int move() {
-        
+
         return (int) minimax(mySymbol, opponentSymbol, 0);
     }
 
@@ -43,14 +41,12 @@ public class MinimaxPlayer extends BasePlayer {
                     // skip over used positions
                     if (board.cells[r][c] != board.EMPTY) continue;
 
-
                     // place move 
-                    int tempNumber= 0;
-                    if (mySymbol == p_mySymbol)
-                        tempNumber = myNumbers.removeIndex(x);
+                    int tempNumber = 0;
+                    if (mySymbol == p_mySymbol) tempNumber = myNumbers.removeIndex(x);
                     else tempNumber = oppentNumbers.removeIndex(x);
                     board.cells[r][c] = tempNumber;
-                    
+
                     // evaluate board (recursively)
                     if (board.hasWon(r, c)) {
                         score = WIN_SCORE;
@@ -68,13 +64,13 @@ public class MinimaxPlayer extends BasePlayer {
                     if (Math.abs(score - maxScore) < 1.0E-5 && randomGenerator.nextDouble() < 0.1) {
                         maxScore = score;
                         maxPos = 3 * r + c;
-                        if ((mySymbol == board.X && tempNumber%2 == 1)) choice = tempNumber;
-                        else if ((mySymbol == board.O && tempNumber%2 == 0)) choice = tempNumber;
+                        if ( (mySymbol == board.X && tempNumber % 2 == 1)) choice = tempNumber;
+                        else if ( (mySymbol == board.O && tempNumber % 2 == 0)) choice = tempNumber;
                     } else if (score > maxScore) {    // clear 
                         maxScore = score;
                         maxPos = 3 * r + c;
-                        if ((mySymbol == board.X && tempNumber%2 == 1)) choice = tempNumber;
-                        else if ((mySymbol == board.O && tempNumber%2 == 0)) choice = tempNumber;
+                        if ( (mySymbol == board.X && tempNumber % 2 == 1)) choice = tempNumber;
+                        else if ( (mySymbol == board.O && tempNumber % 2 == 0)) choice = tempNumber;
                     }
 
                     // undo move 

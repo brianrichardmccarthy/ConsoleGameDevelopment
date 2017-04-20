@@ -12,22 +12,22 @@ import wit.cgd.numericalxando.game.ai.MinimaxPlayer;
 import wit.cgd.numericalxando.game.util.AudioManager;
 import wit.cgd.numericalxando.game.util.Constants;
 
-
 public class Board {
+
     private class Previous {
+
         public int row;
         public int col;
         public int number;
         public int playerSymbol;
-        
+
         public Previous(int row, int col, int number, int playerSymbol) {
             this.row = row;
             this.col = col;
             this.number = number;
             this.playerSymbol = playerSymbol;
         }
-        
-        
+
     }
 
     private static final String TAG = WorldRenderer.class.getName();
@@ -48,7 +48,7 @@ public class Board {
     private Stack<Previous> previous;
 
     public Vector3 suggested;
-    
+
     public Board() {
         init();
     }
@@ -92,7 +92,7 @@ public class Board {
         currentPlayer.remove(number);
         previous.push(new Previous(row, col, number, currentPlayer.mySymbol));
         Gdx.app.debug(TAG, "Current player <" + currentPlayer.mySymbol + "> Number <" + number + ">");
-        
+
         if (hasWon(row, col)) {
             gameState = currentPlayer.mySymbol == X ? GameState.X_WON : GameState.O_WON;
             AudioManager.instance.play(Assets.instance.sounds.win);
@@ -123,18 +123,15 @@ public class Board {
     public boolean hasWon(int row, int col) {
 
         return (
-                // 3-in-the-row
-                ((cells[row][0] + cells[row][1] + cells[row][2] == 15) && (cells[row][0] != EMPTY && cells[row][1] != EMPTY && cells[row][2] != EMPTY))
-                ||  // 3-in-the-column
-                (cells[0][col] + cells[1][col] + cells[2][col] == 15 && (cells[0][col] != EMPTY && cells[1][col] != EMPTY && cells[2][col] != EMPTY))
-                ||  // 3-in-the-diagonal
-                (row == col && cells[0][0] + cells[1][1] + cells[2][2] == 15 && (cells[0][0] != EMPTY && cells[1][1] != EMPTY && cells[2][2] != EMPTY))
-                || // 3-in-the-opposite-diagonal
-                (row + col == 2 && cells[0][2] + cells[1][1] + cells[2][0] == 15 && (cells[0][2] != EMPTY && cells[1][1] != EMPTY && cells[2][0] != EMPTY))
-            );
+        // 3-in-the-row
+        ( (cells[row][0] + cells[row][1] + cells[row][2] == 15) && (cells[row][0] != EMPTY && cells[row][1] != EMPTY && cells[row][2] != EMPTY)) ||  // 3-in-the-column
+                (cells[0][col] + cells[1][col] + cells[2][col] == 15 && (cells[0][col] != EMPTY && cells[1][col] != EMPTY && cells[2][col] != EMPTY)) ||  // 3-in-the-diagonal
+                (row == col && cells[0][0] + cells[1][1] + cells[2][2] == 15 && (cells[0][0] != EMPTY && cells[1][1] != EMPTY && cells[2][2] != EMPTY)) || // 3-in-the-opposite-diagonal
+                (row + col == 2 && cells[0][2] + cells[1][1] + cells[2][0] == 15 && (cells[0][2] != EMPTY && cells[1][1] != EMPTY && cells[2][0] != EMPTY)));
     }
 
     public void undo() {
+
         if (!previous.isEmpty()) {
             Previous temp = previous.pop();
             cells[temp.row][temp.col] = EMPTY;
@@ -142,17 +139,18 @@ public class Board {
             else secondPlayer.myNumbers.add(temp.number);
         }
     }
-    
+
     public void help() {
+
         MinimaxPlayer tempPlayer = new MinimaxPlayer(this, currentPlayer.mySymbol);
         tempPlayer.myNumbers.clear();
         tempPlayer.oppentNumbers.clear();
         tempPlayer.myNumbers = new Array<Integer>(currentPlayer.myNumbers);
         tempPlayer.oppentNumbers = new Array<Integer>(currentPlayer.oppentNumbers);
         int p = tempPlayer.move();
-        suggested = new Vector3(p/3, p%3, tempPlayer.choice);
+        suggested = new Vector3(p / 3, p % 3, tempPlayer.choice);
     }
-    
+
     public void render(SpriteBatch batch) {
 
         TextureRegion region = Assets.instance.board.region;
@@ -162,13 +160,12 @@ public class Board {
         for (int row = 0; row < 3; row++)
             for (int col = 0; col < 3; col++) {
                 if (cells[row][col] == EMPTY) continue;
-                if (Assets.instance.numbers.get(cells[row][col]) != null) 
-                batch.draw(Assets.instance.numbers.get(cells[row][col]).region.getTexture(), col * 1.4f - 1.9f,
-                    row * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0, Assets.instance.numbers.get(
-                        cells[row][col]).region.getRegionX(), Assets.instance.numbers.get(
-                            cells[row][col]).region.getRegionY(), Assets.instance.numbers.get(
-                                cells[row][col]).region.getRegionWidth(), Assets.instance.numbers.get(
-                                    cells[row][col]).region.getRegionHeight(), false, false);
+                if (Assets.instance.numbers.get(cells[row][col]) != null) batch.draw(Assets.instance.numbers.get(
+                    cells[row][col]).region.getTexture(), col * 1.4f - 1.9f, row * 1.4f - 2.3f, 0, 0, 1, 1, 1, 1, 0,
+                    Assets.instance.numbers.get(cells[row][col]).region.getRegionX(), Assets.instance.numbers.get(
+                        cells[row][col]).region.getRegionY(), Assets.instance.numbers.get(
+                            cells[row][col]).region.getRegionWidth(), Assets.instance.numbers.get(
+                                cells[row][col]).region.getRegionHeight(), false, false);
             }
 
         if (firstPlayer.valid(1))

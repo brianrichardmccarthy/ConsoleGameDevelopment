@@ -5,50 +5,54 @@ import wit.cgd.numericalxando.game.Board;
 
 public class CheckAndImpactPlayer extends BasePlayer {
 
-	public CheckAndImpactPlayer(Board board, int symbol) {
-		super(board, symbol);
-		name = "CheckAndImpactPlayer";
-	}
+    public CheckAndImpactPlayer(Board board, int symbol) {
+        super(board, symbol);
+        name = "CheckAndImpactPlayer";
+    }
 
-	@Override
-	public int move() {
-		for (int x = 0; x < 8; x++) {
-		    for (int y = 0; y < myNumbers.size; y++) {
-		        int row = x/3;
-		        int col = x%3;
-		        if (board.cells[row][col] == board.EMPTY) {
-		            board.cells[row][col] = myNumbers.get(y);
-		            if (board.hasWon(row, col)) {
-		                choice = myNumbers.get(y);
-		                board.cells[row][col] = board.EMPTY;
-		                return x;
-		            }
-		            board.cells[row][col] = board.EMPTY;
-		        }
-		    }
-		}
+    @Override
+    public int move() {
 
-		for (int x = 0; x < 8; x++) {
-		    for (int y = 0; y < oppentNumbers.size; y++) {
-		        int row = x/3;
-		        int col = x%3;
-		        if (board.cells[row][col] == board.EMPTY) {
-		            board.cells[row][col] = oppentNumbers.get(y);
-		            if (board.hasWon(row, col)) {
-		                choice = myNumbers.first();
-		                board.cells[row][col] = board.EMPTY;
-		                return x;
-		            }
-		            board.cells[row][col] = board.EMPTY;
-		        }
-		    }
-		}
-		
-		choice = myNumbers.first();
-		for (int num : new int[] { 4, 0, 2, 6, 8, 1, 3, 5, 7 })
-			if (board.cells[num / 3][num % 3] == board.EMPTY) return num;
+        // Check if this player can win - if yes win the game
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < myNumbers.size; y++) {
+                int row = x / 3;
+                int col = x % 3;
+                if (board.cells[row][col] == board.EMPTY) {
+                    board.cells[row][col] = myNumbers.get(y);
+                    if (board.hasWon(row, col)) {
+                        choice = myNumbers.get(y);
+                        board.cells[row][col] = board.EMPTY;
+                        return x;
+                    }
+                    board.cells[row][col] = board.EMPTY;
+                }
+            }
+        }
 
-		return -1;
-	}
+        // check if opponent can win - if yes stop them
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < oppentNumbers.size; y++) {
+                int row = x / 3;
+                int col = x % 3;
+                if (board.cells[row][col] == board.EMPTY) {
+                    board.cells[row][col] = oppentNumbers.get(y);
+                    if (board.hasWon(row, col)) {
+                        choice = myNumbers.first();
+                        board.cells[row][col] = board.EMPTY;
+                        return x;
+                    }
+                    board.cells[row][col] = board.EMPTY;
+                }
+            }
+        }
+
+        // place a random number from the available numbers
+        choice = myNumbers.random();
+        for (int num: new int[]{ 4, 0, 2, 6, 8, 1, 3, 5, 7 })
+            if (board.cells[num / 3][num % 3] == board.EMPTY) return num;
+
+        return -1;
+    }
 
 }

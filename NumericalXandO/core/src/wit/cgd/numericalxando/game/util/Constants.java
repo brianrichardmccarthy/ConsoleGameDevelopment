@@ -21,10 +21,10 @@ public class Constants {
     // location of libgdx default skin and atlas
     public static final String SKIN_LIBGDX_UI = "images/uiskin.json";
     public static final String TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
-    
-    public static final int BUTTON_PAD      = 5;
-    
- // Game setting (preferences + stats) files
+
+    public static final int BUTTON_PAD = 5;
+
+    // Game setting (preferences + stats) files
     public static final String STATS = "xando.stats";
     public static final String PREFERENCES = "xando.prefs";
 }

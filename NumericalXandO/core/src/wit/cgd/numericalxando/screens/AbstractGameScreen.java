@@ -19,7 +19,8 @@ public abstract class AbstractGameScreen implements Screen {
     public AbstractGameScreen(Game game) {
         this.game = game;
         skin = new Skin(Gdx.files.internal(Constants.SKIN_UI), new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
-        defaultSkin = new Skin(Gdx.files.internal(Constants.SKIN_LIBGDX_UI), new TextureAtlas(Constants.TEXTURE_ATLAS_LIBGDX_UI));
+        defaultSkin = new Skin(Gdx.files.internal(Constants.SKIN_LIBGDX_UI), new TextureAtlas(
+            Constants.TEXTURE_ATLAS_LIBGDX_UI));
     }
 
     @Override
@@ -45,6 +46,7 @@ public abstract class AbstractGameScreen implements Screen {
 
     @Override
     public void dispose() {
+
         skin.dispose();
         defaultSkin.dispose();
         Assets.instance.dispose();

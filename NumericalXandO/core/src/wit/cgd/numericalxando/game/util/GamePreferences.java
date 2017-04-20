@@ -21,13 +21,12 @@ public class GamePreferences {
     public float musicVolume;
     public float soundVolume;
 
-
-    
     private GamePreferences() {
         prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
     }
 
     public void load() {
+
         firstPlayerSkill = MathUtils.clamp(prefs.getFloat("firstPlayerSkill"), 0f, 10f);
         secondPlayerSkill = MathUtils.clamp(prefs.getFloat("secondPlayerSkill"), 0f, 10f);
         musicVolume = MathUtils.clamp(prefs.getFloat("musicVolume"), 0f, 1f);
@@ -39,7 +38,7 @@ public class GamePreferences {
     }
 
     public void save() {
-        
+
         prefs.putFloat("firstPlayerSkill", firstPlayerSkill);
         prefs.putFloat("secondPlayerSkill", secondPlayerSkill);
         prefs.putFloat("musicVolume", musicVolume);

@@ -35,6 +35,7 @@ public class AudioManager {
     }
 
     public void play(Music music) {
+
         stopMusic();
         playingMusic = music;
         if (GamePreferences.instance.music) {
@@ -45,10 +46,12 @@ public class AudioManager {
     }
 
     public void stopMusic() {
+
         if (playingMusic != null) playingMusic.stop();
     }
 
     public void onSettingsUpdated() {
+
         if (playingMusic == null) return;
         playingMusic.setVolume(GamePreferences.instance.musicVolume);
         if (GamePreferences.instance.music) {
@@ -57,5 +60,5 @@ public class AudioManager {
             playingMusic.pause();
         }
     }
-    
+
 }

@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 import wit.cgd.numericalxando.game.util.Constants;
@@ -30,7 +29,7 @@ public class Assets implements Disposable, AssetErrorListener {
     public Asset board;
 
     public HashMap<Integer, Asset> numbers;
-    
+
     public AssetSounds sounds;
     public AssetMusic music;
 
@@ -78,7 +77,7 @@ public class Assets implements Disposable, AssetErrorListener {
             defaultSmall = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
             defaultNormal = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
             defaultBig = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
-            
+
             // set font sizes
             defaultSmall.getData().setScale(0.75f);
             defaultNormal.getData().setScale(1.0f);
@@ -97,14 +96,14 @@ public class Assets implements Disposable, AssetErrorListener {
     public void init(AssetManager assetManager) {
 
         if (numbers != null) numbers.clear();
-        
+
         numbers = new HashMap<Integer, Asset>();
-        
+
         this.assetManager = assetManager;
-        
+
         // set asset manager error handler
         this.assetManager.setErrorListener(this);
-        
+
         // load texture atlas
         this.assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS, TextureAtlas.class);
         // start loading assets and wait until finished
@@ -115,7 +114,7 @@ public class Assets implements Disposable, AssetErrorListener {
             Gdx.app.debug(TAG, "asset: " + a);
 
         TextureAtlas atlas = this.assetManager.get(Constants.TEXTURE_ATLAS_OBJECTS);
-        
+
         // enable texture filtering for pixel smoothing
         for (Texture t: atlas.getTextures())
             t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -124,7 +123,8 @@ public class Assets implements Disposable, AssetErrorListener {
 
         // build game resource objects
         board = new Asset(atlas, "board");
-        
+
+        // number images
         numbers.put(1, new Asset(atlas, "1"));
         numbers.put(2, new Asset(atlas, "2"));
         numbers.put(3, new Asset(atlas, "3"));
@@ -134,14 +134,14 @@ public class Assets implements Disposable, AssetErrorListener {
         numbers.put(7, new Asset(atlas, "7"));
         numbers.put(8, new Asset(atlas, "8"));
         numbers.put(9, new Asset(atlas, "9"));
-        
+
         // load sounds
         this.assetManager.load("sounds/first.wav", Sound.class);
         this.assetManager.load("sounds/second.wav", Sound.class);
         this.assetManager.load("sounds/win.wav", Sound.class);
         this.assetManager.load("sounds/draw.wav", Sound.class);
         this.assetManager.finishLoading();
-        
+
         // load music
         this.assetManager.load("music/keith303_-_brand_new_highscore.mp3", Music.class);
         this.assetManager.finishLoading();
