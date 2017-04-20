@@ -12,8 +12,6 @@ public class CheckAndImpactPlayer extends BasePlayer {
 
 	@Override
 	public int move() {
-	    return -1;
-	    /*
 		for (int x = 0; x < 8; x++) {
 		    for (int y = 0; y < myNumbers.size; y++) {
 		        int row = x/3;
@@ -46,11 +44,11 @@ public class CheckAndImpactPlayer extends BasePlayer {
 		    }
 		}
 		
+		choice = myNumbers.first();
 		for (int num : new int[] { 4, 0, 2, 6, 8, 1, 3, 5, 7 })
 			if (board.cells[num / 3][num % 3] == board.EMPTY) return num;
 
 		return -1;
-        */
 	}
 
 }
