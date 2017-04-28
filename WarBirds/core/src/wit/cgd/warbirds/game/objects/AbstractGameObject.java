@@ -2,6 +2,7 @@ package wit.cgd.warbirds.game.objects;
 
 import wit.cgd.warbirds.game.util.Constants;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -50,7 +51,7 @@ public abstract class AbstractGameObject {
 
 	public void update(float deltaTime) {
 		
-		if (state == State.ASLEEP) return; 
+		if (state == State.ASLEEP || state == State.DEAD) return; 
 		
 		stateTime += deltaTime;
 		
@@ -60,6 +61,8 @@ public abstract class AbstractGameObject {
 		// Move to new position
 		position.x += velocity.x * deltaTime;
 		position.y += velocity.y * deltaTime;
+		
+		// state = (isInScreen()) ? State.ACTIVE : State.ASLEEP;
 		
 		if (state == State.DYING) {
 			timeToDie -= deltaTime;
@@ -79,6 +82,7 @@ public abstract class AbstractGameObject {
 	protected void updateMotionY(float deltaTime) {}
 	
 	public boolean isInScreen()  {
+	    
 		return ((position.x>-Constants.VIEWPORT_WIDTH/2 && position.x<Constants.VIEWPORT_WIDTH/2) && 
 				(position.y>level.start && position.y<level.end));
 		

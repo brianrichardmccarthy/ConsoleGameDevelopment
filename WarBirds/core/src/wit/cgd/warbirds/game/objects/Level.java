@@ -9,8 +9,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Pool;
 
+import wit.cgd.warbirds.ai.AbstractEnemy;
+import wit.cgd.warbirds.ai.BasicEnemy;
 import wit.cgd.warbirds.game.Assets;
-import wit.cgd.warbirds.game.objects.enemys.Basic;
 import wit.cgd.warbirds.game.util.Constants;
 
 public class Level extends AbstractGameObject {
@@ -22,8 +23,10 @@ public class Level extends AbstractGameObject {
     public float start;
     public float end;
     public Random random;
-    private float timer;
-    private Array<Basic> enemies;
+    public Random enemySpawn;
+    private float islandTImer;
+    private float enemyTimer;
+    private Array<AbstractEnemy> enemies;
     
     private final String[] islands = {
             "islandBig",
@@ -38,7 +41,7 @@ public class Level extends AbstractGameObject {
         @Override
         protected Bullet newObject() {
 
-            return new Bullet(level);
+            return new Bullet(level, Assets.instance.doubleBullet);
         }
     };
     
@@ -48,7 +51,7 @@ public class Level extends AbstractGameObject {
         @Override
         protected Bullet newObject() {
 
-            return new Bullet(level);
+            return new Bullet(level, Assets.instance.bullet);
         }
     };
     
@@ -100,6 +103,11 @@ public class Level extends AbstractGameObject {
 
         Gdx.app.log(TAG, "Data name = " + data.name);
 
+        enemySpawn = new Random((long) data.seed);
+        enemies = new Array<AbstractEnemy>();
+        
+        Gdx.app.debug(TAG, "Number of Enemies <" + enemies.size + ">");
+        
         Gdx.app.log(TAG, "islands . . . ");
         random = new Random(data.islands);
         for (int x = random.nextInt(100)+100; x >= 0; x--) {
@@ -107,19 +115,11 @@ public class Level extends AbstractGameObject {
             levelDecoration.add(islands[random.nextInt(islands.length)], (((random.nextInt((Math.round(Constants.VIEWPORT_WIDTH*2))+1)) - Constants.VIEWPORT_WIDTH)/2), ((random.nextInt((Math.round(Constants.VIEWPORT_HEIGHT*2))+1)) - Constants.VIEWPORT_HEIGHT), random.nextInt(361));
         }
 
-        Gdx.app.log(TAG, "enemies . . . data.enemies <" + data.enemies.size() + ">");
-        for (Object e: data.enemies) {
-            LevelObject p = (LevelObject) e;
-            Gdx.app.log(TAG, "type = " + p.name + "\tx = " + p.x + "\ty =" + p.y);
-            Basic enemy = new Basic(this);
-            enemy.position.set(p.x, p.y);
-            enemies.add(enemy);
-        }
-
         position.set(0, 0);
         velocity.y = Constants.SCROLL_SPEED;
         state = State.ACTIVE;
-        timer = 1f;
+        islandTImer = 1f;
+        enemyTimer = 2f;
 
     }
 
@@ -136,13 +136,21 @@ public class Level extends AbstractGameObject {
         for (Bullet bullet: bullets)
             bullet.update(deltaTime);
         
-        for (Basic b: enemies) b.update(deltaTime);
+        for (AbstractEnemy b: enemies) b.update(deltaTime);
         
-        if (timer <= 0) {
-            if (random.nextFloat() < 0.876) return;
-            levelDecoration.add(islands[random.nextInt(islands.length)], (((random.nextInt((Math.round(Constants.VIEWPORT_WIDTH*2))+1)) - Constants.VIEWPORT_WIDTH)/2), end, random.nextInt(361));
-            timer = 1f;
-        } else timer -= deltaTime;
+        if (islandTImer <= 0) {
+            if (random.nextFloat() >= 0.876) {
+                levelDecoration.add(islands[random.nextInt(islands.length)], (((random.nextInt((Math.round(Constants.VIEWPORT_WIDTH*2))+1)) - Constants.VIEWPORT_WIDTH)/2), end, random.nextInt(361));
+                islandTImer = 1f;
+            }
+        } else islandTImer -= deltaTime;
+        
+        if (enemyTimer <= 0) {
+            if (enemySpawn.nextFloat() >= 0.75) {
+                addEnemy("enemy_plane_green", (((enemySpawn.nextInt((Math.round(Constants.VIEWPORT_WIDTH*2))+1)) - Constants.VIEWPORT_WIDTH)/2), end, 0, 0);
+                enemyTimer = 2f;
+            }
+        } else enemyTimer -= deltaTime;
     }
 
     public void render(SpriteBatch batch) {
@@ -152,9 +160,24 @@ public class Level extends AbstractGameObject {
         for (Bullet bullet: bullets)
             bullet.render(batch);
 
-        for (Basic b: enemies) b.render(batch);
+        for (AbstractEnemy b: enemies) b.render(batch);
         
-        System.out.println("Bullets " + bullets.size);
+        // System.out.println("Bullets " + bullets.size);
     }
 
+    public void addEnemy(String name, float x, float y, float rotation, int skill) {
+        AbstractEnemy enemy = null;
+        
+        if (skill == 0) {
+            enemy = new BasicEnemy(this);
+        }
+
+        enemy.origin.x = enemy.dimension.x/2; 
+        enemy.origin.y = enemy.dimension.y/2; 
+        enemy.position.set(x,y);
+        enemy.rotation = rotation;
+        enemies.add(enemy);
+        
+    }
+    
 }

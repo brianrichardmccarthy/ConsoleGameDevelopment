@@ -1,5 +1,7 @@
 package wit.cgd.warbirds.game.objects;
 
+import wit.cgd.warbirds.ai.AbstractEnemy;
+import wit.cgd.warbirds.ai.BasicEnemy;
 import wit.cgd.warbirds.game.Assets;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -66,6 +68,7 @@ public class LevelDecoration extends AbstractGameObject {
 				region.getRegionX(), region.getRegionY(),
 				region.getRegionWidth(), region.getRegionHeight(), false, false);
 
+		// islands
 		for (Island island: islands) {
 			region = island.region;
 			if (island.position.y<level.start || island.position.y>level.end) continue;
@@ -78,7 +81,6 @@ public class LevelDecoration extends AbstractGameObject {
 					region.getRegionWidth(), region.getRegionHeight(), false, false);
 		}
 		
-		// islands
 	
 	}
 

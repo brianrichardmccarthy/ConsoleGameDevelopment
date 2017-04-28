@@ -1,12 +1,12 @@
 package wit.cgd.warbirds.game.objects;
 
-import wit.cgd.warbirds.game.Assets;
-import wit.cgd.warbirds.game.util.Constants;
-
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Pool.Poolable;
+
+import wit.cgd.warbirds.game.Assets;
+import wit.cgd.warbirds.game.Assets.Asset;
+import wit.cgd.warbirds.game.util.Constants;
 
 
 public class Bullet extends AbstractGameObject implements Poolable {
@@ -14,16 +14,18 @@ public class Bullet extends AbstractGameObject implements Poolable {
 	public static final String TAG = Player.class.getName();
 	
 	private TextureRegion region;
+	private Asset bullet;
 	
-	Bullet(Level level) {
+	Bullet(Level level, Asset bullet) {
 		super(level);
+		this.bullet = bullet;
 		init();
 	}
 	
 	public void init() {
 		dimension.set(0.5f, 0.5f);
 				
-		region = Assets.instance.doubleBullet.region;
+		region = Assets.instance.bullet.region;
 
 		// Center image on game object
 		origin.set(dimension.x / 2, dimension.y / 2);
