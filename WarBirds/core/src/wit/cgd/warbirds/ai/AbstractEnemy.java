@@ -28,6 +28,8 @@ public abstract class AbstractEnemy extends AbstractGameObject {
     protected float timeShootDelay;
     protected int health;
 
+    public AbstractGameObject player;
+    
     public AbstractEnemy(Level level) {
         super(level);
         init();
@@ -55,13 +57,15 @@ public abstract class AbstractEnemy extends AbstractGameObject {
         if (health <= 0 || currentState == STATE.DEAD) return;
         
         super.update(deltaTime);
-        timeShootDelay -= deltaTime;
+        
+        if (timeShootDelay <= 0) shoot();
+        else timeShootDelay -= deltaTime;
+        
+        // rotation += (float) Math.atan2(player.position.y, player.position.x);
         
     }
 
     public void shoot() {
-
-        if (timeShootDelay > 0) return;
 
         // get bullet
         Bullet bullet = level.enemyBulletPool.obtain();

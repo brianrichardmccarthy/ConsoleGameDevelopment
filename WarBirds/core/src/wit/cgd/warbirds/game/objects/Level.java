@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Pool;
@@ -26,7 +27,7 @@ public class Level extends AbstractGameObject {
     public Random enemySpawn;
     private float islandTImer;
     private float enemyTimer;
-    private Array<AbstractEnemy> enemies;
+    public Array<AbstractEnemy> enemies;
     
     private final String[] islands = {
             "islandBig",
@@ -51,7 +52,11 @@ public class Level extends AbstractGameObject {
         @Override
         protected Bullet newObject() {
 
-            return new Bullet(level, Assets.instance.bullet);
+            Bullet bullet = new Bullet(level, Assets.instance.bullet);
+            
+            bullet.velocity = new Vector2(bullet.velocity.x, -bullet.velocity.y);
+            
+            return bullet;
         }
     };
     
@@ -136,6 +141,8 @@ public class Level extends AbstractGameObject {
         for (Bullet bullet: bullets)
             bullet.update(deltaTime);
         
+        for (Bullet bullet: enemyBullets) bullet.update(deltaTime);
+        
         for (AbstractEnemy b: enemies) b.update(deltaTime);
         
         if (islandTImer <= 0) {
@@ -159,6 +166,8 @@ public class Level extends AbstractGameObject {
         player.render(batch);
         for (Bullet bullet: bullets)
             bullet.render(batch);
+        
+        for (Bullet bullet: enemyBullets) bullet.render(batch);
 
         for (AbstractEnemy b: enemies) b.render(batch);
         
@@ -172,6 +181,7 @@ public class Level extends AbstractGameObject {
             enemy = new BasicEnemy(this);
         }
 
+        enemy.player = player;
         enemy.origin.x = enemy.dimension.x/2; 
         enemy.origin.y = enemy.dimension.y/2; 
         enemy.position.set(x,y);

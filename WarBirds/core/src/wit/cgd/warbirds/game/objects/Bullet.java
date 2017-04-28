@@ -1,5 +1,6 @@
 package wit.cgd.warbirds.game.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Pool.Poolable;
@@ -25,7 +26,7 @@ public class Bullet extends AbstractGameObject implements Poolable {
 	public void init() {
 		dimension.set(0.5f, 0.5f);
 				
-		region = Assets.instance.bullet.region;
+		region = bullet.region;
 
 		// Center image on game object
 		origin.set(dimension.x / 2, dimension.y / 2);
@@ -44,7 +45,7 @@ public class Bullet extends AbstractGameObject implements Poolable {
 
 	@Override
 	public void reset() {
-		System.out.println("sdfsd");
+		//System.out.println("sdfsd");
 		state = State.ACTIVE;
 	}
 }

@@ -3,6 +3,7 @@ package wit.cgd.warbirds.game.objects;
 import wit.cgd.warbirds.game.Assets;
 import wit.cgd.warbirds.game.util.Constants;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -44,6 +45,7 @@ public class Player extends AbstractGameObject {
 
 	public void shoot() {
 
+	    Gdx.app.debug(TAG, "shooting");
 		if (timeShootDelay>0) return;
 		
 		// get bullet
