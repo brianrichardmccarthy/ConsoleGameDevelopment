@@ -18,7 +18,7 @@ public class Player extends AbstractGameObject {
 	protected float timeShootDelay;
 	
 	public Player (Level level) {
-		super(level);
+		super(level, 2);
 		init();
 	}
 	
@@ -45,7 +45,6 @@ public class Player extends AbstractGameObject {
 
 	public void shoot() {
 
-	    Gdx.app.debug(TAG, "shooting");
 		if (timeShootDelay>0) return;
 		
 		// get bullet

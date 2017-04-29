@@ -30,4 +30,7 @@ public class Constants {
 
     public static final float BULLET_DIE_DELAY = 1.2f;
     public static final float ENEMY_DIE_DELAY = 0.2f;
+    
+    public static final int BASE_HEALTH = 100;
+    public static final int BASE_DAMAGE = 10;
 }

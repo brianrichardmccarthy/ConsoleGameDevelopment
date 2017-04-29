@@ -23,7 +23,7 @@ public class LevelDecoration extends AbstractGameObject {
 		private TextureRegion region;
 		
 		public Island(Level level, TextureRegion region) {
-			super(level);
+			super(level, 0);
 			this.region = region;
 		}
 		
@@ -38,7 +38,7 @@ public class LevelDecoration extends AbstractGameObject {
 	}
 		
 	public LevelDecoration (Level level) {
-		super(level);
+		super(level, 0);
 		init();
 	}
 

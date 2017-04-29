@@ -27,6 +27,8 @@ public abstract class AbstractGameObject {
     public Vector2 friction;
     public Vector2 acceleration;
     public Rectangle bounds;
+    public int health;
+    public int damage;
 
     public AbstractGameObject() {
         position = new Vector2();

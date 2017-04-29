@@ -28,6 +28,7 @@ public class Level extends AbstractGameObject {
     private float islandTImer;
     private float enemyTimer;
     public Array<AbstractEnemy> enemies;
+    private String currentLevel;
     
     private final String[] islands = {
             "islandBig",
@@ -84,10 +85,12 @@ public class Level extends AbstractGameObject {
         float seed;
     }
 
-    public Level() {
-        super(null);
+    public Level(String level) {
+        super(null, ((level.equals("levels/level-01.json")) ? 1 : 2));
+        
+        currentLevel = level;
+        
         init();
-
     }
 
     private void init() {
@@ -99,7 +102,7 @@ public class Level extends AbstractGameObject {
         levelDecoration = new LevelDecoration(this);
 
         // read and parse level map (form a json file)
-        String map = Gdx.files.internal("levels/level-01.json").readString();
+        String map = Gdx.files.internal(currentLevel).readString();
 
         Json json = new Json();
         json.setElementType(LevelMap.class, "enemies", LevelObject.class);
@@ -110,8 +113,6 @@ public class Level extends AbstractGameObject {
 
         enemySpawn = new Random((long) data.seed);
         enemies = new Array<AbstractEnemy>();
-        
-        Gdx.app.debug(TAG, "Number of Enemies <" + enemies.size + ">");
         
         Gdx.app.log(TAG, "islands . . . ");
         random = new Random(data.islands);
@@ -165,11 +166,12 @@ public class Level extends AbstractGameObject {
         levelDecoration.render(batch);
         player.render(batch);
         for (Bullet bullet: bullets)
-            bullet.render(batch);
+            if (bullet.state != State.DEAD) bullet.render(batch);
         
-        for (Bullet bullet: enemyBullets) bullet.render(batch);
+        for (Bullet bullet: enemyBullets) 
+            if (bullet.state != State.DEAD) bullet.render(batch);
 
-        for (AbstractEnemy b: enemies) b.render(batch);
+        for (AbstractEnemy b: enemies) if (b.state != State.DEAD) b.render(batch);
         
         // System.out.println("Bullets " + bullets.size);
     }
@@ -178,7 +180,7 @@ public class Level extends AbstractGameObject {
         AbstractEnemy enemy = null;
         
         if (skill == 0) {
-            enemy = new BasicEnemy(this);
+            enemy = new BasicEnemy(this, 1);
         }
 
         enemy.player = player;

@@ -27,6 +27,10 @@ public abstract class AbstractGameObject {
 	
 	public float 		timeToDie;
 
+	public int health;
+	public int damage;
+	public int multiplyer;
+	
 	public enum State {
 		ASLEEP, // not yet in screen area 
 		ACTIVE, // in screen area 
@@ -35,7 +39,7 @@ public abstract class AbstractGameObject {
 	}
 	public State state;
 	
-	public AbstractGameObject(Level level) {
+	public AbstractGameObject(Level level, int multiplyer) {
 		this.level = level;
 		position = new Vector2();
 		dimension = new Vector2(1, 1);
@@ -47,6 +51,10 @@ public abstract class AbstractGameObject {
 		friction = new Vector2();
 		acceleration = new Vector2();
 		state = State.ASLEEP;
+		// health, damage, 
+		this.multiplyer = multiplyer;
+		health = Constants.BASE_HEALTH;
+		damage = Constants.BASE_DAMAGE * multiplyer;
 	}
 
 	public void update(float deltaTime) {

@@ -1,11 +1,9 @@
 package wit.cgd.warbirds.game.objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
-import wit.cgd.warbirds.game.Assets;
 import wit.cgd.warbirds.game.Assets.Asset;
 import wit.cgd.warbirds.game.util.Constants;
 
@@ -17,11 +15,18 @@ public class Bullet extends AbstractGameObject implements Poolable {
 	private TextureRegion region;
 	private Asset bullet;
 	
-	Bullet(Level level, Asset bullet) {
-		super(level);
+	Bullet(Level level, Asset bullet, int damage) {
+		super(level, damage);
 		this.bullet = bullet;
+		this.damage = damage;
 		init();
 	}
+	
+	Bullet(Level level, Asset bullet) {
+        super(level, 1);
+        this.bullet = bullet;
+        init();
+    }
 	
 	public void init() {
 		dimension.set(0.5f, 0.5f);

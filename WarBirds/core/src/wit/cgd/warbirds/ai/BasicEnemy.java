@@ -8,8 +8,8 @@ import wit.cgd.warbirds.game.util.Constants;
 
 public class BasicEnemy extends AbstractEnemy {
 
-    public BasicEnemy(Level level) {
-        super(level);
+    public BasicEnemy(Level level, int multiplyer) {
+        super(level, multiplyer);
         velocity  = new Vector2(0f, -1f);
     }
     

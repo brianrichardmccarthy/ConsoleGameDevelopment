@@ -26,20 +26,21 @@ public abstract class AbstractEnemy extends AbstractGameObject {
     protected Animation<TextureRegion> animation;
     protected TextureRegion region;
     protected float timeShootDelay;
-    protected int health;
 
     public AbstractGameObject player;
     
-    public AbstractEnemy(Level level) {
-        super(level);
+    public AbstractEnemy(Level level, int multiplyer) {
+        super(level, multiplyer);
         init();
     }
 
     public void init() {
 
         dimension.set(1, 1);
+        
+        // public int health;
+        // public int damage;
 
-        health = 100;
         currentState = STATE.ALIVE;
         
         animation = Assets.instance.enemy[0].animationNormal;
@@ -60,6 +61,8 @@ public abstract class AbstractEnemy extends AbstractGameObject {
         
         if (timeShootDelay <= 0) shoot();
         else timeShootDelay -= deltaTime;
+        
+        
         
         // rotation += (float) Math.atan2(player.position.y, player.position.x);
         
