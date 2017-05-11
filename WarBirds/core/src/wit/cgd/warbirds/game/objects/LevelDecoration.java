@@ -1,7 +1,7 @@
 package wit.cgd.warbirds.game.objects;
 
 import wit.cgd.warbirds.ai.AbstractEnemy;
-import wit.cgd.warbirds.ai.BasicEnemy;
+import wit.cgd.warbirds.ai.BasicVerticalEnemy;
 import wit.cgd.warbirds.game.Assets;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

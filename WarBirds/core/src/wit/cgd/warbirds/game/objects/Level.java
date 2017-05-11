@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Pool;
 
 import wit.cgd.warbirds.ai.AbstractEnemy;
-import wit.cgd.warbirds.ai.BasicEnemy;
-import wit.cgd.warbirds.ai.HorizontalEnemy;
+import wit.cgd.warbirds.ai.BasicVerticalEnemy;
+import wit.cgd.warbirds.ai.BasicHorizontalEnemy;
 import wit.cgd.warbirds.game.Assets;
 import wit.cgd.warbirds.game.util.Constants;
 
@@ -189,7 +189,7 @@ public class Level extends AbstractGameObject {
         }
 
         if (!debug) {
-            enemy = new HorizontalEnemy(this, 1);
+            enemy = new BasicHorizontalEnemy(this, 1);
             enemy.player = player;
             enemy.origin.x = enemy.dimension.x/2; 
             enemy.origin.y = enemy.dimension.y/2; 

@@ -6,9 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 import wit.cgd.warbirds.game.objects.Level;
 import wit.cgd.warbirds.game.util.Constants;
 
-public class BasicEnemy extends AbstractEnemy {
+public class BasicVerticalEnemy extends AbstractEnemy {
 
-    public BasicEnemy(Level level, int multiplyer) {
+    public BasicVerticalEnemy(Level level, int multiplyer) {
         super(level, multiplyer);
         velocity  = new Vector2(0f, -1f);
     }
