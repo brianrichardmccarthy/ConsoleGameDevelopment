@@ -196,9 +196,6 @@ public class Level extends AbstractGameObject {
             enemy.position.set(x,y);
             enemy.rotation = rotation;
             
-            Animation<TextureRegion> animation = Assets.instance.enemy[1].animationNormal;
-            enemy.setAnimation(animation);
-            
             enemies.add(enemy);
             debug = true;
         }
