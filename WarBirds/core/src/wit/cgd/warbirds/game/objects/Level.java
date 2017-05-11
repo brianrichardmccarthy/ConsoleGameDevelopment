@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.utils.Pool;
 
 import wit.cgd.warbirds.ai.AbstractEnemy;
 import wit.cgd.warbirds.ai.BasicEnemy;
+import wit.cgd.warbirds.ai.HorizontalEnemy;
 import wit.cgd.warbirds.game.Assets;
 import wit.cgd.warbirds.game.util.Constants;
 
@@ -25,10 +28,12 @@ public class Level extends AbstractGameObject {
     public float end;
     public Random random;
     public Random enemySpawn;
-    private float islandTImer;
+    private float islandTimer;
     private float enemyTimer;
     public Array<AbstractEnemy> enemies;
     private String currentLevel;
+    
+    boolean debug = false;
     
     private final String[] islands = {
             "islandBig",
@@ -124,7 +129,7 @@ public class Level extends AbstractGameObject {
         position.set(0, 0);
         velocity.y = Constants.SCROLL_SPEED;
         state = State.ACTIVE;
-        islandTImer = 1f;
+        islandTimer = 1f;
         enemyTimer = 2f;
 
     }
@@ -146,12 +151,12 @@ public class Level extends AbstractGameObject {
         
         for (AbstractEnemy b: enemies) b.update(deltaTime);
         
-        if (islandTImer <= 0) {
+        if (islandTimer <= 0) {
             if (random.nextFloat() >= 0.876) {
                 levelDecoration.add(islands[random.nextInt(islands.length)], (((random.nextInt((Math.round(Constants.VIEWPORT_WIDTH*2))+1)) - Constants.VIEWPORT_WIDTH)/2), end, random.nextInt(361));
-                islandTImer = 1f;
+                islandTimer = 1f;
             }
-        } else islandTImer -= deltaTime;
+        } else islandTimer -= deltaTime;
         
         if (enemyTimer <= 0) {
             if (enemySpawn.nextFloat() >= 0.75) {
@@ -180,15 +185,24 @@ public class Level extends AbstractGameObject {
         AbstractEnemy enemy = null;
         
         if (skill == 0) {
-            enemy = new BasicEnemy(this, 1);
+            // enemy = new BasicEnemy(this, 1);
         }
 
-        enemy.player = player;
-        enemy.origin.x = enemy.dimension.x/2; 
-        enemy.origin.y = enemy.dimension.y/2; 
-        enemy.position.set(x,y);
-        enemy.rotation = rotation;
-        enemies.add(enemy);
+        if (!debug) {
+            enemy = new HorizontalEnemy(this, 1);
+            enemy.player = player;
+            enemy.origin.x = enemy.dimension.x/2; 
+            enemy.origin.y = enemy.dimension.y/2; 
+            enemy.position.set(x,y);
+            enemy.rotation = rotation;
+            
+            Animation<TextureRegion> animation = Assets.instance.enemy[1].animationNormal;
+            enemy.setAnimation(animation);
+            
+            enemies.add(enemy);
+            debug = true;
+        }
+        
         
     }
     

@@ -16,8 +16,8 @@ public abstract class AbstractEnemy extends AbstractGameObject {
 
     public static final String TAG = AbstractEnemy.class.getName();
 
-    protected Animation<TextureRegion> animation;
-    protected TextureRegion region;
+    public Animation<TextureRegion> animation;
+    public TextureRegion region;
     protected float timeShootDelay;
 
     public AbstractGameObject player;
