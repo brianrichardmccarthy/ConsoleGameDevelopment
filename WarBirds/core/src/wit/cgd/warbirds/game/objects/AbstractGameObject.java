@@ -1,12 +1,13 @@
 package wit.cgd.warbirds.game.objects;
 
+import wit.cgd.warbirds.game.Assets;
 import wit.cgd.warbirds.game.util.Constants;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Pool.Poolable;
 
 public abstract class AbstractGameObject {
 
@@ -23,7 +24,8 @@ public abstract class AbstractGameObject {
 	public Vector2		acceleration;
 
 	public float		stateTime;
-	public Animation	animation;
+	public Animation<TextureRegion>	animation;
+	public Animation<TextureRegion> explosion;
 	
 	public float 		timeToDie;
 
@@ -51,7 +53,6 @@ public abstract class AbstractGameObject {
 		friction = new Vector2();
 		acceleration = new Vector2();
 		state = State.ASLEEP;
-		// health, damage, 
 		this.multiplyer = multiplyer;
 		health = Constants.BASE_HEALTH;
 		damage = Constants.BASE_DAMAGE * multiplyer;
@@ -59,7 +60,7 @@ public abstract class AbstractGameObject {
 
 	public void update(float deltaTime) {
 		
-		if (state == State.ASLEEP || state == State.DEAD) return; 
+		if (state == State.ASLEEP) return;
 		
 		stateTime += deltaTime;
 		
@@ -72,13 +73,18 @@ public abstract class AbstractGameObject {
 		
 		// state = (isInScreen()) ? State.ACTIVE : State.ASLEEP;
 		
+		if (health <= 0) {
+		    state = State.DYING;
+		}
+		
 		if (state == State.DYING) {
 			timeToDie -= deltaTime;
+			setAnimation(Assets.instance.player.animationExplosionBig);
 			if (timeToDie<0) state = State.DEAD;
 		}
 	}
 
-	public void setAnimation(Animation animation) {
+	public void setAnimation(Animation<TextureRegion> animation) {
 		this.animation = animation;
 		stateTime = 0;
 	}

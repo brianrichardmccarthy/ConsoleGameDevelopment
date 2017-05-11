@@ -52,6 +52,8 @@ public class Player extends AbstractGameObject {
 		bullet.reset();
 		bullet.position.set(position);
 		
+		bullet.damage = damage;
+		
 		level.bullets.add(bullet);
 		timeShootDelay = Constants.PLAYER_SHOOT_DELAY;
 

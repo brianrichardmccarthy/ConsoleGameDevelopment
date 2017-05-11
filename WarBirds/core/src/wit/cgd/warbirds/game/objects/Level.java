@@ -98,7 +98,7 @@ public class Level extends AbstractGameObject {
         // player
         player = new Player(this);
         player.position.set(0, 0);
-
+        
         levelDecoration = new LevelDecoration(this);
 
         // read and parse level map (form a json file)

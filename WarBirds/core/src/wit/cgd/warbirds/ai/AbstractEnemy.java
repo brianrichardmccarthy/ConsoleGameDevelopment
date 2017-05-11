@@ -14,13 +14,6 @@ import wit.cgd.warbirds.game.util.Constants;
 
 public abstract class AbstractEnemy extends AbstractGameObject {
 
-    public enum STATE {
-        ALIVE,
-        DEAD
-    };
-    
-    protected STATE currentState;
-    
     public static final String TAG = AbstractEnemy.class.getName();
 
     protected Animation<TextureRegion> animation;
@@ -38,11 +31,6 @@ public abstract class AbstractEnemy extends AbstractGameObject {
 
         dimension.set(1, 1);
         
-        // public int health;
-        // public int damage;
-
-        currentState = STATE.ALIVE;
-        
         animation = Assets.instance.enemy[0].animationNormal;
         setAnimation(animation);
         
@@ -55,15 +43,11 @@ public abstract class AbstractEnemy extends AbstractGameObject {
     @Override
     public void update(float deltaTime) {
 
-        if (health <= 0 || currentState == STATE.DEAD) return;
-        
         super.update(deltaTime);
         
         if (timeShootDelay <= 0) shoot();
         else timeShootDelay -= deltaTime;
-        
-        
-        
+
         // rotation += (float) Math.atan2(player.position.y, player.position.x);
         
     }

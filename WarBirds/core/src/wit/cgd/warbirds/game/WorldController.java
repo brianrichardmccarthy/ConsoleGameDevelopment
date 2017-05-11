@@ -88,9 +88,9 @@ public class WorldController extends InputAdapter {
                 if (bullet.state == State.DEAD) continue;
                 
                 if (new Rectangle(b.position.x, b.position.y, b.dimension.x, b.dimension.y).overlaps(new Rectangle(bullet.position.x, bullet.position.y, bullet.dimension.x, bullet.dimension.y))) {
-                    b.damage -= bullet.damage;
+                    b.health -= bullet.damage;
                     bullet.state = State.DEAD;
-                    b.state = State.DEAD;
+                    Gdx.app.debug(TAG, "Health <" + b.health + ">");
                 }
                 
             }
