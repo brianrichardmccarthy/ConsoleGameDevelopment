@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.Pool;
 
 import wit.cgd.warbirds.ai.AbstractEnemy;
 import wit.cgd.warbirds.ai.BasicVerticalEnemy;
+import wit.cgd.warbirds.ai.Boss;
+import wit.cgd.warbirds.ai.DiagionalEnemy;
 import wit.cgd.warbirds.ai.BasicHorizontalEnemy;
 import wit.cgd.warbirds.game.Assets;
 import wit.cgd.warbirds.game.util.Constants;
@@ -32,6 +34,10 @@ public class Level extends AbstractGameObject {
     private float enemyTimer;
     public Array<AbstractEnemy> enemies;
     private String currentLevel;
+    private int totalNumberOfEnemies;
+    private int killedEnemies;
+    private boolean bossSpawned;
+    private AbstractEnemy boss;
     
     boolean debug = false;
     
@@ -88,6 +94,7 @@ public class Level extends AbstractGameObject {
         String name;
         float length;
         float seed;
+        public int numOfEnemies;
     }
 
     public Level(String level) {
@@ -99,7 +106,9 @@ public class Level extends AbstractGameObject {
     }
 
     private void init() {
-
+        
+        killedEnemies = 0;
+        bossSpawned = false;
         // player
         player = new Player(this);
         player.position.set(0, 0);
@@ -126,6 +135,8 @@ public class Level extends AbstractGameObject {
             levelDecoration.add(islands[random.nextInt(islands.length)], (((random.nextInt((Math.round(Constants.VIEWPORT_WIDTH*2))+1)) - Constants.VIEWPORT_WIDTH)/2), ((random.nextInt((Math.round(Constants.VIEWPORT_HEIGHT*2))+1)) - Constants.VIEWPORT_HEIGHT), random.nextInt(361));
         }
 
+        totalNumberOfEnemies = (int) data.numOfEnemies;
+        Gdx.app.debug(TAG, "number <" + totalNumberOfEnemies + ">");
         position.set(0, 0);
         velocity.y = Constants.SCROLL_SPEED;
         state = State.ACTIVE;
@@ -160,12 +171,20 @@ public class Level extends AbstractGameObject {
         
         if (enemyTimer <= 0) {
             if (enemySpawn.nextFloat() >= 0.75) {
-                addEnemy("enemy_plane_green", (((enemySpawn.nextInt((Math.round(Constants.VIEWPORT_WIDTH*2))+1)) - Constants.VIEWPORT_WIDTH)/2), end, 0, 0);
+                addEnemy((((enemySpawn.nextInt((Math.round(Constants.VIEWPORT_WIDTH*2))+1)) - Constants.VIEWPORT_WIDTH)/2), end, 0, enemySpawn.nextInt(3));
                 enemyTimer = 2f;
             }
         } else enemyTimer -= deltaTime;
     }
 
+    public void killedEnemy() {
+        killedEnemies++;
+    }
+    
+    public boolean isGameOver() {
+        return bossSpawned && boss.health <= 0; 
+    }
+    
     public void render(SpriteBatch batch) {
 
         levelDecoration.render(batch);
@@ -176,31 +195,34 @@ public class Level extends AbstractGameObject {
         for (Bullet bullet: enemyBullets) 
             if (bullet.state != State.DEAD) bullet.render(batch);
 
-        for (AbstractEnemy b: enemies) if (b.state != State.DEAD) b.render(batch);
+        for (AbstractEnemy b: enemies) if (b.state == State.ACTIVE) b.render(batch);
         
-        // System.out.println("Bullets " + bullets.size);
     }
 
-    public void addEnemy(String name, float x, float y, float rotation, int skill) {
+    public void addEnemy(float x, float y, float rotation, int skill) {
+        
+        if (bossSpawned) return;
+        
+        bossSpawned = killedEnemies >= totalNumberOfEnemies;
         AbstractEnemy enemy = null;
         
-        if (skill == 0) {
-            // enemy = new BasicEnemy(this, 1);
+        if (bossSpawned) {
+            enemy = new Boss(this, 1, player);
+            boss = enemy;
+        } else if (skill == 0) {
+            enemy = new BasicVerticalEnemy(this, 1);
+        } else if (skill == 1) {
+            enemy = new BasicHorizontalEnemy(this, 1);
+        } else {
+            enemy = new DiagionalEnemy(this, 1, (enemySpawn.nextBoolean()) ? 1.5f: -1.5f);
         }
 
-        if (!debug) {
-            enemy = new BasicHorizontalEnemy(this, 1);
-            enemy.player = player;
-            enemy.origin.x = enemy.dimension.x/2; 
-            enemy.origin.y = enemy.dimension.y/2; 
-            enemy.position.set(x,y);
-            enemy.rotation = rotation;
-            
-            enemies.add(enemy);
-            debug = true;
-        }
-        
-        
+        enemy.origin.x = enemy.dimension.x/2;
+        enemy.origin.y = enemy.dimension.y/2;
+        enemy.position.set(x,y);
+        enemy.rotation = rotation;
+        enemy.explosion = Assets.instance.enemy[0].animationExplosionBig;
+        enemies.add(enemy);
     }
     
 }

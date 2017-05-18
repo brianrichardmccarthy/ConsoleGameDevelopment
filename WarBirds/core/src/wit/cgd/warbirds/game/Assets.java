@@ -32,8 +32,9 @@ public class Assets implements Disposable, AssetErrorListener {
     public AssetAirplane enemy[];
     public Asset bullet;
     public Asset doubleBullet;
+    public Asset enemyBullet;
     public AssetLevelDecoration levelDecoration;
-
+    
     private Assets() {
     }
 
@@ -75,6 +76,8 @@ public class Assets implements Disposable, AssetErrorListener {
         bullet = new Asset(atlas, "bullet");
         doubleBullet = new Asset(atlas, "bullet_double");
 
+        enemyBullet = new Asset(atlas, "emeny_bullet_1");
+        
         // create sound and music resource objects
         sounds = new AssetSounds(assetManager);
         music = new AssetMusic(assetManager);

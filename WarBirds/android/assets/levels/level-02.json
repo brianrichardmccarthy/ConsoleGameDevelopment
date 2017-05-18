@@ -1,0 +1,7 @@
+{
+	numOfEnemies: 10,
+	islands: 60,
+	seed: 20,
+	name: 2,
+	length: 20
+}

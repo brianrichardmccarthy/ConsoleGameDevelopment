@@ -40,6 +40,8 @@ public class Player extends AbstractGameObject {
 		position.x = MathUtils.clamp(position.x,-Constants.VIEWPORT_WIDTH/2+0.5f,Constants.VIEWPORT_WIDTH/2-0.5f);
 		position.y = MathUtils.clamp(position.y,level.start+2, level.end-2);
 		
+		isInScreen();
+		
 		timeShootDelay -= deltaTime;
 	}
 
@@ -58,7 +60,7 @@ public class Player extends AbstractGameObject {
 		timeShootDelay = Constants.PLAYER_SHOOT_DELAY;
 
 	}
-	
+
 	public void render (SpriteBatch batch) {
 		
 		region = animation.getKeyFrame(stateTime, true);

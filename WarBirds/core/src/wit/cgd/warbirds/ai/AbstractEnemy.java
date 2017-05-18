@@ -1,5 +1,6 @@
 package wit.cgd.warbirds.ai;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,23 +17,19 @@ public abstract class AbstractEnemy extends AbstractGameObject {
 
     public static final String TAG = AbstractEnemy.class.getName();
 
-    public Animation<TextureRegion> animation;
     public TextureRegion region;
     protected float timeShootDelay;
 
-    public AbstractGameObject player;
-    
-    public AbstractEnemy(Level level, int multiplyer) {
+    public AbstractEnemy(Level level, int multiplyer, int texture) {
         super(level, multiplyer);
-        init();
+        init(texture);
     }
 
-    public void init() {
+    public void init(int texture) {
 
         dimension.set(1, 1);
         
-        animation = Assets.instance.enemy[0].animationNormal;
-        setAnimation(animation);
+        setAnimation(Assets.instance.enemy[texture].animationNormal);
         
         // Center image on game object
         origin.set(dimension.x / 2, dimension.y / 2);
@@ -45,11 +42,10 @@ public abstract class AbstractEnemy extends AbstractGameObject {
 
         super.update(deltaTime);
         
-        if (timeShootDelay <= 0) shoot();
-        else timeShootDelay -= deltaTime;
-
-        // rotation += (float) Math.atan2(player.position.y, player.position.x);
-        
+        if (state == State.ACTIVE) {
+            if (timeShootDelay <= 0) shoot();
+            else timeShootDelay -= deltaTime;
+        }
     }
 
     public void shoot() {
@@ -66,6 +62,8 @@ public abstract class AbstractEnemy extends AbstractGameObject {
 
     public void render(SpriteBatch batch) {
 
+        if (state != State.ACTIVE) return;
+        
         region = animation.getKeyFrame(stateTime, true);
 
         batch.draw(region.getTexture(), position.x - origin.x, position.y - origin.y, origin.x, origin.y, dimension.x,

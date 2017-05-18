@@ -71,15 +71,13 @@ public abstract class AbstractGameObject {
 		position.x += velocity.x * deltaTime;
 		position.y += velocity.y * deltaTime;
 		
-		// state = (isInScreen()) ? State.ACTIVE : State.ASLEEP;
-		
 		if (health <= 0) {
 		    state = State.DYING;
+		    setAnimation(explosion);
 		}
 		
 		if (state == State.DYING) {
 			timeToDie -= deltaTime;
-			setAnimation(Assets.instance.player.animationExplosionBig);
 			if (timeToDie<0) state = State.DEAD;
 		}
 	}
@@ -96,9 +94,7 @@ public abstract class AbstractGameObject {
 	protected void updateMotionY(float deltaTime) {}
 	
 	public boolean isInScreen()  {
-	    
 		return ((position.x>-Constants.VIEWPORT_WIDTH/2 && position.x<Constants.VIEWPORT_WIDTH/2) && 
 				(position.y>level.start && position.y<level.end));
-		
 	}
 }

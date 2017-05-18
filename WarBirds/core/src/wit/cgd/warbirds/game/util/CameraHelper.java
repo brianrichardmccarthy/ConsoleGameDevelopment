@@ -55,7 +55,7 @@ public class CameraHelper {
 		return zoom;
 	}
 
-	public void setTarget(AbstractGameObject target) {
+	public void setTarget(AbstractGameObject target){
 		this.target = target;
 	}
 
