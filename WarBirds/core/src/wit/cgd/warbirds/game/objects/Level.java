@@ -205,7 +205,7 @@ public class Level extends AbstractGameObject {
         for (Bullet bullet: enemyBullets) 
             if (bullet.state == State.ACTIVE) bullet.render(batch);
 
-        for (AbstractEnemy b: enemies) if (b.state == State.ACTIVE) b.render(batch);
+        for (AbstractEnemy b: enemies) b.render(batch);
         
         for (AbstractGameObject b: powerUps) if (b.state == State.ACTIVE) b.render(batch);
         

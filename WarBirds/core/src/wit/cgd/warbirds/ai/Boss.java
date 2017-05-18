@@ -14,12 +14,9 @@ public class Boss extends AbstractEnemy {
 
     private AbstractGameObject player;
     private float distance;
-    private float timer;
-    private float lastDirection;
     
     public Boss(Level level, int multiplyer, AbstractGameObject player) {
         super(level, multiplyer, 2);
-        lastDirection = 1;
         this.player = player;
         velocity = new Vector2(1f, 1f);
     }
@@ -69,11 +66,8 @@ public class Boss extends AbstractEnemy {
                 // bottom right
                 velocity = new Vector2(speed, -speed);
             }
-            timer = 5f;
         } else {
-            // if (!isInScreen() && health >= 0) {
-               // velocity = new Vector2(2f, 2f);
-            // }
+            velocity = new Vector2();
         }
     }
     

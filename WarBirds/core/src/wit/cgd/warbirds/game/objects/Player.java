@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class Player extends AbstractGameObject {
 
@@ -40,8 +41,6 @@ public class Player extends AbstractGameObject {
 		position.x = MathUtils.clamp(position.x,-Constants.VIEWPORT_WIDTH/2+0.5f,Constants.VIEWPORT_WIDTH/2-0.5f);
 		position.y = MathUtils.clamp(position.y,level.start+2, level.end-2);
 		
-		isInScreen();
-		
 		timeShootDelay -= deltaTime;
 	}
 
@@ -53,6 +52,8 @@ public class Player extends AbstractGameObject {
 		Bullet bullet = level.bulletPool.obtain();
 		bullet.reset();
 		bullet.position.set(position);
+		
+		// bullet.velocity = new Vector2(velocity.x * Constants.BULLET_SPEED, velocity.y * Constants.BULLET_SPEED);
 		
 		bullet.damage = damage;
 		

@@ -55,6 +55,9 @@ public abstract class AbstractEnemy extends AbstractGameObject {
         bullet.reset();
         bullet.position.set(position);
 
+        // bullet.velocity = velocity;
+        // bullet.rotation = rotation;
+        
         level.enemyBullets.add(bullet);
         timeShootDelay = Constants.ENEMY_SHOOT_DELAY;
 
@@ -62,7 +65,7 @@ public abstract class AbstractEnemy extends AbstractGameObject {
 
     public void render(SpriteBatch batch) {
 
-        if (state != State.ACTIVE) return;
+        if (state != State.ACTIVE && state != State.DYING) return;
         
         region = animation.getKeyFrame(stateTime, true);
 
