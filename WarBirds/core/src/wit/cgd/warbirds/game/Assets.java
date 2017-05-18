@@ -88,10 +88,12 @@ public class Assets implements Disposable, AssetErrorListener {
 
     @Override
     public void dispose() {
-
         assetManager.dispose();
+        fonts.defaultSmall.dispose();
+        fonts.defaultNormal.dispose();
+        fonts.defaultBig.dispose();
     }
-
+    
     @Override
     public void error(AssetDescriptor asset, Throwable throwable) {
 

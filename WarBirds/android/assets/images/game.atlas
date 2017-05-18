@@ -4,6 +4,13 @@ size: 1024,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+Health
+  rotate: false
+  xy: 989, 212
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 bullet
   rotate: false
   xy: 586, 11
@@ -13,112 +20,112 @@ bullet
   index: -1
 bullet_double
   rotate: false
-  xy: 989, 212
+  xy: 338, 14
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 emeny_bullet
   rotate: false
-  xy: 338, 14
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 1
-emeny_bullet
-  rotate: false
   xy: 922, 80
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 2
+  index: 1
 emeny_bullet
   rotate: false
   xy: 622, 13
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
-enemy_plane_green
+  index: 2
+emeny_bullet
   rotate: false
   xy: 956, 80
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
+  index: 3
+enemy_plane_green
+  rotate: false
+  xy: 990, 80
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
   index: 1
-enemy_plane_green
-  rotate: false
-  xy: 990, 80
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-enemy_plane_green
-  rotate: false
-  xy: 990, 80
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
 enemy_plane_green
   rotate: false
   xy: 922, 46
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 3
-enemy_plane_white
+  index: 2
+enemy_plane_green
+  rotate: false
+  xy: 922, 46
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+enemy_plane_green
   rotate: false
   xy: 956, 46
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
+  index: 3
+enemy_plane_white
+  rotate: false
+  xy: 990, 46
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
   index: 1
-enemy_plane_white
-  rotate: false
-  xy: 990, 46
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-enemy_plane_white
-  rotate: false
-  xy: 990, 46
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 4
 enemy_plane_white
   rotate: false
   xy: 656, 13
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
+  index: 2
+enemy_plane_white
+  rotate: false
+  xy: 656, 13
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+enemy_plane_white
+  rotate: false
+  xy: 690, 14
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
   index: 3
 enemy_plane_yellow
   rotate: false
-  xy: 690, 14
+  xy: 724, 14
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 enemy_plane_yellow
   rotate: false
-  xy: 724, 14
+  xy: 758, 14
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 enemy_plane_yellow
   rotate: false
-  xy: 724, 14
+  xy: 758, 14
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 enemy_plane_yellow
   rotate: false
-  xy: 758, 14
+  xy: 792, 14
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -391,21 +398,21 @@ flame
   index: 2
 flame
   rotate: false
-  xy: 916, 4
+  xy: 950, 4
   size: 20, 40
   orig: 20, 40
   offset: 0, 0
   index: 3
 flame
   rotate: false
-  xy: 938, 4
+  xy: 972, 4
   size: 20, 40
   orig: 20, 40
   offset: 0, 0
   index: 4
 flame
   rotate: false
-  xy: 960, 4
+  xy: 994, 4
   size: 20, 40
   orig: 20, 40
   offset: 0, 0
@@ -433,14 +440,14 @@ island_tiny
   index: -1
 life_up
   rotate: false
-  xy: 792, 14
+  xy: 826, 14
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 life_up
   rotate: false
-  xy: 826, 14
+  xy: 860, 14
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -475,7 +482,7 @@ player
   index: 3
 water
   rotate: false
-  xy: 860, 14
+  xy: 916, 12
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

@@ -3,6 +3,8 @@ package wit.cgd.warbirds.game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 import wit.cgd.warbirds.game.util.Constants;
 
 public class WorldRenderer implements Disposable {
@@ -45,6 +47,11 @@ public class WorldRenderer implements Disposable {
 		worldController.level.levelDecoration.scale.y =  scale;
 	}
 	
+	private void renderGuiScore(SpriteBatch batch) {
+	    batch.draw(Assets.instance.enemy[0].region, -15, -15, 50, 50, 100, 100, 0.80f, -0.80f, 0);
+	    Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.level.killedEnemies + "/" + worldController.level.totalNumberOfEnemies, -15+100, -15+37);
+	}
+	
 	public void render() {
 		
 		// Game rendering
@@ -58,7 +65,7 @@ public class WorldRenderer implements Disposable {
 		
 		batch.setProjectionMatrix(cameraGUI.combined);
 		batch.begin();
-		
+		renderGuiScore(batch);
 		batch.end();
 	}
 

@@ -90,6 +90,8 @@ public class WorldController extends InputAdapter {
                 enemy.timeToDie = Constants.ENEMY_DIE_DELAY;
             }
         }
+        
+        // power ups
     }
 
     public boolean isInScreen(AbstractGameObject gameObject) {

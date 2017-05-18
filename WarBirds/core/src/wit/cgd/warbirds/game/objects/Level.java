@@ -34,8 +34,8 @@ public class Level extends AbstractGameObject {
     private float enemyTimer;
     public Array<AbstractEnemy> enemies;
     private String currentLevel;
-    private int totalNumberOfEnemies;
-    private int killedEnemies;
+    public int totalNumberOfEnemies;
+    public int killedEnemies;
     private boolean bossSpawned;
     private AbstractEnemy boss;
     public Array<AbstractPowerUp> powerUps;
