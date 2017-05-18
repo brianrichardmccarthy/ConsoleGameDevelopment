@@ -178,6 +178,7 @@ public class Level extends AbstractGameObject {
     }
 
     public void killedEnemy() {
+        // Gdx.app.debug(TAG, "killedEnemy called");
         killedEnemies++;
     }
     
@@ -190,10 +191,10 @@ public class Level extends AbstractGameObject {
         levelDecoration.render(batch);
         player.render(batch);
         for (Bullet bullet: bullets)
-            if (bullet.state != State.DEAD) bullet.render(batch);
+            if (bullet.state == State.ACTIVE) bullet.render(batch);
         
         for (Bullet bullet: enemyBullets) 
-            if (bullet.state != State.DEAD) bullet.render(batch);
+            if (bullet.state == State.ACTIVE) bullet.render(batch);
 
         for (AbstractEnemy b: enemies) if (b.state == State.ACTIVE) b.render(batch);
         
@@ -204,6 +205,9 @@ public class Level extends AbstractGameObject {
         if (bossSpawned) return;
         
         bossSpawned = killedEnemies >= totalNumberOfEnemies;
+        
+        // Gdx.app.debug(TAG, "Condition <" + (killedEnemies >= totalNumberOfEnemies) + "> killedEnemies <" + killedEnemies + "> totalNumberOfEnemies <" + totalNumberOfEnemies + ">" );
+        
         AbstractEnemy enemy = null;
         
         if (bossSpawned) {

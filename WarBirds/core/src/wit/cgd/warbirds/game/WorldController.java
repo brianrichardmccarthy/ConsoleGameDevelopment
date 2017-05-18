@@ -101,9 +101,9 @@ public class WorldController extends InputAdapter {
 
         for (int x = level.enemies.size; --x >= 0;) {
 
-            AbstractEnemy b = level.enemies.get(x);
+            AbstractEnemy enemy = level.enemies.get(x);
 
-            if (b.state == State.DEAD) continue;
+            if (enemy.state != State.ACTIVE) continue;
 
             for (int y = level.bullets.size; --y >= 0;) {
 
@@ -111,14 +111,17 @@ public class WorldController extends InputAdapter {
 
                 if (bullet.state != State.ACTIVE) continue;
 
-                if (new Rectangle(b.position.x, b.position.y, b.dimension.x, b.dimension.y).overlaps(new Rectangle(
+                if (new Rectangle(enemy.position.x, enemy.position.y, enemy.dimension.x, enemy.dimension.y).overlaps(new Rectangle(
                     bullet.position.x, bullet.position.y, bullet.dimension.x, bullet.dimension.y))) {
-                    b.health -= bullet.damage;
-                    bullet.state = State.DYING;
-                    bullet.timeToDie = Constants.BULLET_DIE_DELAY;
-                    if (b.health <= 0) {
+                    enemy.health -= bullet.damage;
+                    if (enemy.health <= 0) {
+                        Gdx.app.debug(TAG, "Debug x <" + x + ">");
+                    }
+                    bullet.state = State.DEAD;
+                    if (enemy.health <= 0) {
                         level.killedEnemy();
-                        b.timeToDie = Constants.ENEMY_DIE_DELAY;
+                        enemy.state = State.DYING;
+                        enemy.timeToDie = Constants.ENEMY_DIE_DELAY;
                     }
                 }
             }
