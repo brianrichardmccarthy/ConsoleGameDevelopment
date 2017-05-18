@@ -52,6 +52,16 @@ public class WorldRenderer implements Disposable {
 	    Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.level.killedEnemies + "/" + worldController.level.totalNumberOfEnemies, -15+100, -15+37);
 	}
 	
+	private void renderGuiExtraLive(SpriteBatch batch) {
+        float x = cameraGUI.viewportWidth - 50 - Constants.MAX_LIVES * 100;
+        float y = -15;
+        for (int i = 0; i < Constants.MAX_LIVES; i++) {
+            if (worldController.lives <= i) batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
+            batch.draw(Assets.instance.player.region, x + i * 100, y, 50, 50, 120, 100, 0.80f, -0.80f, 0);
+            batch.setColor(1, 1, 1, 1);
+        }
+    }
+	
 	public void render() {
 		
 		// Game rendering
@@ -66,6 +76,7 @@ public class WorldRenderer implements Disposable {
 		batch.setProjectionMatrix(cameraGUI.combined);
 		batch.begin();
 		renderGuiScore(batch);
+		renderGuiExtraLive(batch);
 		batch.end();
 	}
 

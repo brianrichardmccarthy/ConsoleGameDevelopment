@@ -33,4 +33,6 @@ public class Constants {
     
     public static final int BASE_HEALTH = 100;
     public static final int BASE_DAMAGE = 10;
+    
+    public static final int MAX_LIVES = 3;
 }

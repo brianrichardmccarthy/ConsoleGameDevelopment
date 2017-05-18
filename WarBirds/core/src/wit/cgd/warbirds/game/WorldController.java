@@ -24,6 +24,7 @@ public class WorldController extends InputAdapter {
     public CameraHelper cameraHelper;
     public Level level;
     private String[] levels = { "levels/level-01.json", "levels/level-02.json", "levels/level-03.json" };
+    public int lives;
 
     private int currentLevel = 0;
 
@@ -38,6 +39,21 @@ public class WorldController extends InputAdapter {
         level = new Level(levels[currentLevel]);
         cameraHelper = new CameraHelper();
         cameraHelper.setTarget(level);
+        lives = Constants.MAX_LIVES;
+    }
+    
+    private void init(String level) {
+        
+        if (level.equals("levels/level-01.json")) {
+            currentLevel = 0;
+        } else if (level.equals("levels/level-02.json")) {
+            currentLevel = 1;
+        } else {
+            currentLevel = 2;
+        }
+        
+        init();
+        
     }
 
     public void update(float deltaTime) {
@@ -45,9 +61,7 @@ public class WorldController extends InputAdapter {
         if (level.isGameOver()) {
 
             if (++currentLevel < levels.length) {
-                level = new Level(levels[currentLevel]);
-                cameraHelper = new CameraHelper();
-                cameraHelper.setTarget(level);
+                init();
             } else {
                 Gdx.app.exit();
             }
@@ -123,7 +137,6 @@ public class WorldController extends InputAdapter {
                         enemy.state = State.DYING;
                         enemy.timeToDie = Constants.ENEMY_DIE_DELAY;
                         if (level.enemySpawn.nextFloat() > 0.5f) {
-                            // level.powerUps.add(new ExtraLive(level, enemy.position, Assets.instance.extraLive));
                             level.addPowerUp(new ExtraLive(level, enemy.position, Assets.instance.extraLive));
                         }
                     }
@@ -234,21 +247,15 @@ public class WorldController extends InputAdapter {
         }
 
         if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
-            level = new Level("levels/level-01.json");
-            cameraHelper = new CameraHelper();
-            cameraHelper.setTarget(level);
+            init("levels/level-01.json");
         }
 
         if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
-            level = new Level("levels/level-02.json");
-            cameraHelper = new CameraHelper();
-            cameraHelper.setTarget(level);
+            init("levels/level-02.json");
         }
 
         if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
-            level = new Level("levels/level-03.json");
-            cameraHelper = new CameraHelper();
-            cameraHelper.setTarget(level);
+            init("levels/level-03.json");
         }
 
     }
