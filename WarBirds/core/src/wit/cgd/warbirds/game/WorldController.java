@@ -26,7 +26,6 @@ public class WorldController extends InputAdapter {
     public Level level;
     private String[] levels = { "levels/level-01.json", "levels/level-02.json", "levels/level-03.json" };
     public int lives;
-
     private int currentLevel = 0;
 
     public WorldController(Game game) {
@@ -251,35 +250,43 @@ public class WorldController extends InputAdapter {
 
     private void handleGameInput(float deltaTime) {
 
-        if (Gdx.input.isKeyPressed(Keys.A)) {
-            level.player.velocity.x = -Constants.PLANE_H_SPEED;
-        } else if (Gdx.input.isKeyPressed(Keys.D)) {
-            level.player.velocity.x = Constants.PLANE_H_SPEED;
+        
+        if (Gdx.input.isKeyPressed(Keys.W) && Gdx.input.isKeyPressed(Keys.D)) {
+            // w, d
+            level.player.rotation -=1;
+        } else if (Gdx.input.isKeyPressed(Keys.W) && Gdx.input.isKeyPressed(Keys.A)) {
+            // w, a
+            level.player.rotation +=1;
+        } else if (Gdx.input.isKeyPressed(Keys.S) && Gdx.input.isKeyPressed(Keys.D)) {
+            // s, d
+            level.player.rotation -=1;
+        } else if (Gdx.input.isKeyPressed(Keys.S) && Gdx.input.isKeyPressed(Keys.A)) {
+            // s, a
+            level.player.rotation +=1;
         } else {
-            level.player.velocity.x = 0;
+            if (Gdx.input.isKeyPressed(Keys.A)) {
+                level.player.velocity.x = -Constants.PLANE_H_SPEED;
+            } else if (Gdx.input.isKeyPressed(Keys.D)) {
+                level.player.velocity.x = Constants.PLANE_H_SPEED;
+            } else {
+                level.player.velocity.x = 0;
+            }
+            
+            if (Gdx.input.isKeyPressed(Keys.W)) {
+                level.player.velocity.y = Constants.PLANE_MAX_V_SPEED;
+            } else if (Gdx.input.isKeyPressed(Keys.S)) {
+                level.player.velocity.y = Constants.PLANE_MIN_V_SPEED;
+            } else {
+                level.player.velocity.y = Constants.SCROLL_SPEED;
+            }
+            
         }
-        if (Gdx.input.isKeyPressed(Keys.W)) {
-            level.player.velocity.y = Constants.PLANE_MAX_V_SPEED;
-        } else if (Gdx.input.isKeyPressed(Keys.S)) {
-            level.player.velocity.y = Constants.PLANE_MIN_V_SPEED;
-        } else {
-            level.player.velocity.y = Constants.SCROLL_SPEED;
-        }
+        
+        
         if (Gdx.input.isKeyPressed(Keys.SPACE)) {
             level.player.shoot();
         }
 
-        if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
-            init("levels/level-01.json");
-        }
-
-        if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
-            init("levels/level-02.json");
-        }
-
-        if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
-            init("levels/level-03.json");
-        }
 
     }
 
@@ -310,6 +317,13 @@ public class WorldController extends InputAdapter {
         if (Gdx.input.isKeyPressed(Keys.COMMA)) cameraHelper.addZoom(camZoomSpeed);
         if (Gdx.input.isKeyPressed(Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
         if (Gdx.input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
+        
+        if (Gdx.input.isKeyPressed(Keys.NUM_1)) init("levels/level-01.json");
+
+        if (Gdx.input.isKeyPressed(Keys.NUM_2)) init("levels/level-02.json");
+
+        if (Gdx.input.isKeyPressed(Keys.NUM_3)) init("levels/level-03.json");
+        
     }
 
     private void moveCamera(float x, float y) {
