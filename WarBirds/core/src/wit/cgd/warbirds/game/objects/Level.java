@@ -38,6 +38,7 @@ public class Level extends AbstractGameObject {
     private int killedEnemies;
     private boolean bossSpawned;
     private AbstractEnemy boss;
+    public Array<AbstractPowerUp> powerUps;
     
     boolean debug = false;
     
@@ -115,6 +116,8 @@ public class Level extends AbstractGameObject {
         
         levelDecoration = new LevelDecoration(this);
 
+        powerUps = new Array<AbstractPowerUp>();
+        
         // read and parse level map (form a json file)
         String map = Gdx.files.internal(currentLevel).readString();
 
@@ -148,6 +151,8 @@ public class Level extends AbstractGameObject {
     public void update(float deltaTime) {
 
         super.update(deltaTime);
+        
+        Gdx.app.debug(TAG, "Power ups size <" + powerUps.size + ">");
 
         // limits for rendering
         start = position.y - scale.y * Constants.VIEWPORT_HEIGHT;
@@ -178,12 +183,16 @@ public class Level extends AbstractGameObject {
     }
 
     public void killedEnemy() {
-        // Gdx.app.debug(TAG, "killedEnemy called");
         killedEnemies++;
     }
     
     public boolean isGameOver() {
         return bossSpawned && boss.health <= 0; 
+    }
+    
+    public void addPowerUp(AbstractPowerUp powerUp) {
+        powerUps.add(powerUp);
+        return;
     }
     
     public void render(SpriteBatch batch) {
@@ -197,6 +206,8 @@ public class Level extends AbstractGameObject {
             if (bullet.state == State.ACTIVE) bullet.render(batch);
 
         for (AbstractEnemy b: enemies) if (b.state == State.ACTIVE) b.render(batch);
+        
+        for (AbstractGameObject b: powerUps) if (b.state == State.ACTIVE) b.render(batch);
         
     }
 

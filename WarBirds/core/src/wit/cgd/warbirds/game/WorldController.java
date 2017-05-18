@@ -11,6 +11,7 @@ import wit.cgd.warbirds.ai.AbstractEnemy;
 import wit.cgd.warbirds.game.objects.AbstractGameObject;
 import wit.cgd.warbirds.game.objects.AbstractGameObject.State;
 import wit.cgd.warbirds.game.objects.Bullet;
+import wit.cgd.warbirds.game.objects.ExtraLive;
 import wit.cgd.warbirds.game.objects.Level;
 import wit.cgd.warbirds.game.util.CameraHelper;
 import wit.cgd.warbirds.game.util.Constants;
@@ -114,14 +115,15 @@ public class WorldController extends InputAdapter {
                 if (new Rectangle(enemy.position.x, enemy.position.y, enemy.dimension.x, enemy.dimension.y).overlaps(new Rectangle(
                     bullet.position.x, bullet.position.y, bullet.dimension.x, bullet.dimension.y))) {
                     enemy.health -= bullet.damage;
-                    if (enemy.health <= 0) {
-                        Gdx.app.debug(TAG, "Debug x <" + x + ">");
-                    }
                     bullet.state = State.DEAD;
                     if (enemy.health <= 0) {
                         level.killedEnemy();
                         enemy.state = State.DYING;
                         enemy.timeToDie = Constants.ENEMY_DIE_DELAY;
+                        if (level.enemySpawn.nextFloat() > 0.5f) {
+                            // level.powerUps.add(new ExtraLive(level, enemy.position, Assets.instance.extraLive));
+                            level.addPowerUp(new ExtraLive(level, enemy.position, Assets.instance.extraLive));
+                        }
                     }
                 }
             }
