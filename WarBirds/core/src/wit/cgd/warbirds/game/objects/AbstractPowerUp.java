@@ -9,6 +9,7 @@ import wit.cgd.warbirds.game.Assets.Asset;
 public abstract class AbstractPowerUp extends AbstractGameObject {
 
     private TextureRegion region;
+    public String name;
     
     public AbstractPowerUp(Level level, Vector2 position, Asset texture) {
         super(level, 0);

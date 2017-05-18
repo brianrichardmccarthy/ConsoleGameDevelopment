@@ -10,8 +10,9 @@ import com.badlogic.gdx.math.Rectangle;
 import wit.cgd.warbirds.ai.AbstractEnemy;
 import wit.cgd.warbirds.game.objects.AbstractGameObject;
 import wit.cgd.warbirds.game.objects.AbstractGameObject.State;
+import wit.cgd.warbirds.game.objects.AbstractPowerUp;
 import wit.cgd.warbirds.game.objects.Bullet;
-import wit.cgd.warbirds.game.objects.ExtraLive;
+import wit.cgd.warbirds.game.objects.ExtraLife;
 import wit.cgd.warbirds.game.objects.Level;
 import wit.cgd.warbirds.game.util.CameraHelper;
 import wit.cgd.warbirds.game.util.Constants;
@@ -74,6 +75,7 @@ public class WorldController extends InputAdapter {
             checkEnemyBulletPlayerCollision();
             checkEnemyPlayerCollision();
             checkEnemyPlanesCollisions();
+            checkPlayerPowerUpCollisions();
             // cullObjects();
         }
     }
@@ -137,7 +139,7 @@ public class WorldController extends InputAdapter {
                         enemy.state = State.DYING;
                         enemy.timeToDie = Constants.ENEMY_DIE_DELAY;
                         if (level.enemySpawn.nextFloat() > 0.5f) {
-                            level.addPowerUp(new ExtraLive(level, enemy.position, Assets.instance.extraLive));
+                            level.addPowerUp(new ExtraLife(level, enemy.position, Assets.instance.extraLive));
                         }
                     }
                 }
@@ -214,6 +216,27 @@ public class WorldController extends InputAdapter {
                     nextEnemy.timeToDie = Constants.ENEMY_DIE_DELAY;
                 }
             }
+        }
+    }
+    
+    public void checkPlayerPowerUpCollisions() {
+        
+        Rectangle player = new Rectangle(level.player.position.x, level.player.position.y, level.player.dimension.x,
+            level.player.dimension.y);
+        
+        for (AbstractPowerUp powerUp : level.powerUps) {
+            
+            if (powerUp.state != State.ACTIVE) continue;
+            
+            Rectangle powerUpBox = new Rectangle(powerUp.position.x, powerUp.position.y, powerUp.dimension.x, powerUp.dimension.y);
+            
+            if (powerUpBox.overlaps(player)) {
+                if (powerUp.name.equals("ExtraLife") && lives < Constants.MAX_LIVES) {
+                    lives++;
+                    powerUp.state = State.DEAD;
+                }
+            }
+            
         }
     }
 

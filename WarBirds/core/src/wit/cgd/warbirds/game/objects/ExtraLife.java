@@ -6,10 +6,11 @@ import com.badlogic.gdx.math.Vector2;
 
 import wit.cgd.warbirds.game.Assets.Asset;
 
-public class ExtraLive extends AbstractPowerUp {
+public class ExtraLife extends AbstractPowerUp {
 
-    public ExtraLive(Level level, Vector2 position, Asset texture) {
+    public ExtraLife(Level level, Vector2 position, Asset texture) {
         super(level, position, texture);
+        name = "ExtraLife";
     }
 
 }
