@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
 import wit.cgd.warbirds.game.util.Constants;
+import wit.cgd.warbirds.game.util.GamePreferences;
 
 @SuppressWarnings("unused")
 public class MenuScreen extends AbstractGameScreen {
@@ -188,11 +189,76 @@ public class MenuScreen extends AbstractGameScreen {
         game.setScreen(new GameScreen(game));
     }
 
-    private void onOptionsClicked() { }
-    
-    
     private Table buildOptionsWindowLayer() {
-        Table table = new Table();
-        return table;
+
+        // create instance of window
+        optionsWindow = new Window("Options", defaultSkin);
+
+        // cancel and save buttons 
+        optionsCancelButton = new Button(skin, "cancel");
+        optionsWindow.add(optionsCancelButton).pad(Constants.BUTTON_PAD);
+        optionsCancelButton.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+              onCancelClicked();
+            }
+          });
+        optionsSaveButton = new Button(skin, "save");
+        optionsWindow.add(optionsSaveButton).pad(Constants.BUTTON_PAD);;
+        optionsSaveButton.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+              onSaveClicked();
+            }
+          });
+        
+        // tidy up window = resize and center
+        optionsWindow.setColor(1, 1, 1, 0.8f);
+        optionsWindow.setVisible(false);
+        if (debugEnabled) optionsWindow.debug();
+        optionsWindow.pack();
+        optionsWindow.setPosition((Constants.VIEWPORT_GUI_WIDTH - optionsWindow.getWidth())/2,
+                        (Constants.VIEWPORT_GUI_HEIGHT - optionsWindow.getHeight())/2);
+        
+        // return constructed window
+        return optionsWindow;
     }
+    
+    private void loadSettings() {
+        GamePreferences prefs = GamePreferences.instance;
+        prefs.load();
+
+        // set each widget using values in prefs
+    }
+    
+    private void saveSettings() {
+        GamePreferences prefs = GamePreferences.instance;
+
+        // save each widget value into prefs
+
+        prefs.save();
+    }
+    
+    private void onOptionsClicked() { 
+        playButton.setVisible(false);
+        optionsButton.setVisible(false);
+        resetStatsButton.setVisible(false);
+        optionsWindow.setVisible(true);
+        loadSettings();
+    }
+    
+    private void onSaveClicked() {
+        saveSettings();
+        onCancelClicked();
+    }
+    
+    private void onCancelClicked() {
+
+        playButton.setVisible(true);
+        optionsButton.setVisible(true);
+        resetStatsButton.setVisible(true);
+        optionsWindow.setVisible(false);
+        // AudioManager.instance.onSettingsUpdated();
+    }
+    
 }
