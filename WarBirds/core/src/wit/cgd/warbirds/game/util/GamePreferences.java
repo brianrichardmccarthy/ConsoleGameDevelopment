@@ -13,6 +13,7 @@ public class GamePreferences {
 
     public boolean music;
     public boolean sound;
+
     public float musicVolume;
     public float soundVolume;
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -47,15 +48,8 @@ public class Assets implements Disposable, AssetErrorListener {
 
         // load texture for game sprites
         assetManager.load(Constants.TEXTURE_ATLAS_GAME, TextureAtlas.class);
-
-        // TODO load sounds
-        // assetManager.load("sounds/FILENAME", Sound.class);
-
-        // load music
-        // assetManager.load("music/FILENAME", Music.class);
-
         assetManager.finishLoading();
-
+        
         Gdx.app.debug(TAG, "# of assets loaded: " + assetManager.getAssetNames().size);
         for (String a: assetManager.getAssetNames())
             Gdx.app.debug(TAG, "asset: " + a);
@@ -81,6 +75,21 @@ public class Assets implements Disposable, AssetErrorListener {
         enemyBullet = new Asset(atlas, "emeny_bullet_2");
         extraLive = new Asset(atlas, "player");
         health = new Asset(atlas, "Health");
+        
+        // load sounds
+        assetManager.load("sounds/enemy_shoot.wav", Sound.class);
+        assetManager.load("sounds/explosion.wav", Sound.class);
+        assetManager.load("sounds/explosion_large.wav", Sound.class);
+        assetManager.load("sounds/player_bullet_01.wav", Sound.class);
+        assetManager.load("sounds/player_hit.wav", Sound.class);
+        assetManager.load("sounds/warning.wav", Sound.class);
+        assetManager.load("sounds/click_01.wav", Sound.class);
+        assetManager.load("sounds/click_02.wav", Sound.class);
+        assetManager.finishLoading();
+        
+        // load music
+        assetManager.load("music/AcesHigh.mp3", Music.class);
+        assetManager.finishLoading();
         
         // create sound and music resource objects
         sounds = new AssetSounds(assetManager);
@@ -168,22 +177,32 @@ public class Assets implements Disposable, AssetErrorListener {
 
     public class AssetSounds {
 
-        // TODO list reference to sound assets
-        // public final Sound first;
+        public final Sound enemyShoot;
+        public final Sound explosion;
+        public final Sound explosionLarge;
+        public final Sound playerBullet;
+        public final Sound playerHit;
+        public final Sound warning;
+        public final Sound click01;
+        public final Sound click02;
 
         public AssetSounds(AssetManager am) {
-            // TODO 
-            // first = am.get("sounds/FILENAME", Sound.class);
+            enemyShoot = am.get("sounds/enemy_shoot.wav", Sound.class);
+            explosion = am.get("sounds/explosion.wav", Sound.class);
+            explosionLarge = am.get("sounds/explosion_large.wav", Sound.class);
+            playerBullet = am.get("sounds/player_bullet_01.wav", Sound.class);
+            playerHit = am.get("sounds/player_hit.wav", Sound.class);
+            warning = am.get("sounds/warning.wav", Sound.class);
+            click01 = am.get("sounds/click_01.wav", Sound.class);
+            click02 = am.get("sounds/click_02.wav", Sound.class);
         }
     }
 
     public class AssetMusic {
-        // TODO list reference to music assets
-        // public final Music song01;
+        public final Music song01;
 
         public AssetMusic(AssetManager am) {
-            // TODO
-            // song01 = am.get("music/FILENAME", Music.class);
+            song01 = am.get("music/AcesHigh.mp3", Music.class);
         }
     }
 

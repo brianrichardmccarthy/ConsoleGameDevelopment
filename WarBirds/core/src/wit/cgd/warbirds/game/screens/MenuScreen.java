@@ -20,53 +20,58 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
+import wit.cgd.warbirds.game.util.AudioManager;
 import wit.cgd.warbirds.game.util.Constants;
 import wit.cgd.warbirds.game.util.GamePreferences;
+import wit.cgd.warbirds.game.util.GameStats;
 
 @SuppressWarnings("unused")
 public class MenuScreen extends AbstractGameScreen {
 
+    @SuppressWarnings("unused")
     private static final String TAG = MenuScreen.class.getName();
-    
-    private Stage               stage;
 
-     // MenuScreen widgets
-     private Button              playButton;
-     private Button              optionsButton;
-     private Button              resetStatsButton;
-     private Label               totalDeathsLabel;
-     private Label               totalKillsLabel;
-    
-     // options window widgets
-     private Table               optionsWindowLayer;
-     private Window              optionsWindow;
-    
-     private Button              optionsSaveButton;
-     private Button              optionsCancelButton;
-    
-     private CheckBox            firstPlayerHumanCheckBox;
-     private Label               firstPlayerSkillLabel;
-     private Slider              firstPlayerSkillSlider;
-     private CheckBox            secondPlayerHumanCheckBox;
-     private Label               secondPlayerSkillLabel;
-     private Slider              secondPlayerSkillSlider;
-    
-     private CheckBox            soundCheckBox;
-     private Slider              soundSlider;
-     private CheckBox            musicCheckBox;
-     private Slider              musicSlider;
-    
-     // debug
-     private final float         DEBUG_REBUILD_INTERVAL  = 5.0f;
-     private boolean             debugEnabled            = false;
-     private float               debugRebuildStage;
-    
+    private Stage stage;
+
+    //MenuScreen widgets
+    private Button playButton;
+    private Button optionsButton;
+    private Button resetStatsButton;
+    private Label gameCountLabel;
+    private Label currentStreakLabel;
+    private Label longestStreakLabel;
+
+    //options window widgets
+    private Table optionsWindowLayer;
+    private Window optionsWindow;
+
+    private Button optionsSaveButton;
+    private Button optionsCancelButton;
+
+    private CheckBox firstPlayerHumanCheckBox;
+    private Label firstPlayerSkillLabel;
+    private Slider firstPlayerSkillSlider;
+    private CheckBox secondPlayerHumanCheckBox;
+    private Label secondPlayerSkillLabel;
+    private Slider secondPlayerSkillSlider;
+
+    private CheckBox soundCheckBox;
+    private Slider soundSlider;
+    private CheckBox musicCheckBox;
+    private Slider musicSlider;
+
+    //debug
+    private final float DEBUG_REBUILD_INTERVAL = 5.0f;
+    private boolean debugEnabled = false;
+    private float debugRebuildStage;
+
     public MenuScreen(Game game) {
         super(game);
     }
 
     @Override
     public void render(float deltaTime) {
+
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if (debugEnabled) {
@@ -78,28 +83,7 @@ public class MenuScreen extends AbstractGameScreen {
         }
         stage.act(deltaTime);
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update((int)Constants.VIEWPORT_GUI_WIDTH, (int)Constants.VIEWPORT_GUI_HEIGHT, false);
-    }
-
-    @Override
-    public void hide() {
-        stage.dispose();
-    }
-
-    @Override
-    public void show() {
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-        rebuildStage();
-    }
-
-    @Override
-    public void pause() {
-
+        //Table.drawDebug(stage);
     }
 
     private void rebuildStage() {
@@ -110,7 +94,7 @@ public class MenuScreen extends AbstractGameScreen {
         stage.clear();
         Stack stack = new Stack();
         stage.addActor(stack);
-        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT-20f);
+        stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 
         // build all layers
         stack.add(buildBackgroundLayer());
@@ -121,8 +105,9 @@ public class MenuScreen extends AbstractGameScreen {
         stage.addActor(optionsWindowLayer);
         stage.addActor(optionsWindowLayer);
     }
-    
+
     private Table buildBackgroundLayer() {
+
         Table table = new Table();
         table.add(new Image(skin, "background"));
         return table;
@@ -133,18 +118,20 @@ public class MenuScreen extends AbstractGameScreen {
         Table table = new Table();
         table.left().top();
 
-        totalDeathsLabel = new Label("Total Deaths: * ", skin);
-        table.add(totalDeathsLabel).left();
+        currentStreakLabel = new Label("Length of current winning streak: " + GameStats.instance.totalKills, skin);
+        table.add(currentStreakLabel).left();
         table.row();
-        totalKillsLabel = new Label("Total Kills: * ", skin);
-        table.add(totalKillsLabel).left();
+        longestStreakLabel = new Label("Longest winning streak: " + GameStats.instance.totalDeaths, skin);
+        table.add(longestStreakLabel).left();
 
         table.row();
         resetStatsButton = new Button(skin, "reset");
         table.add(resetStatsButton).pad(Constants.BUTTON_PAD);
         resetStatsButton.addListener(new ChangeListener() {
+
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
                 onResetStatsClicked();
             }
         });
@@ -153,19 +140,24 @@ public class MenuScreen extends AbstractGameScreen {
         return table;
     }
 
-    private void onResetStatsClicked() { }
-    
+    private void onResetStatsClicked() {
+
+        GameStats.instance.reset();
+        rebuildStage();
+    }
+
     private Table buildControlsLayer() {
+
         Table table = new Table();
         table.right().bottom();
-        table.align(Align.bottom);
 
         playButton = new Button(skin, "play");
         table.add(playButton).pad(Constants.BUTTON_PAD);
-        // table.add(playButton).padRight(Constants.BUTTON_PAD*3.5f);
         playButton.addListener(new ChangeListener() {
+
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
                 onPlayClicked();
             }
         });
@@ -174,8 +166,10 @@ public class MenuScreen extends AbstractGameScreen {
         optionsButton = new Button(skin, "options");
         table.add(optionsButton).pad(Constants.BUTTON_PAD);
         optionsButton.addListener(new ChangeListener() {
+
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
                 onOptionsClicked();
             }
         });
@@ -186,7 +180,17 @@ public class MenuScreen extends AbstractGameScreen {
     }
 
     private void onPlayClicked() {
+
         game.setScreen(new GameScreen(game));
+    }
+
+    private void onOptionsClicked() {
+
+        playButton.setVisible(false);
+        optionsButton.setVisible(false);
+        resetStatsButton.setVisible(false);
+        optionsWindow.setVisible(true);
+        loadSettings();
     }
 
     private Table buildOptionsWindowLayer() {
@@ -194,71 +198,138 @@ public class MenuScreen extends AbstractGameScreen {
         // create instance of window
         optionsWindow = new Window("Options", defaultSkin);
 
+
+        // sound settings
+        optionsWindow.add(new Label("Sound Effects", defaultSkin)).colspan(3);
+        optionsWindow.row();
+        soundCheckBox = new CheckBox("On", defaultSkin);
+        optionsWindow.add(soundCheckBox);
+        soundCheckBox.addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                CheckBox me = (CheckBox) actor;
+                soundSlider.setDisabled(!me.isChecked());
+            }
+        });
+        soundSlider = new Slider(0.0f, 1.0f, 0.1f, false, defaultSkin);
+        optionsWindow.add(soundSlider).colspan(2);
+        optionsWindow.row().padBottom(10);
+
+        // music settings
+        optionsWindow.add(new Label("Music", defaultSkin)).colspan(3);
+        optionsWindow.row();
+        musicCheckBox = new CheckBox("On", defaultSkin);
+        optionsWindow.add(musicCheckBox);
+        musicCheckBox.addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                CheckBox me = (CheckBox) actor;
+                musicSlider.setDisabled(!me.isChecked());
+            }
+        });
+        musicSlider = new Slider(0.0f, 1.0f, 0.1f, false, defaultSkin);
+        optionsWindow.add(musicSlider).colspan(2);
+        optionsWindow.row().padBottom(10);
+
         // cancel and save buttons 
         optionsCancelButton = new Button(skin, "cancel");
         optionsWindow.add(optionsCancelButton).pad(Constants.BUTTON_PAD);
         optionsCancelButton.addListener(new ChangeListener() {
+
             @Override
-            public void changed (ChangeEvent event, Actor actor) {
-              onCancelClicked();
+            public void changed(ChangeEvent event, Actor actor) {
+
+                onCancelClicked();
             }
-          });
+        });
         optionsSaveButton = new Button(skin, "save");
-        optionsWindow.add(optionsSaveButton).pad(Constants.BUTTON_PAD);;
+        optionsWindow.add(optionsSaveButton).pad(Constants.BUTTON_PAD);
         optionsSaveButton.addListener(new ChangeListener() {
+
             @Override
-            public void changed (ChangeEvent event, Actor actor) {
-              onSaveClicked();
+            public void changed(ChangeEvent event, Actor actor) {
+
+                onSaveClicked();
             }
-          });
-        
+        });
+
         // tidy up window = resize and center
         optionsWindow.setColor(1, 1, 1, 0.8f);
         optionsWindow.setVisible(false);
         if (debugEnabled) optionsWindow.debug();
         optionsWindow.pack();
-        optionsWindow.setPosition((Constants.VIEWPORT_GUI_WIDTH - optionsWindow.getWidth())/2,
-                        (Constants.VIEWPORT_GUI_HEIGHT - optionsWindow.getHeight())/2);
-        
+        optionsWindow.setPosition( (Constants.VIEWPORT_GUI_WIDTH - optionsWindow.getWidth()) / 2,
+            (Constants.VIEWPORT_GUI_HEIGHT - optionsWindow.getHeight()) / 2);
+
         // return constructed window
         return optionsWindow;
     }
-    
-    private void loadSettings() {
-        GamePreferences prefs = GamePreferences.instance;
-        prefs.load();
 
-        // set each widget using values in prefs
-    }
-    
-    private void saveSettings() {
-        GamePreferences prefs = GamePreferences.instance;
-
-        // save each widget value into prefs
-
-        prefs.save();
-    }
-    
-    private void onOptionsClicked() { 
-        playButton.setVisible(false);
-        optionsButton.setVisible(false);
-        resetStatsButton.setVisible(false);
-        optionsWindow.setVisible(true);
-        loadSettings();
-    }
-    
     private void onSaveClicked() {
+
         saveSettings();
         onCancelClicked();
+        AudioManager.instance.onSettingsUpdated();
     }
-    
+
     private void onCancelClicked() {
 
         playButton.setVisible(true);
         optionsButton.setVisible(true);
         resetStatsButton.setVisible(true);
         optionsWindow.setVisible(false);
-        // AudioManager.instance.onSettingsUpdated();
+        AudioManager.instance.onSettingsUpdated();
+    }
+
+    private void loadSettings() {
+
+        GamePreferences prefs = GamePreferences.instance;
+        prefs.load();
+
+        soundCheckBox.setChecked(prefs.sound);
+        soundSlider.setValue(prefs.soundVolume);
+        musicCheckBox.setChecked(prefs.music);
+        musicSlider.setValue(prefs.musicVolume);
+    }
+
+    private void saveSettings() {
+
+        GamePreferences prefs = GamePreferences.instance;
+
+        prefs.sound = soundCheckBox.isChecked();
+        prefs.soundVolume = soundSlider.getValue();
+        prefs.music = musicCheckBox.isChecked();
+        prefs.musicVolume = musicSlider.getValue();
+        prefs.save();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+        stage.getViewport().update((int) Constants.VIEWPORT_GUI_WIDTH, (int) Constants.VIEWPORT_GUI_HEIGHT, false);
+    }
+
+    @Override
+    public void show() {
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        rebuildStage();
+    }
+
+    @Override
+    public void hide() {
+
+        stage.dispose();
+    }
+
+    @Override
+    public void pause() {
+
     }
     
 }
