@@ -17,6 +17,8 @@ public class Constants {
     public static final String TEXTURE_ATLAS_GAME = "images/game.atlas";
 
     // Persistent storage files
+    // Game setting (preferences + stats) files
+    public static final String STATS = "xando.stats";
     public static final String PREFERENCES = "game.prefs";
 
     // Speed Constants (most relative to SCROLL_SPEED)

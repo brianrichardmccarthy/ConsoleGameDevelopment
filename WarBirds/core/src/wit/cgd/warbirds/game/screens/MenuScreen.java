@@ -33,9 +33,8 @@ public class MenuScreen extends AbstractGameScreen {
      private Button              playButton;
      private Button              optionsButton;
      private Button              resetStatsButton;
-     private Label               gameCountLabel;
-     private Label               currentStreakLabel;
-     private Label               longestStreakLabel;
+     private Label               totalDeathsLabel;
+     private Label               totalKillsLabel;
     
      // options window widgets
      private Table               optionsWindowLayer;
@@ -133,14 +132,11 @@ public class MenuScreen extends AbstractGameScreen {
         Table table = new Table();
         table.left().top();
 
-        gameCountLabel = new Label("Number of games played: * ", skin);
-        table.add(gameCountLabel).left();
+        totalDeathsLabel = new Label("Total Deaths: * ", skin);
+        table.add(totalDeathsLabel).left();
         table.row();
-        currentStreakLabel = new Label("Length of current winning streak: * ", skin);
-        table.add(currentStreakLabel).left();
-        table.row();
-        longestStreakLabel = new Label("Longest winning streak: * ", skin);
-        table.add(longestStreakLabel).left();
+        totalKillsLabel = new Label("Total Kills: * ", skin);
+        table.add(totalKillsLabel).left();
 
         table.row();
         resetStatsButton = new Button(skin, "reset");
