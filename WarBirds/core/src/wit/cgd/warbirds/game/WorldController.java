@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import wit.cgd.warbirds.ai.AbstractEnemy;
 import wit.cgd.warbirds.game.objects.AbstractGameObject;
 import wit.cgd.warbirds.game.objects.AbstractGameObject.State;
+import wit.cgd.warbirds.game.screens.MenuScreen;
 import wit.cgd.warbirds.game.objects.AbstractPowerUp;
 import wit.cgd.warbirds.game.objects.Bullet;
 import wit.cgd.warbirds.game.objects.DoubleBulletsPowerUp;
@@ -293,7 +294,7 @@ public class WorldController extends InputAdapter {
     public boolean keyUp(int keycode) {
 
         if (keycode == Keys.ESCAPE || keycode == Keys.BACK) {
-            Gdx.app.exit();
+            game.setScreen(new MenuScreen(game));
         }
         return false;
     }
