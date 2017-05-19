@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 import wit.cgd.warbirds.ai.AbstractEnemy;
@@ -14,6 +15,7 @@ import wit.cgd.warbirds.game.objects.AbstractPowerUp;
 import wit.cgd.warbirds.game.objects.Bullet;
 import wit.cgd.warbirds.game.objects.DoubleBulletsPowerUp;
 import wit.cgd.warbirds.game.objects.ExtraLife;
+import wit.cgd.warbirds.game.objects.HealthPowerUp;
 import wit.cgd.warbirds.game.objects.Level;
 import wit.cgd.warbirds.game.util.CameraHelper;
 import wit.cgd.warbirds.game.util.Constants;
@@ -31,6 +33,8 @@ public class WorldController extends InputAdapter {
     private float timer;
 
     private boolean reset = false;
+    public boolean gameOver = false;
+    public boolean gameWon = false;
     
     public WorldController(Game game) {
         this.game = game;
@@ -71,27 +75,37 @@ public class WorldController extends InputAdapter {
             }
         } else {
             
-            if (timer > 0) {
-                timer -= deltaTime;
-                Gdx.app.debug(TAG, "level.player.damage <" + level.player.damage + ">");
-            }
-            else if (reset) {
-                level.player.damage /= 2;
-                Gdx.app.debug(TAG, "level.player.damage <" + level.player.damage + ">");
-                level.player.bulletRegion = Assets.instance.bullet.region;
-                reset = false;
-            }
+            if (level.player.health <= 0 && lives >= 0) {
+                lives--;
+                level.player.health = Constants.BASE_HEALTH;
+            } else if (level.player.health <= 0 && lives < 0) {
+                gameWon = false;
+                gameOver = true;
+            } 
+            
+            if (!gameOver) {
+                if (timer > 0) {
+                    timer -= deltaTime;
+                    Gdx.app.debug(TAG, "level.player.damage <" + level.player.damage + ">");
+                }
+                else if (reset) {
+                    level.player.damage /= 2;
+                    Gdx.app.debug(TAG, "level.player.damage <" + level.player.damage + ">");
+                    level.player.bulletRegion = Assets.instance.bullet.region;
+                    reset = false;
+                }
 
-            handleDebugInput(deltaTime);
-            handleGameInput(deltaTime);
-            cameraHelper.update(deltaTime);
-            level.update(deltaTime);
-            checkBulletEnemyCollision();
-            checkEnemyBulletPlayerCollision();
-            checkEnemyPlayerCollision();
-            checkEnemyPlanesCollisions();
-            checkPlayerPowerUpCollisions();
-            // cullObjects();
+                handleDebugInput(deltaTime);
+                handleGameInput(deltaTime);
+                cameraHelper.update(deltaTime);
+                level.update(deltaTime);
+                checkBulletEnemyCollision();
+                checkEnemyBulletPlayerCollision();
+                checkEnemyPlayerCollision();
+                checkEnemyPlanesCollisions();
+                checkPlayerPowerUpCollisions();
+                cullObjects();
+            }
         }
     }
 
@@ -107,7 +121,7 @@ public class WorldController extends InputAdapter {
             if (it.state == Bullet.State.DEAD) {
                 level.bullets.removeIndex(k);
                 level.bulletPool.free(it);
-            } else if (it.state == Bullet.State.ACTIVE && !isInScreen(it)) {
+            } else if (it.state == Bullet.State.ACTIVE && !Constants.isInScreen(it, level)) {
                 it.state = Bullet.State.DYING;
                 it.timeToDie = Constants.BULLET_DIE_DELAY;
             }
@@ -116,19 +130,24 @@ public class WorldController extends InputAdapter {
         for (int x = level.enemies.size; --x >= 0;) {
             AbstractGameObject enemy = level.enemies.get(x);
             if (enemy.state == State.DEAD) level.enemies.removeIndex(x);
-            else if (!isInScreen(enemy) && enemy.state == State.ACTIVE) {
+            else if (!Constants.isInScreen(enemy, level) && enemy.state == State.ACTIVE) {
                 enemy.state = Bullet.State.DYING;
                 enemy.timeToDie = Constants.ENEMY_DIE_DELAY;
             }
         }
         
         // power ups
+        for (int x = level.powerUps.size; --x >= 0; ) {
+            AbstractPowerUp p = level.powerUps.get(x);
+            if (p.state == State.DEAD || !Constants.isInScreen(p, level)) level.powerUps.removeIndex(x);
+        }
+        
     }
 
-    public boolean isInScreen(AbstractGameObject gameObject) {
+    /* public boolean isInScreen(AbstractGameObject gameObject) {
 
         return ( (gameObject.position.x > -Constants.VIEWPORT_WIDTH / 2 && gameObject.position.x < Constants.VIEWPORT_WIDTH / 2) && (gameObject.position.y > level.start && gameObject.position.y < level.end));
-    }
+    } */
 
     // Collision detection methods
     public void checkBulletEnemyCollision() {
@@ -160,7 +179,7 @@ public class WorldController extends InputAdapter {
                             } else if (spawn > .70f) {
                                 level.addPowerUp(new ExtraLife(level, enemy.position, Assets.instance.doubleBullet));
                             } else if (spawn > .50f) {
-                                
+                                level.addPowerUp(new HealthPowerUp(level, enemy.position, Assets.instance.health));
                             } 
                         }
                     }
@@ -185,7 +204,7 @@ public class WorldController extends InputAdapter {
             Rectangle bulletBox = new Rectangle(b.position.x, b.position.y, b.dimension.x, b.dimension.y);
 
             if (player.overlaps(bulletBox)) {
-                // level.player.health -= b.damage;
+                level.player.health -= b.damage;
                 b.state = State.DEAD;
                 b.timeToDie = Constants.BULLET_DIE_DELAY;
             }
@@ -260,6 +279,9 @@ public class WorldController extends InputAdapter {
                     timer = Constants.DOUBLE_BULLET_TIMER;
                     level.player.damage *= 2;
                     reset = true;
+                } else if (powerUp.name.equals("Health") && level.player.health < Constants.BASE_HEALTH) {
+                    level.player.health += 25;
+                    MathUtils.clamp(level.player.health, 0, Constants.BASE_HEALTH);
                 }
                 powerUp.state = State.DEAD;
             }

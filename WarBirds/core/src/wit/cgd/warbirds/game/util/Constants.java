@@ -1,5 +1,8 @@
 package wit.cgd.warbirds.game.util;
 
+import wit.cgd.warbirds.game.objects.AbstractGameObject;
+import wit.cgd.warbirds.game.objects.Level;
+
 public class Constants {
 
     // Game world dimensions
@@ -36,4 +39,9 @@ public class Constants {
     
     public static final int MAX_LIVES = 3;
     public static final float DOUBLE_BULLET_TIMER = 8f;
+    
+    public static boolean isInScreen(AbstractGameObject gameObject, Level level) {
+
+        return ( (gameObject.position.x > -Constants.VIEWPORT_WIDTH / 2 && gameObject.position.x < Constants.VIEWPORT_WIDTH / 2) && (gameObject.position.y > level.start && gameObject.position.y < level.end));
+    }
 }

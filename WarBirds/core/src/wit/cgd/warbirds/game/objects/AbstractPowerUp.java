@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import wit.cgd.warbirds.game.Assets.Asset;
+import wit.cgd.warbirds.game.util.Constants;
 
 public abstract class AbstractPowerUp extends AbstractGameObject {
 
@@ -27,7 +28,7 @@ public abstract class AbstractPowerUp extends AbstractGameObject {
     @Override
     public void update(float deltaTime) {
         
-        if (!isInScreen()) state = State.DEAD;
+        if (!Constants.isInScreen(this, level)) state = State.DEAD;
         
         return;
     }

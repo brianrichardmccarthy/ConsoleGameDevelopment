@@ -51,7 +51,6 @@ public class Player extends AbstractGameObject {
 
 		if (timeShootDelay>0) return;
 		
-		Gdx.app.debug(TAG, "Player causing exception");
 		// get bullet
 		Bullet bullet = level.bulletPool.obtain();
 		bullet.reset();

@@ -77,6 +77,7 @@ public abstract class AbstractGameObject {
 		}
 		
 		if (state == State.DYING) {
+		    if (!Constants.isInScreen(this, level)) state = State.ACTIVE;
 			timeToDie -= deltaTime;
 			if (timeToDie<0) state = State.DEAD;
 		}
@@ -93,8 +94,8 @@ public abstract class AbstractGameObject {
 
 	protected void updateMotionY(float deltaTime) {}
 	
-	public boolean isInScreen()  {
+	/* public boolean isInScreen()  {
 		return ((position.x>-Constants.VIEWPORT_WIDTH/2 && position.x<Constants.VIEWPORT_WIDTH/2) && 
 				(position.y>level.start && position.y<level.end));
-	}
+	} */
 }
