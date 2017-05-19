@@ -36,6 +36,7 @@ public class Level extends AbstractGameObject {
     private String currentLevel;
     public int totalNumberOfEnemies;
     public int killedEnemies;
+    public int spawnedEnemies;
     private boolean bossSpawned;
     private AbstractEnemy boss;
     public Array<AbstractPowerUp> powerUps;
@@ -108,7 +109,7 @@ public class Level extends AbstractGameObject {
 
     private void init() {
         
-        killedEnemies = 0;
+        spawnedEnemies = killedEnemies = 0;
         bossSpawned = false;
         // player
         player = new Player(this);
@@ -236,6 +237,8 @@ public class Level extends AbstractGameObject {
         enemy.rotation = rotation;
         enemy.explosion = Assets.instance.enemy[0].animationExplosionBig;
         enemies.add(enemy);
+        
+        spawnedEnemies++;
     }
     
 }

@@ -49,8 +49,12 @@ public class WorldRenderer implements Disposable {
 	
 	private void renderGuiScore(SpriteBatch batch) {
 	    batch.draw(Assets.instance.enemy[0].region, -15, -15, 50, 50, 100, 100, 0.80f, -0.80f, 0);
-	    Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.level.killedEnemies + "/" + worldController.level.totalNumberOfEnemies, -15+100, -15+37);
+	    Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.level.killedEnemies + "/" + worldController.level.spawnedEnemies + "/" + worldController.level.totalNumberOfEnemies, -15+100, -15+37);
 	}
+	
+	private void renderGuiHealth(SpriteBatch batch) {
+        Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.level.player.health, -15+50, -15+100);
+    }
 	
 	private void renderGuiExtraLive(SpriteBatch batch) {
         float x = cameraGUI.viewportWidth - 50 - Constants.MAX_LIVES * 100;
@@ -77,6 +81,7 @@ public class WorldRenderer implements Disposable {
 		batch.begin();
 		renderGuiScore(batch);
 		renderGuiExtraLive(batch);
+		renderGuiHealth(batch);
 		batch.end();
 	}
 

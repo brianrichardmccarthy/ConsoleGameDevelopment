@@ -51,7 +51,6 @@ public abstract class AbstractEnemy extends AbstractGameObject {
     public void shoot() {
 
         
-        Gdx.app.debug(TAG, "Enemy causing exception");
         // get bullet
         Bullet bullet = level.enemyBulletPool.obtain();
         bullet.reset();
