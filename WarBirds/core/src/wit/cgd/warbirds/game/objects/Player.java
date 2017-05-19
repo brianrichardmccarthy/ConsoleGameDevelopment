@@ -16,6 +16,7 @@ public class Player extends AbstractGameObject {
 	
 	protected Animation<TextureRegion> animation;
 	protected TextureRegion region;
+	public TextureRegion bulletRegion;
 	protected float timeShootDelay;
 	
 	public Player (Level level) {
@@ -29,6 +30,8 @@ public class Player extends AbstractGameObject {
 		animation = Assets.instance.player.animationNormal;
 		setAnimation(animation);
 
+		bulletRegion = Assets.instance.bullet.region;
+		
 		// Center image on game object
 		origin.set(dimension.x / 2, dimension.y / 2);
 		timeShootDelay = 0;
@@ -48,10 +51,13 @@ public class Player extends AbstractGameObject {
 
 		if (timeShootDelay>0) return;
 		
+		Gdx.app.debug(TAG, "Player causing exception");
 		// get bullet
 		Bullet bullet = level.bulletPool.obtain();
 		bullet.reset();
 		bullet.position.set(position);
+		
+		bullet.setRegion(bulletRegion);
 		
 		// bullet.velocity = new Vector2(velocity.x * Constants.BULLET_SPEED, velocity.y * Constants.BULLET_SPEED);
 		

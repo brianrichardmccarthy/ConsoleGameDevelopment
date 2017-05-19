@@ -35,4 +35,5 @@ public class Constants {
     public static final int BASE_DAMAGE = 10;
     
     public static final int MAX_LIVES = 3;
+    public static final float DOUBLE_BULLET_TIMER = 8f;
 }

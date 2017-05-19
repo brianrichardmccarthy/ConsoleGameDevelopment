@@ -39,7 +39,10 @@ public class Bullet extends AbstractGameObject implements Poolable {
 		velocity.y = Constants.BULLET_SPEED;
 	}
 	
-
+	public void setRegion(TextureRegion region) {
+	    this.region = region;
+	}
+	
 	@Override
 	public void render(SpriteBatch batch) {
 		batch.draw(region.getTexture(), position.x-origin.x, position.y-origin.y, origin.x, origin.y, 

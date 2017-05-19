@@ -12,6 +12,7 @@ import wit.cgd.warbirds.game.objects.AbstractGameObject;
 import wit.cgd.warbirds.game.objects.AbstractGameObject.State;
 import wit.cgd.warbirds.game.objects.AbstractPowerUp;
 import wit.cgd.warbirds.game.objects.Bullet;
+import wit.cgd.warbirds.game.objects.DoubleBulletsPowerUp;
 import wit.cgd.warbirds.game.objects.ExtraLife;
 import wit.cgd.warbirds.game.objects.Level;
 import wit.cgd.warbirds.game.util.CameraHelper;
@@ -27,7 +28,10 @@ public class WorldController extends InputAdapter {
     private String[] levels = { "levels/level-01.json", "levels/level-02.json", "levels/level-03.json" };
     public int lives;
     private int currentLevel = 0;
+    private float timer;
 
+    private boolean reset = false;
+    
     public WorldController(Game game) {
         this.game = game;
         init();
@@ -66,6 +70,18 @@ public class WorldController extends InputAdapter {
                 Gdx.app.exit();
             }
         } else {
+            
+            if (timer > 0) {
+                timer -= deltaTime;
+                Gdx.app.debug(TAG, "level.player.damage <" + level.player.damage + ">");
+            }
+            else if (reset) {
+                level.player.damage /= 2;
+                Gdx.app.debug(TAG, "level.player.damage <" + level.player.damage + ">");
+                level.player.bulletRegion = Assets.instance.bullet.region;
+                reset = false;
+            }
+
             handleDebugInput(deltaTime);
             handleGameInput(deltaTime);
             cameraHelper.update(deltaTime);
@@ -137,8 +153,15 @@ public class WorldController extends InputAdapter {
                         level.killedEnemy();
                         enemy.state = State.DYING;
                         enemy.timeToDie = Constants.ENEMY_DIE_DELAY;
-                        if (level.enemySpawn.nextFloat() > 0.5f) {
-                            level.addPowerUp(new ExtraLife(level, enemy.position, Assets.instance.extraLive));
+                        if (level.enemySpawn.nextBoolean()) {
+                            float spawn = level.enemySpawn.nextFloat();
+                            if (spawn > .80f) {
+                                level.addPowerUp(new DoubleBulletsPowerUp(level, enemy.position, Assets.instance.doubleBullet));
+                            } else if (spawn > .70f) {
+                                level.addPowerUp(new ExtraLife(level, enemy.position, Assets.instance.doubleBullet));
+                            } else if (spawn > .50f) {
+                                
+                            } 
                         }
                     }
                 }
@@ -232,8 +255,13 @@ public class WorldController extends InputAdapter {
             if (powerUpBox.overlaps(player)) {
                 if (powerUp.name.equals("ExtraLife") && lives < Constants.MAX_LIVES) {
                     lives++;
-                    powerUp.state = State.DEAD;
+                } else if (powerUp.name.equals("DoubleBullet")) {
+                    level.player.bulletRegion = Assets.instance.doubleBullet.region;
+                    timer = Constants.DOUBLE_BULLET_TIMER;
+                    level.player.damage *= 2;
+                    reset = true;
                 }
+                powerUp.state = State.DEAD;
             }
             
         }

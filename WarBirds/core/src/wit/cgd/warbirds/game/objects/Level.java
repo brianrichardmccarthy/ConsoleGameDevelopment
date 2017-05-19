@@ -152,8 +152,6 @@ public class Level extends AbstractGameObject {
 
         super.update(deltaTime);
         
-        Gdx.app.debug(TAG, "Power ups size <" + powerUps.size + ">");
-
         // limits for rendering
         start = position.y - scale.y * Constants.VIEWPORT_HEIGHT;
         end = position.y + scale.y * Constants.VIEWPORT_HEIGHT;

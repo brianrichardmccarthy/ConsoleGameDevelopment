@@ -77,7 +77,7 @@ public class Assets implements Disposable, AssetErrorListener {
         bullet = new Asset(atlas, "bullet");
         doubleBullet = new Asset(atlas, "bullet_double");
 
-        enemyBullet = new Asset(atlas, "emeny_bullet_1");
+        enemyBullet = new Asset(atlas, "emeny_bullet_2");
         extraLive = new Asset(atlas, "player");
         
         // create sound and music resource objects
