@@ -66,45 +66,45 @@ public class WorldController extends InputAdapter {
 
     public void update(float deltaTime) {
 
-        if (level.isGameOver()) {
+        if (level.player.health <= 0 && lives > 0) {
+            lives--;
+            level.player.health = Constants.BASE_HEALTH;
+        } else if (level.player.health <= 0 && lives <= 0) {
+            gameWon = false;
+            gameOver = true;
+        } 
 
-            if (++currentLevel < levels.length) {
-                init();
+        if (!gameOver) {
+            if (level.isGameOver()) {
+                if (++currentLevel < levels.length) {
+                    init();
+                } else {
+                    gameWon = true;
+                    gameOver = true;
+                }
             } else {
-                Gdx.app.exit();
-            }
-        } else {
-            
-            if (level.player.health <= 0 && lives >= 0) {
-                lives--;
-                level.player.health = Constants.BASE_HEALTH;
-            } else if (level.player.health <= 0 && lives < 0) {
-                gameWon = false;
-                gameOver = true;
-            } 
-            
-            if (!gameOver) {
-                if (timer > 0) {
-                    timer -= deltaTime;
-                    Gdx.app.debug(TAG, "level.player.damage <" + level.player.damage + ">");
-                }
-                else if (reset) {
-                    level.player.damage /= 2;
-                    Gdx.app.debug(TAG, "level.player.damage <" + level.player.damage + ">");
-                    level.player.bulletRegion = Assets.instance.bullet.region;
-                    reset = false;
-                }
+                
+                if (!gameOver) {
+                    if (timer > 0) {
+                        timer -= deltaTime;
+                    }
+                    else if (reset) {
+                        level.player.damage /= 2;
+                        level.player.bulletRegion = Assets.instance.bullet.region;
+                        reset = false;
+                    }
 
-                handleDebugInput(deltaTime);
-                handleGameInput(deltaTime);
-                cameraHelper.update(deltaTime);
-                level.update(deltaTime);
-                checkBulletEnemyCollision();
-                checkEnemyBulletPlayerCollision();
-                checkEnemyPlayerCollision();
-                checkEnemyPlanesCollisions();
-                checkPlayerPowerUpCollisions();
-                cullObjects();
+                    handleDebugInput(deltaTime);
+                    handleGameInput(deltaTime);
+                    cameraHelper.update(deltaTime);
+                    level.update(deltaTime);
+                    checkBulletEnemyCollision();
+                    checkEnemyBulletPlayerCollision();
+                    checkEnemyPlayerCollision();
+                    checkEnemyPlanesCollisions();
+                    checkPlayerPowerUpCollisions();
+                    // cullObjects();
+                }
             }
         }
     }
