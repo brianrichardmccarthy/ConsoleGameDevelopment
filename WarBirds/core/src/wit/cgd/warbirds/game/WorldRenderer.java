@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        FILENAME
+ * @author      YOUR NAME AND STUDENT NUMBER
+ * @assignment  PRACTICAL/ASSIGNMENT NAME AS IN MOODLE
+ * @brief       ONE LINE SUMMARY OF CONTENTS
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,11 +27,18 @@ public class WorldRenderer implements Disposable {
     private SpriteBatch batch;
     private WorldController worldController;
 
+    /**
+     * Constructor
+     * @param worldController
+     */
     public WorldRenderer(WorldController worldController) {
         this.worldController = worldController;
         init();
     }
 
+    /**
+     * Setups the cameras
+     */
     private void init() {
 
         batch = new SpriteBatch();
@@ -35,6 +51,11 @@ public class WorldRenderer implements Disposable {
         cameraGUI.update();
     }
 
+    /**
+     * Resize the cameras
+     * @param width
+     * @param height
+     */
     public void resize(int width, int height) {
 
         float scale = (float) height / (float) width;
@@ -49,6 +70,10 @@ public class WorldRenderer implements Disposable {
         worldController.level.levelDecoration.scale.y = scale;
     }
 
+    /**
+     * Render the score as number of enemies killed then number of enemies spawned then number of enemies to be killed until boss is spawned
+     * @param batch
+     */
     private void renderGuiScore(SpriteBatch batch) {
 
         batch.draw(Assets.instance.enemy[0].region, -15, -15, 50, 50, 100, 100, 0.80f, -0.80f, 0);
@@ -57,11 +82,19 @@ public class WorldRenderer implements Disposable {
             -15 + 100, -15 + 37);
     }
 
+    /**
+     * Render the health of the player
+     * @param batch
+     */
     private void renderGuiHealth(SpriteBatch batch) {
 
         Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.level.player.health, -15 + 50, -15 + 100);
     }
 
+    /**
+     * Render the amount of extra lives the player has.
+     * @param batch
+     */
     private void renderGuiExtraLive(SpriteBatch batch) {
 
         float x = cameraGUI.viewportWidth - 50 - Constants.MAX_LIVES * 100;
@@ -73,6 +106,10 @@ public class WorldRenderer implements Disposable {
         }
     }
 
+    /**
+     * Render message the player either won or lost the game.
+     * @param batch
+     */
     private void renderGuiGameOverMessage(SpriteBatch batch) {
 
         float x = cameraGUI.viewportWidth / 2;
@@ -83,6 +120,9 @@ public class WorldRenderer implements Disposable {
         fontGameOver.setColor(1, 1, 1, 1);
     }
 
+    /**
+     * Render game and gui
+     */
     public void render() {
 
         // Game rendering
@@ -105,6 +145,9 @@ public class WorldRenderer implements Disposable {
         batch.end();
     }
 
+    /**
+     * Free resource 
+     */
     @Override
     public void dispose() {
 

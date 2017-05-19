@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        GamePreferences
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Player preferences class, stores music and sound volume
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.util;
 
 import com.badlogic.gdx.Gdx;
@@ -21,6 +30,9 @@ public class GamePreferences {
         prefs = Gdx.app.getPreferences(Constants.PREFERENCES);
     }
 
+    /**
+     * Load preferences
+     */
     public void load() {
 
         musicVolume = MathUtils.clamp(prefs.getFloat("musicVolume"), 0f, 1f);
@@ -29,6 +41,9 @@ public class GamePreferences {
         sound = prefs.getBoolean("sound", true);
     }
 
+    /**
+     * Save preferences
+     */
     public void save() {
 
         prefs.putFloat("musicVolume", musicVolume);

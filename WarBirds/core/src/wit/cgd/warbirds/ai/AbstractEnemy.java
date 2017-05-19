@@ -1,16 +1,20 @@
+/**
+ *
+ * @file        AbstractEnemy
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Base class for the enemy planes.
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.ai;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
-
 import wit.cgd.warbirds.game.Assets;
 import wit.cgd.warbirds.game.objects.AbstractGameObject;
 import wit.cgd.warbirds.game.objects.Bullet;
 import wit.cgd.warbirds.game.objects.Level;
-import wit.cgd.warbirds.game.objects.AbstractGameObject.State;
 import wit.cgd.warbirds.game.util.Constants;
 
 public abstract class AbstractEnemy extends AbstractGameObject {
@@ -25,6 +29,11 @@ public abstract class AbstractEnemy extends AbstractGameObject {
         init(texture);
     }
 
+    /**
+     * Setup the plane.
+     * @param texture
+     */
+    @SuppressWarnings("unchecked")
     public void init(int texture) {
 
         dimension.set(1, 1);
@@ -37,6 +46,9 @@ public abstract class AbstractEnemy extends AbstractGameObject {
         state = State.ACTIVE;
     }
 
+    /**
+     * Move the plane and shoot bullets.
+     */
     @Override
     public void update(float deltaTime) {
 
@@ -48,6 +60,9 @@ public abstract class AbstractEnemy extends AbstractGameObject {
         }
     }
 
+    /**
+     * Shoots a bullet
+     */
     public void shoot() {
 
         
@@ -57,7 +72,7 @@ public abstract class AbstractEnemy extends AbstractGameObject {
         bullet.position.set(position);
         bullet.setRegion(Assets.instance.enemyBullet.region);
 
-        bullet.setRegion(Assets.instance.bullet.region);
+        // bullet.setRegion(Assets.instance.bullet.region);
         
         // bullet.velocity = velocity;
         // bullet.rotation = rotation;
@@ -67,6 +82,9 @@ public abstract class AbstractEnemy extends AbstractGameObject {
 
     }
 
+    /**
+     * Renders the enemy plane
+     */
     public void render(SpriteBatch batch) {
 
         if (state != State.ACTIVE && state != State.DYING) return;

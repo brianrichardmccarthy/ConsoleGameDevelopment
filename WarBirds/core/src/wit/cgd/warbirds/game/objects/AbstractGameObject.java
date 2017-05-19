@@ -1,13 +1,20 @@
+/**
+ *
+ * @file        AbstractGameObject
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Abstract object class
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.objects;
 
-import wit.cgd.warbirds.game.Assets;
-import wit.cgd.warbirds.game.util.Constants;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+
+import wit.cgd.warbirds.game.util.Constants;
 
 public abstract class AbstractGameObject {
 
@@ -41,6 +48,11 @@ public abstract class AbstractGameObject {
 	}
 	public State state;
 	
+	/**
+	 * Constructor
+	 * @param level
+	 * @param multiplyer
+	 */
 	public AbstractGameObject(Level level, int multiplyer) {
 		this.level = level;
 		position = new Vector2();
@@ -58,14 +70,16 @@ public abstract class AbstractGameObject {
 		damage = Constants.BASE_DAMAGE * multiplyer;
 	}
 
+	/**
+	 * Update the motion, check if instance is still alive
+	 * @param deltaTime
+	 */
 	public void update(float deltaTime) {
 		
 		if (state == State.ASLEEP) return;
 		
 		stateTime += deltaTime;
 		
-		updateMotionX(deltaTime);
-		updateMotionY(deltaTime);
 
 		// Move to new position
 		position.x += velocity.x * deltaTime;
@@ -77,25 +91,33 @@ public abstract class AbstractGameObject {
 		}
 		
 		if (state == State.DYING) {
-		    if (!Constants.isInScreen(this, level)) state = State.ACTIVE;
+		    if (!isInScreen()) state = State.ACTIVE;
 			timeToDie -= deltaTime;
 			if (timeToDie<0) state = State.DEAD;
 		}
 	}
 
+	/**
+	 * Changes the animation
+	 * @param animation
+	 */
 	public void setAnimation(Animation<TextureRegion> animation) {
 		this.animation = animation;
 		stateTime = 0;
 	}
 
+	/**
+	 * Render Method
+	 * @param batch
+	 */
 	public abstract void render(SpriteBatch batch);
 
-	protected void updateMotionX(float deltaTime) {}
-
-	protected void updateMotionY(float deltaTime) {}
-	
-	/* public boolean isInScreen()  {
+	/**
+	 * Checks if this instance is inside the gamescreen
+	 * @return
+	 */
+	public boolean isInScreen()  {
 		return ((position.x>-Constants.VIEWPORT_WIDTH/2 && position.x<Constants.VIEWPORT_WIDTH/2) && 
 				(position.y>level.start && position.y<level.end));
-	} */
+	}
 }

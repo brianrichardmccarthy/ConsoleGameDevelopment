@@ -1,3 +1,12 @@
+/**
+ *
+ * @file CameraHelper
+ * @author Brian McCarthy, 20063914
+ * @assignment Warbirds
+ * @brief Camera Class, handles moving & position, and zoom in and out, tracking of a target.
+ * @notes DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.util;
 
 import wit.cgd.warbirds.game.objects.AbstractGameObject;
@@ -8,74 +17,138 @@ import com.badlogic.gdx.math.Vector2;
 
 public class CameraHelper {
 
-	private static final String	TAG				= CameraHelper.class.getName();
+    @SuppressWarnings("unused")
+    private static final String TAG = CameraHelper.class.getName();
 
-	private final float			MAX_ZOOM_IN		= 0.25f;
-	private final float			MAX_ZOOM_OUT	= 10.0f;
+    private final float MAX_ZOOM_IN = 0.25f;
+    private final float MAX_ZOOM_OUT = 10.0f;
 
-	private Vector2				position;
-	private float				zoom;
+    private Vector2 position;
+    private float zoom;
 
-	private AbstractGameObject	target;
+    private AbstractGameObject target;
 
-	public CameraHelper() {
-		position = new Vector2();
-		zoom = 1.0f;
-	}
+    /**
+     * Constructor
+     */
+    public CameraHelper() {
+        position = new Vector2();
+        zoom = 1.0f;
+    }
 
-	public void update(float deltaTime) {
-		if (!hasTarget()) return;
+    /**
+     * if the camera has a target
+     *      Updates the position relative to the target
+     * @param deltaTime
+     */
+    public void update(float deltaTime) {
 
-		position.x = target.position.x + target.origin.x;
-		position.y = target.position.y + target.origin.y;
-	}
+        if (!hasTarget()) return;
 
-	public void reset() {
-		setPosition(0, 0);
-		setZoom(1);
-	}
+        position.x = target.position.x + target.origin.x;
+        position.y = target.position.y + target.origin.y;
+    }
 
-	public void setPosition(float x, float y) {
-		this.position.set(x, y);
-	}
+    /**
+     * Resets the zoom and position of the camera
+     */
+    public void reset() {
 
-	public Vector2 getPosition() {
-		return position;
-	}
+        setPosition(0, 0);
+        setZoom(1);
+    }
 
-	public void addZoom(float amount) {
-		setZoom(zoom + amount);
-	}
+    /**
+     * Sets the position to the given parameters
+     * @param x
+     * @param y
+     */
+    public void setPosition(float x, float y) {
 
-	public void setZoom(float zoom) {
-		this.zoom = MathUtils.clamp(zoom, MAX_ZOOM_IN, MAX_ZOOM_OUT);
-	}
+        this.position.set(x, y);
+    }
 
-	public float getZoom() {
-		return zoom;
-	}
+    /**
+     * Gets the position of the camera
+     * @return
+     */
+    public Vector2 getPosition() {
 
-	public void setTarget(AbstractGameObject target){
-		this.target = target;
-	}
+        return position;
+    }
 
-	public AbstractGameObject getTarget() {
-		return target;
-	}
+    /**
+     * Adds parameter to current value of zoom
+     * @param amount
+     */
+    public void addZoom(float amount) {
 
-	public boolean hasTarget() {
-		return target != null;
-	}
+        setZoom(zoom + amount);
+    }
 
-	public boolean hasTarget(AbstractGameObject target) {
-		return hasTarget() && this.target.equals(target);
-	}
+    /**
+     * Sets the zoom to the given value if it's greater than the max zoom in and less than max zoom out
+     * @param zoom
+     */
+    public void setZoom(float zoom) {
 
-	public void applyTo(OrthographicCamera camera) {
-		camera.position.x = position.x;
-		camera.position.y = position.y;
-		camera.zoom = zoom;
-		camera.update();
-	}
+        this.zoom = MathUtils.clamp(zoom, MAX_ZOOM_IN, MAX_ZOOM_OUT);
+    }
+
+    /*
+     * Gets the current zoom
+     */
+    public float getZoom() {
+
+        return zoom;
+    }
+
+    /**
+     * Sets the cameras' target
+     * @param target
+     */
+    public void setTarget(AbstractGameObject target) {
+
+        this.target = target;
+    }
+    
+    /*
+     * Gets the Cameras' target
+     */
+    public AbstractGameObject getTarget() {
+
+        return target;
+    }
+
+    /**
+     * Boolean, has camera a target
+     * @return
+     */
+    public boolean hasTarget() {
+
+        return target != null;
+    }
+
+    /**
+     * Is the cameras' target the given parameter
+     * @param target
+     * @return
+     */
+    public boolean hasTarget(AbstractGameObject target) {
+
+        return hasTarget() && this.target.equals(target);
+    }
+
+    /**
+     * Copy the position and zoom of "this" camera to parameter camera
+     * @param camera
+     */
+    public void applyTo(OrthographicCamera camera) {
+
+        camera.position.x = position.x;
+        camera.position.y = position.y;
+        camera.zoom = zoom;
+        camera.update();
+    }
 
 }

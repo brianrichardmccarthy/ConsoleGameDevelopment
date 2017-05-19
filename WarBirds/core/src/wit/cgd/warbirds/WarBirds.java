@@ -1,3 +1,12 @@
+/**
+ *
+ * @file WarBirds
+ * @author Brian McCarthy, 20063914
+ * @assignment Warbirds
+ * @brief creates an instance of the game starting at the menu screen
+ * @notes DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds;
 
 import com.badlogic.gdx.Application;
@@ -17,24 +26,24 @@ import wit.cgd.warbirds.game.util.GamePreferences;
 
 public class WarBirds extends Game {
 
-	@Override
-	public void create() {
+    @Override
+    public void create() {
 
-		// Set Libgdx log level
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        // Set Libgdx log level
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-		// Load assets
-		Assets.instance.init(new AssetManager());
+        // Load assets
+        Assets.instance.init(new AssetManager());
 
-		// Load preferences for audio settings 
-		GamePreferences.instance.load();
-		
-		// TODO start playing music
-		AudioManager.instance.play(Assets.instance.music.song01);
+        // Load preferences for audio settings 
+        GamePreferences.instance.load();
 
-		// TODO Start game at menu screen
-		setScreen(new MenuScreen(this));
+        // start playing music
+        // AudioManager.instance.play(Assets.instance.music.song01);
 
-	}
+        // Start game at menu screen
+        setScreen(new MenuScreen(this));
+
+    }
 
 }

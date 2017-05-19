@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        AbstractPowerUp
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Abstract/ base power up class
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,7 +37,7 @@ public abstract class AbstractPowerUp extends AbstractGameObject {
     @Override
     public void update(float deltaTime) {
         
-        if (!Constants.isInScreen(this, level)) state = State.DEAD;
+        if (!isInScreen()) state = State.DEAD;
         
         return;
     }

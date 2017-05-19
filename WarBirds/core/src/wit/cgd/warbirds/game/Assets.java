@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        Assets
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Loads and stores the various assets.
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game;
 
 import com.badlogic.gdx.Gdx;
@@ -41,6 +50,11 @@ public class Assets implements Disposable, AssetErrorListener {
     private Assets() {
     }
 
+    /**
+     * Loads the various assets.
+     * Such as images, fonts, I tried sounds and music still have to debug it (figure out why libgdx dosen't want to load it)
+     * @param assetManager
+     */
     public void init(AssetManager assetManager) {
 
         this.assetManager = assetManager;
@@ -77,7 +91,7 @@ public class Assets implements Disposable, AssetErrorListener {
         health = new Asset(atlas, "Health");
         
         // load sounds
-        assetManager.load("sounds/enemy_shoot.wav", Sound.class);
+        /* assetManager.load("sounds/enemy_shoot.wav", Sound.class);
         assetManager.load("sounds/explosion.wav", Sound.class);
         assetManager.load("sounds/explosion_large.wav", Sound.class);
         assetManager.load("sounds/player_bullet_01.wav", Sound.class);
@@ -94,9 +108,12 @@ public class Assets implements Disposable, AssetErrorListener {
         // create sound and music resource objects
         sounds = new AssetSounds(assetManager);
         music = new AssetMusic(assetManager);
-
+    */
     }
 
+    /**
+     * Dispose of the fonts and assets manager.
+     */
     @Override
     public void dispose() {
         assetManager.dispose();
@@ -105,12 +122,19 @@ public class Assets implements Disposable, AssetErrorListener {
         fonts.defaultBig.dispose();
     }
     
+    /**
+     * When assets manager decides it wants to load one sound file from sounds/
+     * and not the rest of the sounds this method is called. Or when asset manager can't load an asset.
+     */
     @Override
-    public void error(AssetDescriptor asset, Throwable throwable) {
+    public void error(@SuppressWarnings("rawtypes") AssetDescriptor asset, Throwable throwable) {
 
         Gdx.app.error(TAG, "Couldn't load asset '" + asset + "'", (Exception) throwable);
     }
 
+    /**
+     * Basic asset class.
+     */
     public class Asset {
 
         public final AtlasRegion region;
@@ -121,6 +145,11 @@ public class Assets implements Disposable, AssetErrorListener {
         }
     }
 
+    /**
+     * Asset class for airplanes.
+     * Contains animation for explosion, and flying
+     */
+    @SuppressWarnings("rawtypes")
     public class AssetAirplane {
 
         public final AtlasRegion region;
@@ -128,6 +157,7 @@ public class Assets implements Disposable, AssetErrorListener {
         public final Animation animationExplosionBig;
         public final String regionName;
 
+        @SuppressWarnings("unchecked")
         public AssetAirplane(TextureAtlas atlas, String region) {
             this.region = atlas.findRegion(region);
             regionName = region;
@@ -138,6 +168,9 @@ public class Assets implements Disposable, AssetErrorListener {
         }
     }
 
+    /**
+     * Asset class for level decoration (islands and water)
+     */
     public class AssetLevelDecoration {
 
         public final AtlasRegion islandBig;
@@ -153,6 +186,9 @@ public class Assets implements Disposable, AssetErrorListener {
         }
     }
 
+    /**
+     * Asset class for fonts
+     */
     public class AssetFonts {
 
         public final BitmapFont defaultSmall;
@@ -175,6 +211,10 @@ public class Assets implements Disposable, AssetErrorListener {
         }
     }
 
+    
+    /**
+     * Asset class for sounds.
+     */
     public class AssetSounds {
 
         public final Sound enemyShoot;
@@ -198,6 +238,9 @@ public class Assets implements Disposable, AssetErrorListener {
         }
     }
 
+    /**
+     * Asset class for background music.
+     */
     public class AssetMusic {
         public final Music song01;
 

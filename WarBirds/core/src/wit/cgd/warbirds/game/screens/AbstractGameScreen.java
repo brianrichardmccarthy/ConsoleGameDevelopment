@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        AbstractGameScreen
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Abstract/ base screen class 
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.screens;
 
 import com.badlogic.gdx.Game;

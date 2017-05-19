@@ -1,7 +1,13 @@
+/**
+ *
+ * @file        Constants
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Game Constants
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.util;
-
-import wit.cgd.warbirds.game.objects.AbstractGameObject;
-import wit.cgd.warbirds.game.objects.Level;
 
 public class Constants {
 
@@ -11,7 +17,7 @@ public class Constants {
 
     // GUI dimensions
     public static final float VIEWPORT_GUI_WIDTH = 480.0f;
-    public static final float VIEWPORT_GUI_HEIGHT = 750.0f;
+    public static final float VIEWPORT_GUI_HEIGHT = 740.0f;
 
     // atlas for all game sprites
     public static final String TEXTURE_ATLAS_GAME = "images/game.atlas";
@@ -51,9 +57,4 @@ public class Constants {
     public static final String  TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
     
     public static final int BUTTON_PAD      = 15;
-    
-    public static boolean isInScreen(AbstractGameObject gameObject, Level level) {
-
-        return ( (gameObject.position.x > -Constants.VIEWPORT_WIDTH / 2 && gameObject.position.x < Constants.VIEWPORT_WIDTH / 2) && (gameObject.position.y > level.start && gameObject.position.y < level.end));
-    }
 }

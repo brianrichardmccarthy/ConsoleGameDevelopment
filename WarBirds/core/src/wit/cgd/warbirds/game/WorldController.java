@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        WorldController
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Handles game over, collisions, camera, input, current level etc
+ * @notes       ToDo: fix cull objects
+ *
+ */
 package wit.cgd.warbirds.game;
 
 import com.badlogic.gdx.Application.ApplicationType;
@@ -20,9 +29,11 @@ import wit.cgd.warbirds.game.objects.HealthPowerUp;
 import wit.cgd.warbirds.game.objects.Level;
 import wit.cgd.warbirds.game.util.CameraHelper;
 import wit.cgd.warbirds.game.util.Constants;
+import wit.cgd.warbirds.game.util.GameStats;
 
 public class WorldController extends InputAdapter {
 
+    @SuppressWarnings("unused")
     private static final String TAG = WorldController.class.getName();
 
     private Game game;
@@ -37,11 +48,18 @@ public class WorldController extends InputAdapter {
     public boolean gameOver = false;
     public boolean gameWon = false;
     
+    /**
+     * Constructor
+     * @param game
+     */
     public WorldController(Game game) {
         this.game = game;
         init();
     }
 
+    /**
+     * Initalizes the game at the current level.
+     */
     private void init() {
 
         Gdx.input.setInputProcessor(this);
@@ -51,6 +69,10 @@ public class WorldController extends InputAdapter {
         lives = Constants.MAX_LIVES;
     }
     
+    /**
+     * Starts the game at the given level.
+     * @param level
+     */
     private void init(String level) {
         
         if (level.equals("levels/level-01.json")) {
@@ -65,18 +87,26 @@ public class WorldController extends InputAdapter {
         
     }
 
+    /**
+     * CHecks if the player lost a life, and if they can respawn. 
+     * Checks if the game is over, checks for various collisions.
+     * ToDo cull dead object
+     * @param deltaTime
+     */
     public void update(float deltaTime) {
 
         if (level.player.health <= 0 && lives > 0) {
             lives--;
             level.player.health = Constants.BASE_HEALTH;
+            GameStats.instance.totalDeaths++;
         } else if (level.player.health <= 0 && lives <= 0) {
             gameWon = false;
             gameOver = true;
+            GameStats.instance.totalDeaths++;
         } 
 
         if (!gameOver) {
-            if (level.isGameOver()) {
+            if (level.isLevelWon()) {
                 if (++currentLevel < levels.length) {
                     init();
                 } else {
@@ -122,7 +152,7 @@ public class WorldController extends InputAdapter {
             if (it.state == Bullet.State.DEAD) {
                 level.bullets.removeIndex(k);
                 level.bulletPool.free(it);
-            } else if (it.state == Bullet.State.ACTIVE && !Constants.isInScreen(it, level)) {
+            } else if (it.state == Bullet.State.ACTIVE && isInScreen(it)) {
                 it.state = Bullet.State.DYING;
                 it.timeToDie = Constants.BULLET_DIE_DELAY;
             }
@@ -131,7 +161,7 @@ public class WorldController extends InputAdapter {
         for (int x = level.enemies.size; --x >= 0;) {
             AbstractGameObject enemy = level.enemies.get(x);
             if (enemy.state == State.DEAD) level.enemies.removeIndex(x);
-            else if (!Constants.isInScreen(enemy, level) && enemy.state == State.ACTIVE) {
+            else if (!isInScreen(enemy) && enemy.state == State.ACTIVE) {
                 enemy.state = Bullet.State.DYING;
                 enemy.timeToDie = Constants.ENEMY_DIE_DELAY;
             }
@@ -140,15 +170,15 @@ public class WorldController extends InputAdapter {
         // power ups
         for (int x = level.powerUps.size; --x >= 0; ) {
             AbstractPowerUp p = level.powerUps.get(x);
-            if (p.state == State.DEAD || !Constants.isInScreen(p, level)) level.powerUps.removeIndex(x);
+            if (p.state == State.DEAD || !isInScreen(p)) level.powerUps.removeIndex(x);
         }
         
     }
 
-    /* public boolean isInScreen(AbstractGameObject gameObject) {
+    public boolean isInScreen(AbstractGameObject gameObject) {
 
         return ( (gameObject.position.x > -Constants.VIEWPORT_WIDTH / 2 && gameObject.position.x < Constants.VIEWPORT_WIDTH / 2) && (gameObject.position.y > level.start && gameObject.position.y < level.end));
-    } */
+    }
 
     // Collision detection methods
     public void checkBulletEnemyCollision() {
@@ -170,6 +200,7 @@ public class WorldController extends InputAdapter {
                     enemy.health -= bullet.damage;
                     bullet.state = State.DEAD;
                     if (enemy.health <= 0) {
+                        GameStats.instance.totalKills++;
                         level.killedEnemy();
                         enemy.state = State.DYING;
                         enemy.timeToDie = Constants.ENEMY_DIE_DELAY;
@@ -191,6 +222,9 @@ public class WorldController extends InputAdapter {
 
     }
 
+    /**
+     * Check if the enemy bullets hit the player.
+     */
     public void checkEnemyBulletPlayerCollision() {
 
         Rectangle player = new Rectangle(level.player.position.x, level.player.position.y, level.player.dimension.x,
@@ -214,6 +248,9 @@ public class WorldController extends InputAdapter {
 
     }
 
+    /**
+     * Check if the player and a enemy plane hit.
+     */
     public void checkEnemyPlayerCollision() {
 
         Rectangle player = new Rectangle(level.player.position.x, level.player.position.y, level.player.dimension.x,
@@ -231,10 +268,14 @@ public class WorldController extends InputAdapter {
                 level.player.health /= 2;
                 b.state = State.DYING;
                 b.timeToDie = Constants.ENEMY_DIE_DELAY;
+                GameStats.instance.totalKills++;
             }
         }
     }
 
+    /**
+     * Check if two enemy planes collide.
+     */
     public void checkEnemyPlanesCollisions() {
 
         for (int current = level.enemies.size; --current >= 1;) {
@@ -261,6 +302,9 @@ public class WorldController extends InputAdapter {
         }
     }
     
+    /**
+     * Checks if the player picks up a power up.
+     */
     public void checkPlayerPowerUpCollisions() {
         
         Rectangle player = new Rectangle(level.player.position.x, level.player.position.y, level.player.dimension.x,
@@ -290,6 +334,9 @@ public class WorldController extends InputAdapter {
         }
     }
 
+    /**
+     * If the Escape or back key is pressed return to main menu
+     */
     @Override
     public boolean keyUp(int keycode) {
 
@@ -299,6 +346,13 @@ public class WorldController extends InputAdapter {
         return false;
     }
 
+    
+    /**
+     * Handles the game input.
+     * Moves and rotates the player.
+     * Also lets the player shoot.
+     * @param deltaTime
+     */
     private void handleGameInput(float deltaTime) {
 
         
@@ -341,6 +395,13 @@ public class WorldController extends InputAdapter {
 
     }
 
+    /**
+     * Handles the debug input.
+     * Such as move the camera if it does not have a target.
+     * Zooms the camera in and out.
+     * Jumps to the three different levels.
+     * @param deltaTime
+     */
     private void handleDebugInput(float deltaTime) {
 
         if (Gdx.app.getType() != ApplicationType.Desktop) return;
@@ -377,6 +438,11 @@ public class WorldController extends InputAdapter {
         
     }
 
+    /**
+     * Moves the camera
+     * @param x
+     * @param y
+     */
     private void moveCamera(float x, float y) {
 
         x += cameraHelper.getPosition().x;

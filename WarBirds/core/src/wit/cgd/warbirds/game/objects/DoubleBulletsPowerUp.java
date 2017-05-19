@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        DoubleBulletsPowerUp
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Double bullets power up
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.objects;
 
 import com.badlogic.gdx.math.Vector2;

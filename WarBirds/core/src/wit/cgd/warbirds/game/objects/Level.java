@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        Level
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Level class, handles enenmies spawning, decoration etc.
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.objects;
 
 import java.util.ArrayList;
@@ -99,6 +108,10 @@ public class Level extends AbstractGameObject {
         public int numOfEnemies;
     }
 
+    /**
+     * Constructor
+     * @param level
+     */
     public Level(String level) {
         super(null, ((level.equals("levels/level-01.json")) ? 1 : 2));
         
@@ -107,6 +120,9 @@ public class Level extends AbstractGameObject {
         init();
     }
 
+    /**
+     * Initialise level
+     */
     private void init() {
         
         spawnedEnemies = killedEnemies = 0;
@@ -127,12 +143,10 @@ public class Level extends AbstractGameObject {
         LevelMap data = new LevelMap();
         data = json.fromJson(LevelMap.class, map);
 
-        Gdx.app.log(TAG, "Data name = " + data.name);
 
         enemySpawn = new Random((long) data.seed);
         enemies = new Array<AbstractEnemy>();
         
-        Gdx.app.log(TAG, "islands . . . ");
         random = new Random(data.islands);
         for (int x = random.nextInt(100)+100; x >= 0; x--) {
             if (random.nextFloat() < 0.876) continue;
@@ -140,7 +154,6 @@ public class Level extends AbstractGameObject {
         }
 
         totalNumberOfEnemies = (int) data.numOfEnemies;
-        Gdx.app.debug(TAG, "number <" + totalNumberOfEnemies + ">");
         position.set(0, 0);
         velocity.y = Constants.SCROLL_SPEED;
         state = State.ACTIVE;
@@ -149,6 +162,9 @@ public class Level extends AbstractGameObject {
 
     }
 
+    /**
+     * Update level and bullets, player, enemies etc.
+     */
     public void update(float deltaTime) {
 
         super.update(deltaTime);
@@ -181,19 +197,33 @@ public class Level extends AbstractGameObject {
         } else enemyTimer -= deltaTime;
     }
 
+    /**
+     * Increment enemy kill count
+     */
     public void killedEnemy() {
         killedEnemies++;
     }
     
-    public boolean isGameOver() {
+    /**
+     * Returns true if the boss has been spawned and killed
+     * @return
+     */
+    public boolean isLevelWon() {
         return bossSpawned && boss.health <= 0; 
     }
     
+    
+    /**
+     * Add a new power up
+     * @param powerUp
+     */
     public void addPowerUp(AbstractPowerUp powerUp) {
         powerUps.add(powerUp);
-        return;
     }
     
+    /**
+     * Render all bullets shot by the player and enemies, renders all enemy planes, the player and the level decoration and power up
+     */
     public void render(SpriteBatch batch) {
 
         levelDecoration.render(batch);
@@ -210,13 +240,18 @@ public class Level extends AbstractGameObject {
         
     }
 
+    /**
+     * Spawn a enemy (either if the player killed enough enemies then spawn boss else spawn enemy based on skill parameter)
+     * @param x
+     * @param y
+     * @param rotation
+     * @param skill
+     */
     public void addEnemy(float x, float y, float rotation, int skill) {
         
         if (bossSpawned) return;
         
         bossSpawned = killedEnemies >= totalNumberOfEnemies;
-        
-        // Gdx.app.debug(TAG, "Condition <" + (killedEnemies >= totalNumberOfEnemies) + "> killedEnemies <" + killedEnemies + "> totalNumberOfEnemies <" + totalNumberOfEnemies + ">" );
         
         AbstractEnemy enemy = null;
         

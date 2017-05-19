@@ -1,14 +1,21 @@
+/**
+ *
+ * @file        Player
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Player class, moves the player object, renders the players' plane etc
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.objects;
 
 import wit.cgd.warbirds.game.Assets;
 import wit.cgd.warbirds.game.util.Constants;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 
 public class Player extends AbstractGameObject {
 
@@ -19,12 +26,20 @@ public class Player extends AbstractGameObject {
 	public TextureRegion bulletRegion;
 	protected float timeShootDelay;
 	
+	/**
+	 * Constructor
+	 * @param level
+	 */
 	public Player (Level level) {
 		super(level, 2);
 		init();
 	}
 	
-	public void init() {
+	/**
+	 * Initialise the instance variables
+	 */
+	@SuppressWarnings("unchecked")
+    public void init() {
 		dimension.set(1, 1);
 				
 		animation = Assets.instance.player.animationNormal;
@@ -38,6 +53,9 @@ public class Player extends AbstractGameObject {
 		state = State.ACTIVE;
 	}
 	
+	/**
+	 * Update the player position and clamp the position
+	 */
 	@Override
 	public void update (float deltaTime) {
 		super.update(deltaTime);
@@ -47,6 +65,9 @@ public class Player extends AbstractGameObject {
 		timeShootDelay -= deltaTime;
 	}
 
+	/**
+	 * If the player can shoot fire a bullet
+	 */
 	public void shoot() {
 
 		if (timeShootDelay>0) return;
@@ -67,6 +88,9 @@ public class Player extends AbstractGameObject {
 
 	}
 
+	/**
+	 * Renders the player plane
+	 */
 	public void render (SpriteBatch batch) {
 		
 		region = animation.getKeyFrame(stateTime, true);

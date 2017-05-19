@@ -1,13 +1,19 @@
+/**
+ *
+ * @file        LevelDecoration
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Level decoration (islands, and water)
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.objects;
-
-import wit.cgd.warbirds.ai.AbstractEnemy;
-import wit.cgd.warbirds.ai.BasicVerticalEnemy;
-import wit.cgd.warbirds.game.Assets;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
+import wit.cgd.warbirds.game.Assets;
 import wit.cgd.warbirds.game.util.Constants;
 
 public class LevelDecoration extends AbstractGameObject {
@@ -37,12 +43,19 @@ public class LevelDecoration extends AbstractGameObject {
 		}
 	}
 		
+	/**
+	 * Constructor
+	 * @param level
+	 */
 	public LevelDecoration (Level level) {
 		super(level, 0);
 		init();
 	}
 
-	private void init () {
+	/**
+	 * Setups the islands and water variables.
+	 */
+	private void init() {
 		dimension.set(1, 1);
 
 		islandBig = Assets.instance.levelDecoration.islandBig;
@@ -53,6 +66,9 @@ public class LevelDecoration extends AbstractGameObject {
 		islands = new Array<Island>();
 	}
 
+	/**
+	 * Renders the water and islands
+	 */
 	@Override
 	public void render(SpriteBatch batch) {
 		TextureRegion region = water;
@@ -84,6 +100,13 @@ public class LevelDecoration extends AbstractGameObject {
 	
 	}
 
+	/**
+	 * Adds a new Island at the given x, y with the given rotation.
+	 * @param name
+	 * @param x
+	 * @param y
+	 * @param rotation
+	 */
 	public void add(String name, float x, float y, float rotation) {
 		Island island = null;
 		if (name.equals("islandBig")) {

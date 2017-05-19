@@ -1,3 +1,12 @@
+/**
+ *
+ * @file        MenuScreen
+ * @author      Brian McCarthy, 20063914
+ * @assignment  Warbirds
+ * @brief       Menu screen class, starts a new game, lets the player choose option menu for sound and music, also shows game stats
+ * @notes       DESCRIPTION OF CODE, BUGS, FEATURES, ISSUES, ETC.
+ *
+ */
 package wit.cgd.warbirds.game.screens;
 
 import com.badlogic.gdx.Game;
@@ -28,7 +37,6 @@ import wit.cgd.warbirds.game.util.GameStats;
 @SuppressWarnings("unused")
 public class MenuScreen extends AbstractGameScreen {
 
-    @SuppressWarnings("unused")
     private static final String TAG = MenuScreen.class.getName();
 
     private Stage stage;
@@ -118,10 +126,10 @@ public class MenuScreen extends AbstractGameScreen {
         Table table = new Table();
         table.left().top();
 
-        currentStreakLabel = new Label("Length of current winning streak: " + GameStats.instance.totalKills, skin);
+        currentStreakLabel = new Label("Total Kills: " + GameStats.instance.totalKills, skin);
         table.add(currentStreakLabel).left();
         table.row();
-        longestStreakLabel = new Label("Longest winning streak: " + GameStats.instance.totalDeaths, skin);
+        longestStreakLabel = new Label("Total Deaths: " + GameStats.instance.totalDeaths, skin);
         table.add(longestStreakLabel).left();
 
         table.row();
@@ -149,7 +157,7 @@ public class MenuScreen extends AbstractGameScreen {
     private Table buildControlsLayer() {
 
         Table table = new Table();
-        table.right().bottom();
+        table.bottom();
 
         playButton = new Button(skin, "play");
         table.add(playButton).pad(Constants.BUTTON_PAD);
@@ -197,7 +205,6 @@ public class MenuScreen extends AbstractGameScreen {
 
         // create instance of window
         optionsWindow = new Window("Options", defaultSkin);
-
 
         // sound settings
         optionsWindow.add(new Label("Sound Effects", defaultSkin)).colspan(3);
