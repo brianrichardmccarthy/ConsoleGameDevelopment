@@ -11,7 +11,7 @@ public class Constants {
 
     // GUI dimensions
     public static final float VIEWPORT_GUI_WIDTH = 480.0f;
-    public static final float VIEWPORT_GUI_HEIGHT = 800.0f;
+    public static final float VIEWPORT_GUI_HEIGHT = 750.0f;
 
     // atlas for all game sprites
     public static final String TEXTURE_ATLAS_GAME = "images/game.atlas";
@@ -39,6 +39,16 @@ public class Constants {
     
     public static final int MAX_LIVES = 3;
     public static final float DOUBLE_BULLET_TIMER = 8f;
+    
+    // location of game specific skin and atlas
+    public static final String  SKIN_UI                 = "images/ui.json";
+    public static final String  TEXTURE_ATLAS_UI        = "images/ui.atlas";
+
+    // location of libgdx default skin and atlas
+    public static final String  SKIN_LIBGDX_UI          = "images/uiskin.json";
+    public static final String  TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
+    
+    public static final int BUTTON_PAD      = 15;
     
     public static boolean isInScreen(AbstractGameObject gameObject, Level level) {
 
